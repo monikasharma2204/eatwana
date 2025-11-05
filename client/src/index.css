@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+@theme {
+    --color-primary: #e7582e;
+    --color-secondary: #f27636;
+    --color-third: #125a69;
+
+    /* --font-roboto: "Roboto", sans-serif;
+    --font-nunito: "Nunito", sans-serif;
+    --font-inter: "Inter", sans-serif; */
+}
