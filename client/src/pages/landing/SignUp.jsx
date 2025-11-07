@@ -255,7 +255,7 @@ export default function Signup() {
                             </div>
 
                             {/* Terms and Conditions */}
-                            <div className="flex items-center gap-2 px-2">
+                            {/* <div className="flex items-center gap-2 px-2">
                                 <input
                                     type="checkbox"
                                     id="terms"
@@ -267,7 +267,7 @@ export default function Signup() {
                                         Terms & Conditions
                                     </button>
                                 </label>
-                            </div>
+                            </div> */}
 
                             {/* Signup Button */}
                             <button
