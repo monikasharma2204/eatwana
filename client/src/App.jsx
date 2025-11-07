@@ -13,6 +13,7 @@ import Signup from "./pages/landing/SignUp";
 import ForgotPassword from "./pages/landing/ForgotPassword";
 import Loader from "./ui/Loader";
 import Profile from "./pages/landing/Profile";
+import CoomingSoon from "./pages/landing/CoomingSoon";
 // import AdminDashboard from "./pages/admin/AdminDashboard";
 
 // Utils
@@ -28,11 +29,12 @@ export default function App() {
           <Route path="/auth/signup" element={<Signup />} />
           <Route path="/auth/forgot" element={<ForgotPassword />} />
           <Route path="/auth/loader" element={<Loader />} />
+          <Route path="/" element={<CoomingSoon />} />
         </Route>
 
         {/* ==================== MAIN ROUTES ==================== */}
         <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
+          {/* <Route path="/" element={<Home />} /> */}
           <Route
             path="/profile"
             element={
