@@ -139,26 +139,21 @@ export default function Signup() {
                         {/* Food Bowls */}
                         <div className="flex flex-col gap-8 items-center">
                             {/* Top Bowl */}
-                            <div className="w-80 h-80 bg-gradient-to-br from-gray-900 to-gray-800 rounded-full shadow-2xl flex items-center justify-center transform -rotate-3">
-                                <div className="w-72 h-72 bg-black rounded-full overflow-hidden shadow-inner">
-                                    <div className="w-full h-full flex items-center justify-center text-6xl">
-                                        🍕
-                                    </div>
+                            <div className="w-80 h-80 rounded-full shadow-2xl flex items-center justify-center transform -rotate-3">
+                                <div className="w-72 h-72   overflow-hidden shadow-inner">
+                                    <img src='/picture/d4.png' />
                                 </div>
                             </div>
 
                             {/* Bottom Row Bowls */}
                             <div className="flex gap-8">
-                                <div className="w-56 h-56 bg-gradient-to-br from-gray-900 to-gray-800 rounded-full shadow-2xl flex items-center justify-center transform rotate-6">
-                                    <div className="w-48 h-48 bg-white rounded-full overflow-hidden shadow-inner flex items-center justify-center text-5xl">
-                                        🍔
-                                    </div>
+                                <div className="w-56 h-56 bg-gradient-to-br  rounded-full shadow-2xl flex items-center justify-center transform rotate-6">
+                                    <img src='/picture/d1.png' />
                                 </div>
-                                <div className="w-56 h-56 bg-gradient-to-br from-gray-900 to-gray-800 rounded-full shadow-2xl flex items-center justify-center transform -rotate-6">
-                                    <div className="w-48 h-48 bg-white rounded-full overflow-hidden shadow-inner flex items-center justify-center text-5xl">
-                                        🌮
-                                    </div>
+                                <div className="w-56 h-56 bg-gradient-to-br rounded-full shadow-2xl flex items-center justify-center transform -rotate-50">
+                                    <img src="/picture/d2.png" className="rotate-6" alt="Rotated" />
                                 </div>
+
                             </div>
                         </div>
                     </div>
