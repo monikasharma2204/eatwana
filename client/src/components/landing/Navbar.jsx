@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Menu, X, User, LogOut } from 'lucide-react';
-
+import { Link } from 'react-router-dom';
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -64,15 +64,14 @@ export default function Navbar() {
                             </div>
                         ) : (
                             <button
-                                onClick={toggleLogin}
                                 className="relative px-6 py-2.5 rounded-lg text-white font-semibold overflow-hidden group"
                             >
                                 <div className="absolute inset-0 bg-gradient-to-r from-[#e7582e] to-[#f27636] transition-all duration-300 group-hover:scale-105"></div>
                                 <div className="absolute inset-0 bg-gradient-to-r from-[#f27636] to-[#e7582e] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                <span className="relative flex items-center space-x-2">
+                                <Link to="/auth/login" className="relative flex items-center space-x-2">
                                     <User className="w-4 h-4" />
                                     <span>Login / Signup</span>
-                                </span>
+                                </Link>
                             </button>
                         )}
                     </div>

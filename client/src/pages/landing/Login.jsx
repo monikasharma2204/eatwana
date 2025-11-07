@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import axiosClient from '../../services/axiosClient';
 import AlertSnackbar from '../../ui/AlertSnackbar';
+import { useDispatch, useSelector } from "react-redux";
+import { loginSuccess, setError, startLoading } from '../../app/auth/userSlice';
+import { BlinkingDots } from '../../ui/Loader';
+
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -13,6 +17,8 @@ export default function Login() {
         severity: "info",
     });
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { loading } = useSelector((state) => state.user);
     const showSnackbar = (message, severity = "info") => {
         setSnackbar({ open: true, message, severity });
     };
@@ -24,58 +30,35 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // 🔹 Basic validation
         if (!email || !password) {
             showSnackbar("Please enter both email and password", "warning");
             return;
         }
 
         try {
-            // 🔹 Send login request
+            // 🟡 Start Loading
+            dispatch(startLoading());
+
             const response = await axiosClient.post("/api/v1/auth/login", {
                 email,
                 password,
             });
 
-            // 🔹 Check backend response
             if (response.status === 200) {
-                showSnackbar(response.data.message || "Login successful!", "success");
-                console.log("Logged in user:", response.data.user);
+                const { user, token, message } = response.data;
 
-                // 🔹 Store token and user info
-                localStorage.setItem("token", response.data.token);
-                localStorage.setItem("user", JSON.stringify(response.data.user));
+                // ✅ Success
+                dispatch(loginSuccess({ user, token }));
+                showSnackbar(message || "Login successful!", "success");
 
-                // ✅ Redirect to dashboard or home
-                setTimeout(() => {
-                    navigate("/");
-                }, 1500);
-            } else {
-                showSnackbar(
-                    response.data?.message || "Unexpected server response!",
-                    "warning"
-                );
+                setTimeout(() => navigate("/"), 1500);
             }
         } catch (error) {
             console.error("Login error:", error);
-
-            const status = error.response?.status;
-            const message = error.response?.data?.message || "Server error occurred";
-
-            if (status === 400) {
-                showSnackbar(message || "Invalid credentials!", "error");
-            } else if (status === 404) {
-                showSnackbar(message || "User not found!", "warning");
-            } else if (status === 500) {
-                showSnackbar(message || "Internal server error.", "error");
-            } else if (!error.response) {
-                showSnackbar("Network error. Please check your internet connection.", "error");
-            } else {
-                showSnackbar(message, "error");
-            }
+            dispatch(setError(error.response?.data?.message || "Login failed"));
+            showSnackbar(error.response?.data?.message || "Login failed", "error");
         }
     };
-
     return (
         <>
             <AlertSnackbar
@@ -86,6 +69,7 @@ export default function Login() {
                 onClose={handleClose}
                 position={{ vertical: "top", horizontal: "right" }}
             />
+
             <div className="min-h-screen flex">
                 {/* Left Side - Image Section */}
                 <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-secondary">
@@ -209,10 +193,18 @@ export default function Login() {
                             {/* Login Button */}
                             <button
                                 onClick={handleSubmit}
-                                className="w-full py-4 rounded-full text-white font-semibold text-lg bg-primary hover:bg-secondary shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+                                disabled={loading}
+                                className={`w-full py-4 rounded-full text-white font-semibold text-lg
+    flex items-center justify-center
+    ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-primary hover:bg-secondary"} 
+    shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200`}
                             >
-                                Login
+                                <div className="transition-opacity duration-300">
+                                    {loading ? <div className='py-2'><BlinkingDots size="md" color="theme" /></div> : "Login"}
+                                </div>
                             </button>
+
+
 
                             {/* Divider */}
                             <div className="flex items-center gap-4 my-6">

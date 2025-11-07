@@ -29,6 +29,24 @@ export const DoubleRing = ({ size = 'md', color = 'blue' }) => {
     };
     return (
         <div className={`relative ${sizes[size]}`}>
+            <style>{`
+        @keyframes slide {
+          0% { left: -33%; }
+          100% { left: 100%; }
+        }
+        @keyframes grow {
+          0%, 100% { height: 16px; }
+          50% { height: 48px; }
+        }
+        @keyframes blink {
+          0%, 100% { opacity: 0.2; }
+          50% { opacity: 1; }
+        }
+        @keyframes orbit {
+          0% { transform: rotate(0deg) translateX(28px); }
+          100% { transform: rotate(360deg) translateX(28px); }
+        }
+      `}</style>
             <div className={`absolute inset-0 border-4 ${colors[color]} rounded-full animate-spin`}></div>
             <div className={`absolute inset-2 border-4 ${colors[color]} rounded-full`} style={{ animation: 'spin 1s linear infinite reverse' }}></div>
         </div>
@@ -48,6 +66,24 @@ export const GradientSpinner = ({ size = 'md', color = 'blue' }) => {
     };
     return (
         <div className={`${sizes[size]} rounded-full bg-gradient-to-tr ${colors[color]} animate-spin`}>
+            <style>{`
+        @keyframes slide {
+          0% { left: -33%; }
+          100% { left: 100%; }
+        }
+        @keyframes grow {
+          0%, 100% { height: 16px; }
+          50% { height: 48px; }
+        }
+        @keyframes blink {
+          0%, 100% { opacity: 0.2; }
+          50% { opacity: 1; }
+        }
+        @keyframes orbit {
+          0% { transform: rotate(0deg) translateX(28px); }
+          100% { transform: rotate(360deg) translateX(28px); }
+        }
+      `}</style>
             <div className={`${innerSizes[size]} bg-white rounded-full`}></div>
         </div>
     );
@@ -66,6 +102,24 @@ export const ProgressBar = ({ size = 'md', color = 'blue', type = 'pulse' }) => 
 
     return (
         <div className={`w-full bg-gray-200 rounded-full ${sizes[size]} overflow-hidden`}>
+            <style>{`
+        @keyframes slide {
+          0% { left: -33%; }
+          100% { left: 100%; }
+        }
+        @keyframes grow {
+          0%, 100% { height: 16px; }
+          50% { height: 48px; }
+        }
+        @keyframes blink {
+          0%, 100% { opacity: 0.2; }
+          50% { opacity: 1; }
+        }
+        @keyframes orbit {
+          0% { transform: rotate(0deg) translateX(28px); }
+          100% { transform: rotate(360deg) translateX(28px); }
+        }
+      `}</style>
             {type === 'pulse' && (
                 <div className={`h-full bg-gradient-to-r ${colors[color]} rounded-full animate-pulse`}></div>
             )}
@@ -89,6 +143,24 @@ export const BouncingBalls = ({ size = 'md', color = 'blue' }) => {
     };
     return (
         <div className={`flex ${gaps[size]}`}>
+            <style>{`
+        @keyframes slide {
+          0% { left: -33%; }
+          100% { left: 100%; }
+        }
+        @keyframes grow {
+          0%, 100% { height: 16px; }
+          50% { height: 48px; }
+        }
+        @keyframes blink {
+          0%, 100% { opacity: 0.2; }
+          50% { opacity: 1; }
+        }
+        @keyframes orbit {
+          0% { transform: rotate(0deg) translateX(28px); }
+          100% { transform: rotate(360deg) translateX(28px); }
+        }
+      `}</style>
             <div className={`${sizes[size]} ${colors[color][0]} rounded-full`} style={{ animation: 'bounce 0.6s ease-in-out infinite' }}></div>
             <div className={`${sizes[size]} ${colors[color][1]} rounded-full`} style={{ animation: 'bounce 0.6s ease-in-out 0.2s infinite' }}></div>
             <div className={`${sizes[size]} ${colors[color][2]} rounded-full`} style={{ animation: 'bounce 0.6s ease-in-out 0.4s infinite' }}></div>
@@ -108,6 +180,24 @@ export const BouncingBars = ({ size = 'md', color = 'blue' }) => {
     };
     return (
         <div className={`flex gap-1 items-end ${sizes[size]}`}>
+            <style>{`
+        @keyframes slide {
+          0% { left: -33%; }
+          100% { left: 100%; }
+        }
+        @keyframes grow {
+          0%, 100% { height: 16px; }
+          50% { height: 48px; }
+        }
+        @keyframes blink {
+          0%, 100% { opacity: 0.2; }
+          50% { opacity: 1; }
+        }
+        @keyframes orbit {
+          0% { transform: rotate(0deg) translateX(28px); }
+          100% { transform: rotate(360deg) translateX(28px); }
+        }
+      `}</style>
             {[0, 0.1, 0.2, 0.3, 0.4].map((delay, i) => (
                 <div key={i} className={`${sizes[size].split(' ')[0]} ${colors[color][i % 3]} rounded-t`} style={{ animation: `grow 0.6s ease-in-out ${delay}s infinite` }}></div>
             ))}
@@ -127,6 +217,24 @@ export const PulseCircle = ({ size = 'md', color = 'blue' }) => {
     };
     return (
         <div className={`relative ${sizes[size]}`}>
+            <style>{`
+        @keyframes slide {
+          0% { left: -33%; }
+          100% { left: 100%; }
+        }
+        @keyframes grow {
+          0%, 100% { height: 16px; }
+          50% { height: 48px; }
+        }
+        @keyframes blink {
+          0%, 100% { opacity: 0.2; }
+          50% { opacity: 1; }
+        }
+        @keyframes orbit {
+          0% { transform: rotate(0deg) translateX(28px); }
+          100% { transform: rotate(360deg) translateX(28px); }
+        }
+      `}</style>
             <div className={`absolute inset-0 ${colors[color]} rounded-full animate-ping opacity-75`}></div>
             <div className={`absolute inset-0 ${colors[color]} rounded-full`}></div>
         </div>
@@ -138,6 +246,8 @@ export const BlinkingDots = ({ size = 'md', color = 'blue' }) => {
     const sizes = { sm: 'w-2 h-2', md: 'w-3 h-3', lg: 'w-4 h-4', xl: 'w-5 h-5' };
     const gaps = { sm: 'gap-1', md: 'gap-2', lg: 'gap-2.5', xl: 'gap-3' };
     const colors = {
+
+        theme: ['bg-primary', 'bg-secondary', 'bg-third'],
         blue: ['bg-blue-500', 'bg-cyan-500', 'bg-teal-500'],
         purple: ['bg-purple-500', 'bg-pink-500', 'bg-blue-500'],
         green: ['bg-emerald-500', 'bg-green-500', 'bg-lime-500'],
@@ -146,6 +256,24 @@ export const BlinkingDots = ({ size = 'md', color = 'blue' }) => {
     };
     return (
         <div className={`flex ${gaps[size]}`}>
+            <style>{`
+        @keyframes slide {
+          0% { left: -33%; }
+          100% { left: 100%; }
+        }
+        @keyframes grow {
+          0%, 100% { height: 16px; }
+          50% { height: 48px; }
+        }
+        @keyframes blink {
+          0%, 100% { opacity: 0.2; }
+          50% { opacity: 1; }
+        }
+        @keyframes orbit {
+          0% { transform: rotate(0deg) translateX(28px); }
+          100% { transform: rotate(360deg) translateX(28px); }
+        }
+      `}</style>
             <div className={`${sizes[size]} ${colors[color][0]} rounded-full`} style={{ animation: 'blink 1.4s ease-in-out infinite' }}></div>
             <div className={`${sizes[size]} ${colors[color][1]} rounded-full`} style={{ animation: 'blink 1.4s ease-in-out 0.2s infinite' }}></div>
             <div className={`${sizes[size]} ${colors[color][2]} rounded-full`} style={{ animation: 'blink 1.4s ease-in-out 0.4s infinite' }}></div>
@@ -166,6 +294,24 @@ export const ChasingDots = ({ size = 'md', color = 'blue' }) => {
     };
     return (
         <div className={`relative ${sizes[size]}`}>
+            <style>{`
+        @keyframes slide {
+          0% { left: -33%; }
+          100% { left: 100%; }
+        }
+        @keyframes grow {
+          0%, 100% { height: 16px; }
+          50% { height: 48px; }
+        }
+        @keyframes blink {
+          0%, 100% { opacity: 0.2; }
+          50% { opacity: 1; }
+        }
+        @keyframes orbit {
+          0% { transform: rotate(0deg) translateX(28px); }
+          100% { transform: rotate(360deg) translateX(28px); }
+        }
+      `}</style>
             <div className={`absolute top-0 left-1/2 ${dotSizes[size]} -ml-1.5 ${colors[color][0]} rounded-full`} style={{ animation: 'orbit 1.2s linear infinite' }}></div>
             <div className={`absolute top-0 left-1/2 ${dotSizes[size]} -ml-1.5 ${colors[color][1]} rounded-full`} style={{ animation: 'orbit 1.2s linear 0.4s infinite' }}></div>
             <div className={`absolute top-0 left-1/2 ${dotSizes[size]} -ml-1.5 ${colors[color][2]} rounded-full`} style={{ animation: 'orbit 1.2s linear 0.8s infinite' }}></div>

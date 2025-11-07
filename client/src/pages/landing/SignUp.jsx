@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AlertSnackbar from '../../ui/AlertSnackbar';
 import axiosClient from '../../services/axiosClient';
+import { useDispatch, useSelector } from "react-redux";
+import { loginSuccess, setError, startLoading } from '../../app/auth/userSlice';
+import { BlinkingDots } from '../../ui/Loader';
+
 
 export default function Signup() {
     const [name, setName] = useState('');
@@ -10,6 +14,8 @@ export default function Signup() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { loading } = useSelector((state) => state.user);
     const [snackbar, setSnackbar] = useState({
         open: false,
         message: "",
@@ -27,7 +33,6 @@ export default function Signup() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Basic validation
         if (!name || !email || !mobile || !password || !confirmPassword) {
             showSnackbar("Please fill all required fields", "warning");
             return;
@@ -39,7 +44,9 @@ export default function Signup() {
         }
 
         try {
-            // 🔹 Send signup request
+            // 🟡 Start Loading
+            dispatch(startLoading());
+
             const response = await axiosClient.post("/api/v1/auth/signup", {
                 name,
                 email,
@@ -47,47 +54,25 @@ export default function Signup() {
                 password,
             });
 
-            // 🔹 Check backend response
             if (response.status === 201) {
-                showSnackbar(response.data.message || "Signup successful!", "success");
-                console.log("User created:", response.data.user);
+                const { user, token, message } = response.data;
 
-                // Optionally store token
-                localStorage.setItem("token", response.data.token);
+                // ✅ Success
+                dispatch(loginSuccess({ user, token }));
+                showSnackbar(message || "Signup successful!", "success");
 
-                // Reset form
                 setName("");
                 setEmail("");
                 setMobile("");
                 setPassword("");
                 setConfirmPassword("");
-                setTimeout(() => {
-                    navigate("/");
-                }, 2000);
-            } else {
-                // Any unexpected non-error status
-                showSnackbar(
-                    response.data?.message || "Unexpected server response!",
-                    "warning"
-                );
+
+                setTimeout(() => navigate("/"), 1500);
             }
         } catch (error) {
             console.error("Signup error:", error);
-
-            // 🔹 Extract message & status safely
-            const status = error.response?.status;
-            const message = error.response?.data?.message || "Server error occurred";
-
-            if (status === 400) {
-                showSnackbar(message || "User already exists!", "warning");
-            } else if (status === 500) {
-                showSnackbar(message || "Internal server error.", "error");
-            } else if (!error.response) {
-                // Network / timeout / no response
-                showSnackbar("Network error. Please check your connection.", "error");
-            } else {
-                showSnackbar(message, "error");
-            }
+            dispatch(setError(error.response?.data?.message || "Signup failed"));
+            showSnackbar(error.response?.data?.message || "Signup failed", "error");
         }
     };
 
@@ -267,9 +252,15 @@ export default function Signup() {
                             {/* Signup Button */}
                             <button
                                 onClick={handleSubmit}
-                                className="w-full py-4 rounded-full text-white font-semibold text-lg bg-primary hover:bg-secondary shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+                                disabled={loading}
+                                className={`w-full py-4 rounded-full text-white font-semibold text-lg
+    flex items-center justify-center
+    ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-primary hover:bg-secondary"} 
+    shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200`}
                             >
-                                Sign Up
+                                <div className="transition-opacity duration-300">
+                                    {loading ? <div className='py-2'><BlinkingDots size="md" color="theme" /></div> : "Sign Up"}
+                                </div>
                             </button>
 
                             {/* Divider */}
