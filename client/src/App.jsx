@@ -29,12 +29,12 @@ export default function App() {
           <Route path="/auth/signup" element={<Signup />} />
           <Route path="/auth/forgot" element={<ForgotPassword />} />
           <Route path="/auth/loader" element={<Loader />} />
-          <Route path="/" element={<CoomingSoon />} />
+          {/* <Route path="/" element={<CoomingSoon />} /> */}
         </Route>
 
         {/* ==================== MAIN ROUTES ==================== */}
         <Route element={<MainLayout />}>
-          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<Home />} />
           <Route
             path="/profile"
             element={
