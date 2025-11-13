@@ -6,16 +6,17 @@ const quantitySchema = new mongoose.Schema(
     {
         type: {
             type: String,
-            enum: ["quarter", "half", "full"],
             required: true,
         },
         price: {
             type: Number,
             required: true,
+            min: [0, "Price cannot be negative"],
         },
         discountPrice: {
             type: Number,
             default: 0,
+            min: [0, "Discount price cannot be negative"],
         },
     },
     { _id: false }
@@ -81,8 +82,39 @@ const dishSchema = new mongoose.Schema(
             type: String,
             trim: true,
         },
+
+        // 🔍 Tags for better search functionality
+        tags: {
+            type: [String],
+            default: [],
+            index: true,
+        },
+
+        // 📊 Search-optimized fields
+        searchTerms: {
+            type: String,
+            index: true,
+        },
     },
     { timestamps: true }
 );
+
+// 🔍 Create search terms before saving
+dishSchema.pre("save", function (next) {
+    // Combine name, description, and tags for efficient searching
+    const searchableText = [
+        this.name,
+        this.description || "",
+        ...(this.tags || []),
+    ]
+        .join(" ")
+        .toLowerCase();
+
+    this.searchTerms = searchableText;
+    next();
+});
+
+// 📊 Index for text search
+dishSchema.index({ name: "text", description: "text", tags: "text" });
 
 export default mongoose.model("Dish", dishSchema);

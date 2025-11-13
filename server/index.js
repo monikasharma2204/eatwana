@@ -6,7 +6,11 @@ import cors from 'cors';
 
 
 import userAuthRoute from './routes/userAuthRoutes.js';
+import dishRoutes from "./routes/dishRoute.js";
+import subCategoryRoutes from "./routes/subCategoryRoute.js";
 
+
+import { errorHandler, notFound } from "./middleware/errorHandler.js";
 console.log("JWT_SECRET:", process.env.USER_JWT_SECRET);
 
 
@@ -27,6 +31,10 @@ app.use(cors({
 }));
 app.use(express.json()); // For parsing JSON data
 app.use(express.urlencoded({ extended: true })); // For form data
+app.use('/uploads', express.static('uploads'));
+// app.use(notFound);
+// app.use(errorHandler);
+
 
 // ========================
 // 🔹 MongoDB Connection
@@ -49,9 +57,12 @@ mongoose.connect(MONGO_URI, {
 // 🔹 Routes
 // ========================
 app.use('/api/v1/auth', userAuthRoute);
+app.use("/api/v1/dishes", dishRoutes);
+app.use("/api/v1/subcategory", subCategoryRoutes);
+
 
 // Example Test Route
-app.get('/api/test', (req, res) => {
+app.get('/', (req, res) => {
     res.json({ message: 'API working fine!' });
 });
 

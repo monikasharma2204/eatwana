@@ -18,6 +18,14 @@ import CoomingSoon from "./pages/landing/CoomingSoon";
 
 // Utils
 import ProtectedRoute from "./components/ProtectedRoute";
+import Sidebar from "./components/admin/Sidebar";
+import AddDishForm from "./pages/admin/AddDishForm";
+import SubCategoryForm from "./components/admin/SubCategoryForm";
+import AllDish from "./pages/admin/AllDish";
+import AddSubCategory from "./pages/admin/AddSubCategory";
+import SubCategory from "./pages/admin/SubCategory";
+import UpdateDishForm from "./pages/admin/UpdateDish";
+
 
 export default function App() {
   return (
@@ -46,16 +54,63 @@ export default function App() {
         </Route>
 
         {/* ==================== ADMIN ROUTES ==================== */}
-        {/* <Route element={<AdminLayout />}>
+        <Route element={<AdminLayout />}>
           <Route
             path="/admin/dashboard"
             element={
-              <ProtectedRoute>
-                <AdminDashboard />
-              </ProtectedRoute>
+
+              <Sidebar>
+                Hello
+              </Sidebar>
+
             }
           />
-        </Route> */}
+          <Route
+            path="/dishes/all"
+            element={
+              <Sidebar>
+                <AllDish />
+              </Sidebar>
+
+            }
+          />
+          <Route
+            path="/dishes/add"
+            element={
+              <Sidebar>
+                <AddDishForm />
+              </Sidebar>
+            }
+          />
+          <Route
+            path="/dishes/update/:id"
+            element={
+              <Sidebar>
+                <UpdateDishForm />
+              </Sidebar>
+            }
+          />
+          <Route
+            path="/dishes/sub-categories"
+            element={
+              <Sidebar>
+                <SubCategory />
+              </Sidebar>
+            }
+          />
+          <Route
+            path="/dishes/sub-categories/add"
+            element={
+              <Sidebar>
+                <AddSubCategory />
+              </Sidebar>
+
+            }
+          />
+
+
+
+        </Route>
       </Routes>
     </Router>
   );
