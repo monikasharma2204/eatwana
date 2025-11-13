@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Upload, X, Plus, Minus, Image, ChevronRight } from 'lucide-react';
 import axiosClient from '../../services/axiosClient';
 import AlertSnackbar from '../../ui/AlertSnackbar';
-
 import Breadcrumb from '../../ui/Breadcrumb';
+import { useParams } from 'react-router-dom';
 
 const UpdateDishForm = () => {
+    const { id } = useParams();
     const [snackbar, setSnackbar] = useState({
         open: false,
         message: "",
@@ -22,21 +23,68 @@ const UpdateDishForm = () => {
     });
 
     const [subCategories, setSubCategories] = useState([]);
-
     const [quantities, setQuantities] = useState([
         { size: '', price: '', discountPrice: '' }
     ]);
-
     const [image, setImage] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
+    const [existingImageUrl, setExistingImageUrl] = useState(null);
     const [tagInput, setTagInput] = useState('');
     const [loading, setLoading] = useState(false);
+    const [pageLoading, setPageLoading] = useState(true);
 
+    // Fetch dish data and subcategories on mount
+    useEffect(() => {
+        const fetchData = async () => {
+            setPageLoading(true);
+            try {
+                await Promise.all([fetchDishById(), fetchSubCategories()]);
+            } catch (error) {
+                showSnackbar('Failed to load data', 'error');
+            } finally {
+                setPageLoading(false);
+            }
+        };
+        fetchData();
+    }, [id]);
 
-    // Fetch subcategories on mount
-    React.useEffect(() => {
-        fetchSubCategories();
-    }, []);
+    const fetchDishById = async () => {
+        try {
+            const response = await axiosClient.get(`/api/v1/dishes/get/${id}`);
+            console.log('Fetched Dish:', response);
+            if (response.data.success) {
+                const dish = response.data.data;
+                // Populate form data
+                setFormData({
+                    name: dish.name || '',
+                    category: dish.category || 'veg',
+                    subCategory: dish.subCategory,
+                    mealType: dish.mealType || 'normal',
+                    description: dish.description || '',
+                    tags: dish.tags || [],
+                    isAvailable: dish.isAvailable !== undefined ? dish.isAvailable : true,
+                });
+
+                // Populate quantities
+                if (dish.quantities && dish.quantities.length > 0) {
+                    setQuantities(dish.quantities.map(q => ({
+                        size: q.type || '',
+                        price: q.price || '',
+                        discountPrice: q.discountPrice || ''
+                    })));
+                }
+
+                // Set existing image
+                if (dish.image) {
+                    setExistingImageUrl(dish.image);
+                    setImagePreview(dish.image);
+                }
+            }
+        } catch (error) {
+            showSnackbar('Failed to load dish data', 'error');
+            console.error(error);
+        }
+    };
 
     const fetchSubCategories = async () => {
         try {
@@ -58,11 +106,17 @@ const UpdateDishForm = () => {
     };
 
     const handleInputChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value
-        }));
+        const { name, value } = e.target;
+
+        if (name === "subCategory") {
+            const selected = subCategories.find(sc => sc._id === value);
+            setFormData(prev => ({
+                ...prev,
+                subCategory: selected || null
+            }));
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }
     };
 
     const handleImageChange = (e) => {
@@ -74,6 +128,7 @@ const UpdateDishForm = () => {
             }
             setImage(file);
             setImagePreview(URL.createObjectURL(file));
+            setExistingImageUrl(null); // Clear existing image reference when new image is uploaded
         }
     };
 
@@ -129,11 +184,6 @@ const UpdateDishForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!image) {
-            showSnackbar('Please upload a dish image', 'error');
-            return;
-        }
-
         const validQuantities = quantities.filter(q => q.size && q.price);
         if (validQuantities.length === 0) {
             showSnackbar('Please add at least one quantity with size and price', 'error');
@@ -152,17 +202,22 @@ const UpdateDishForm = () => {
 
         try {
             const formDataToSend = new FormData();
-            formDataToSend.append('image', image);
+
+            // Only append image if a new one was uploaded
+            if (image) {
+                formDataToSend.append('image', image);
+            }
+
             formDataToSend.append('name', formData.name);
             formDataToSend.append('category', formData.category);
-            formDataToSend.append('subCategory', formData.subCategory);
+            formDataToSend.append('subCategory', formData.subCategory._id);
             formDataToSend.append('mealType', formData.mealType);
             formDataToSend.append('description', formData.description);
             formDataToSend.append('isAvailable', formData.isAvailable);
 
             // Format quantities to match backend expectations
             const formattedQuantities = validQuantities.map(q => ({
-                size: q.size,
+                type: q.size,
                 price: parseFloat(q.price),
                 discountPrice: q.discountPrice ? parseFloat(q.discountPrice) : 0
             }));
@@ -170,47 +225,46 @@ const UpdateDishForm = () => {
             formDataToSend.append('quantities', JSON.stringify(formattedQuantities));
             formDataToSend.append('tags', JSON.stringify(formData.tags));
 
-            const response = await axiosClient.post('/api/v1/dishes/add', formDataToSend, {
+            const response = await axiosClient.put(`/api/v1/dishes/update/${id}`, formDataToSend, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
 
             if (response.data.success) {
-                showSnackbar('Dish created successfully!', 'success');
-                resetForm();
+                showSnackbar('Dish updated successfully!', 'success');
+                // Optionally redirect or refresh data
+                await fetchDishById();
             } else {
-                showSnackbar(response.data.message || 'Failed to create dish', 'error');
+                showSnackbar(response.data.message || 'Failed to update dish', 'error');
             }
         } catch (error) {
-            showSnackbar('An error occurred while creating the dish', 'error');
+            showSnackbar('An error occurred while updating the dish', 'error');
             console.log(error);
         } finally {
             setLoading(false);
         }
     };
 
-    const resetForm = () => {
-        setFormData({
-            name: '',
-            category: 'veg',
-            subCategory: '',
-            mealType: 'normal',
-            description: '',
-            tags: [],
-            isAvailable: true,
-        });
-        setQuantities([{ size: '', price: '', discountPrice: '' }]);
-        setImage(null);
-        setImagePreview(null);
-    };
+    // Loading placeholder - Replace with your custom loader component
+    if (pageLoading) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+                {/* INSERT YOUR CUSTOM LOADER COMPONENT HERE */}
+                <div className="text-center">
+                    <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-orange-500 border-t-transparent"></div>
+                    <p className="mt-4 text-gray-600 font-medium">Loading dish data...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <>
             <Breadcrumb
                 items={[
                     { label: 'Dish', href: '/dishes/all' },
-                    { label: 'Add Dish' }
+                    { label: 'Update Dish' }
                 ]}
                 showHome={true}
                 homeIcon={true}
@@ -224,29 +278,40 @@ const UpdateDishForm = () => {
 
                         {/* Image Upload - Large Featured Box */}
                         <div className="lg:col-span-5 lg:row-span-2 bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow">
-                            <h3 className="text-lg font-semibold text-gray-800 mb-4">Dish Image *</h3>
+                            <h3 className="text-lg font-semibold text-gray-800 mb-4">Dish Image</h3>
                             <div className="h-full flex items-center justify-center">
                                 <div className="w-full">
                                     <div className="relative border-2 border-dashed border-gray-300 rounded-xl hover:border-orange-500 transition-colors overflow-hidden bg-gray-50">
                                         {imagePreview ? (
                                             <div className="relative aspect-square">
-                                                <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                                                <button
+                                                <img
+                                                    src={
+                                                        existingImageUrl
+                                                            ? `${import.meta.env.VITE_API_URL}/${existingImageUrl}`
+                                                            : imagePreview
+                                                    }
+                                                    alt="Preview"
+                                                    className="w-full h-full object-cover"
+                                                />                                                <button
                                                     type="button"
                                                     onClick={() => {
                                                         setImage(null);
                                                         setImagePreview(null);
+                                                        setExistingImageUrl(null);
                                                     }}
                                                     className="absolute top-3 right-3 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 shadow-lg"
                                                 >
                                                     <X size={20} />
                                                 </button>
+                                                <div className="absolute bottom-3 left-3 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+                                                    {image ? 'New Image' : 'Current Image'}
+                                                </div>
                                             </div>
                                         ) : (
                                             <div className="aspect-square flex flex-col items-center justify-center p-8">
                                                 <Image className="h-16 w-16 text-gray-400 mb-4" />
                                                 <label className="cursor-pointer">
-                                                    <span className="text-orange-500 hover:text-orange-600 font-medium text-lg">Upload Image</span>
+                                                    <span className="text-orange-500 hover:text-orange-600 font-medium text-lg">Upload New Image</span>
                                                     <input
                                                         type="file"
                                                         className="hidden"
@@ -315,14 +380,14 @@ const UpdateDishForm = () => {
                             </label>
                             <select
                                 name="subCategory"
-                                value={formData.subCategory}
+                                value={formData.subCategory?._id || ""}
                                 onChange={handleInputChange}
                                 required
                                 className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                             >
                                 <option value="">Select Sub Category</option>
                                 {subCategories.map((subCat) => (
-                                    <option key={subCat._id || subCat.id} value={subCat._id || subCat.id}>
+                                    <option key={subCat._id} value={subCat._id}>
                                         {subCat.name}
                                     </option>
                                 ))}
@@ -509,14 +574,23 @@ const UpdateDishForm = () => {
                                     type="button"
                                     onClick={handleSubmit}
                                     disabled={loading}
-                                    className="flex-1 bg-orange-500 text-white py-4 px-6 rounded-xl hover:bg-orange-600 transition-colors font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                                    className="flex-1 bg-orange-500 text-white py-4 px-6 rounded-xl hover:bg-orange-600 transition-colors font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed shadow-lg flex items-center justify-center gap-2"
                                 >
-                                    {loading ? 'Creating Dish...' : 'Create Dish'}
+                                    {loading ? (
+                                        <>
+                                            {/* INSERT YOUR CUSTOM BUTTON LOADER HERE */}
+                                            <div className="inline-block animate-spin rounded-full h-5 w-5 border-3 border-white border-t-transparent"></div>
+                                            <span>Updating Dish...</span>
+                                        </>
+                                    ) : (
+                                        'Update Dish'
+                                    )}
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={resetForm}
-                                    className="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-semibold"
+                                    onClick={() => fetchDishById()}
+                                    disabled={loading}
+                                    className="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     Reset
                                 </button>

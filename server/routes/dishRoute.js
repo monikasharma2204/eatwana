@@ -24,8 +24,8 @@ router.get("/tag/:tag", getDishesByTag);
 // 📝 CRUD routes
 router.post("/add", upload.single("image"), createDish);
 router.get("/all", getAllDishes);
-router.get("/:id", getDishById);
-router.put("/:id", upload.single("image"), updateDish);
+router.get("/get/:id", getDishById);
+router.put("/update/:id", upload.single("image"), updateDish);
 router.delete("/delete/:id", deleteDish);
 
 export default router;

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { loginSuccess, logout } from "../app/auth/userSlice";
 import axiosClient from "../services/axiosClient";
-import { BlinkingDots } from "../ui/Loader";
+// import { BlinkingDots } from "../ui/Loader";
 
 const ProtectedRoute = ({ children }) => {
     const dispatch = useDispatch();

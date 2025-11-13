@@ -411,7 +411,7 @@ export const getDishesByTag = async (req, res) => {
 export const updateDish = async (req, res) => {
     try {
         const { id } = req.params;
-
+        console.log(req.body    )
         // Validate MongoDB ObjectId
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({

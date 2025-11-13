@@ -3,8 +3,10 @@ import Breadcrumb from '../../ui/Breadcrumb';
 import DishCard from '../../components/admin/DishCard';
 import { ChevronRight } from 'lucide-react';
 import axiosClient from '../../services/axiosClient';
+import { RippleLoader } from '../../ui/Loader';
 
 export default function AllDish() {
+    const [loading, setLoading] = useState(true);
     const [dishes, setDishes] = useState([]);
     const [snackbar, setSnackbar] = useState({
         open: false,
@@ -21,16 +23,20 @@ export default function AllDish() {
     useEffect(() => {
         const fetchDishes = async () => {
             try {
+                setLoading(true); // start loader
+
                 const response = await axiosClient.get('/api/v1/dishes/all');
-                // ✅ Assuming backend sends data as { success: true, data: [...] }
                 setDishes(response.data.data || []);
             } catch (error) {
                 console.error('Error fetching dishes:', error);
+            } finally {
+                setLoading(false); // stop loader
             }
         };
 
         fetchDishes();
-    }, []); // ✅ Added dependency array so it runs once only
+    }, []);
+
 
     const handleEdit = (dish) => {
         console.log('Edit dish:', dish);
@@ -56,7 +62,22 @@ export default function AllDish() {
             showSnackbar("Something went wrong while deleting", "error");
         }
     };
+    if (loading) {
+        return (
+            <>
+                <Breadcrumb
+                    items={[{ label: 'All Dishes' }]}
+                    showHome={true}
+                    homeIcon={true}
+                    separator={<ChevronRight size={15} />}
+                />
 
+                <div className="flex items-center justify-center h-screen">
+                    <RippleLoader size={60} color="#e7582e" />
+                </div>
+            </>
+        );
+    }
     return (
         <>
             <Breadcrumb
@@ -98,6 +119,7 @@ export default function AllDish() {
                             No dishes found.
                         </div>
                     )}
+
                 </div>
             </div>
         </>

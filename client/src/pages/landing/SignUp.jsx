@@ -4,7 +4,7 @@ import AlertSnackbar from '../../ui/AlertSnackbar';
 import axiosClient from '../../services/axiosClient';
 import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess, setError, startLoading } from '../../app/auth/userSlice';
-import { BlinkingDots } from '../../ui/Loader';
+// import { BlinkingDots } from '../../ui/Loader';
 
 
 export default function Signup() {

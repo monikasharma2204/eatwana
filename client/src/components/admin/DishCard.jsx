@@ -1,10 +1,11 @@
 
 import React, { useState } from 'react';
 import { Star, Edit2, Trash2, AlertCircle, Package, Clock, Tag, Info } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const DishCard = ({ dish, onDelete }) => {
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-
+    const navigate = useNavigate();
 
     const currentDish = dish;
 
@@ -218,7 +219,7 @@ const DishCard = ({ dish, onDelete }) => {
                                 {/* Action Buttons */}
                                 <div className="flex gap-3">
                                     <button
-                                        onClick={() => onEdit && onEdit(currentDish)}
+                                        onClick={() => navigate(`/dishes/update/${dish._id}`)}
                                         className="flex-1 bg-third text-white py-3.5 px-4 rounded-xl font-bold hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg text-sm"
                                     >
                                         <Edit2 className="w-4 h-4" />
