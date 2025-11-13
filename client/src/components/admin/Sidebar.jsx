@@ -41,14 +41,23 @@ const Sidebar = ({ children }) => {
             ]
         },
         {
-            id: 'orders',
-            label: 'Orders',
+            id: 'menu',
+            label: 'Menu',
             icon: ShoppingBag,
-            badge: 12,
+            // badge: 12,
             subItems: [
-                { label: 'All Orders', path: '/orders' },
-                { label: 'Pending Orders', path: '/orders/pending' },
-                { label: 'Order History', path: '/orders/history' }
+                { label: 'Menu', path: '/Menu' },
+                { label: 'Create Menu', path: '/menu/add' }
+            ]
+        },
+        {
+            id: 'tiffin',
+            label: 'Tiffin',
+            icon: ShoppingBag,
+            // badge: 12,
+            subItems: [
+                { label: 'Tiffin', path: '/tiffin' },
+                { label: 'Pending Orders', path: '/tiffin/add' }
             ]
         },
         {

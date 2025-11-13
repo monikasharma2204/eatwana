@@ -3,6 +3,8 @@ import SubCategoryTable from '../../components/admin/SubCategoryTable';
 import axiosClient from '../../services/axiosClient';
 import { RippleLoader } from '../../ui/Loader';
 import AlertSnackbar from '../../ui/AlertSnackbar';
+import { ChevronRight } from 'lucide-react';
+import Breadcrumb from '../../ui/Breadcrumb';
 
 export default function SubCategory() {
     const [loading, setLoading] = useState(true);
@@ -87,6 +89,12 @@ export default function SubCategory() {
                 duration={4000}
                 onClose={handleClose}
                 position={{ vertical: "top", horizontal: "right" }}
+            />
+            <Breadcrumb
+                items={[{ label: 'Sub Categories' }]}
+                showHome={true}
+                homeIcon={true}
+                separator={<ChevronRight size={15} />}
             />
             {/* Loader */}
             {loading && (

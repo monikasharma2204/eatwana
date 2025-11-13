@@ -8,6 +8,7 @@ import cors from 'cors';
 import userAuthRoute from './routes/userAuthRoutes.js';
 import dishRoutes from "./routes/dishRoute.js";
 import subCategoryRoutes from "./routes/subCategoryRoute.js";
+import tiffinMenuRoutes from "./routes/tiffinMenuRoute.js";
 
 
 import { errorHandler, notFound } from "./middleware/errorHandler.js";
@@ -59,6 +60,7 @@ mongoose.connect(MONGO_URI, {
 app.use('/api/v1/auth', userAuthRoute);
 app.use("/api/v1/dishes", dishRoutes);
 app.use("/api/v1/subcategory", subCategoryRoutes);
+app.use("/api/v1/menu", tiffinMenuRoutes);
 
 
 // Example Test Route

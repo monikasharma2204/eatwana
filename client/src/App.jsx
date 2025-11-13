@@ -13,18 +13,21 @@ import Signup from "./pages/landing/SignUp";
 import ForgotPassword from "./pages/landing/ForgotPassword";
 import Loader from "./ui/Loader";
 import Profile from "./pages/landing/Profile";
-import CoomingSoon from "./pages/landing/CoomingSoon";
-// import AdminDashboard from "./pages/admin/AdminDashboard";
-
-// Utils
-import ProtectedRoute from "./components/ProtectedRoute";
-import Sidebar from "./components/admin/Sidebar";
 import AddDishForm from "./pages/admin/AddDishForm";
 import SubCategoryForm from "./components/admin/SubCategoryForm";
 import AllDish from "./pages/admin/AllDish";
 import AddSubCategory from "./pages/admin/AddSubCategory";
 import SubCategory from "./pages/admin/SubCategory";
 import UpdateDishForm from "./pages/admin/UpdateDish";
+import AddMenu from "./pages/admin/AddMenu";
+import CoomingSoon from "./pages/landing/CoomingSoon";
+// import AdminDashboard from "./pages/admin/AdminDashboard";
+
+// Utils
+import ProtectedRoute from "./components/ProtectedRoute";
+import Sidebar from "./components/admin/Sidebar";
+import Menu from "./pages/admin/Menu";
+
 
 
 export default function App() {
@@ -103,6 +106,24 @@ export default function App() {
             element={
               <Sidebar>
                 <AddSubCategory />
+              </Sidebar>
+
+            }
+          />
+          <Route
+            path="/menu"
+            element={
+              <Sidebar>
+                <Menu />
+              </Sidebar>
+
+            }
+          />
+          <Route
+            path="/menu/add"
+            element={
+              <Sidebar>
+                <AddMenu />
               </Sidebar>
 
             }

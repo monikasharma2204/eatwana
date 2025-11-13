@@ -1,47 +1,57 @@
 import mongoose from "mongoose";
 
+const dishSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    type: {
+        type: String,
+        enum: ["Veg", "Non-Veg"],
+        required: true,
+    }
+});
+
 const tiffinMenuSchema = new mongoose.Schema(
     {
-        tiffin: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Tiffin",
-            required: true,
-        },
-
-        day: {
+        // Name of weekly menu
+        menuName: {
             type: String,
-            enum: [
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Saturday",
-                "Sunday",
-            ],
             required: true,
-        },
-
-        mealType: {
-            type: String,
-            enum: ["Breakfast", "Lunch", "Dinner"],
-            required: true,
-        },
-
-        // List of dishes for that meal
-        dishes: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Dish", // from the Dish model
-                required: true,
-            },
-        ],
-
-        // Optional notes (e.g., “served with salad and chutney”)
-        note: {
-            type: String,
+            unique: true,
             trim: true,
         },
+
+        // Overall tag → Pure-Veg / Includes-Non-Veg
+        menuType: {
+            type: String,
+            enum: ["Pure-Veg", "Includes-Non-Veg"],
+            default: "Pure-Veg",
+        },
+
+        // Full week
+        week: [
+            {
+                day: {
+                    type: String,
+                    enum: [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday",
+                    ],
+                    required: true,
+                },
+
+                meals: {
+                    Breakfast: { type: [dishSchema], default: [] },
+                    Lunch: { type: [dishSchema], default: [] },
+                    Dinner: { type: [dishSchema], default: [] }
+                },
+
+                note: { type: String, trim: true }
+            }
+        ]
     },
     { timestamps: true }
 );
