@@ -1,15 +1,15 @@
 import React from 'react'
+import UpdateMenuForm from '../../components/admin/UpdateMenuForm'
 import Breadcrumb from '../../ui/Breadcrumb'
 import { ChevronRight } from 'lucide-react'
-import AddMenuForm from '../../components/admin/AddMenuForm'
 
-export default function AddMenu() {
+export default function UpdateMenu() {
     return (
         <>
             <Breadcrumb
                 items={[
                     { label: 'Menu', href: '/menu' },
-                    { label: 'Add Menu' }
+                    { label: 'Update Menu' }
                 ]}
                 showHome={true}
                 homeIcon={true}
@@ -17,7 +17,7 @@ export default function AddMenu() {
             />
 
             <div className='bg-gradient-to-br from-orange-50 to-teal-50 '>
-                <AddMenuForm />
+                <UpdateMenuForm />
             </div>
         </>
     )

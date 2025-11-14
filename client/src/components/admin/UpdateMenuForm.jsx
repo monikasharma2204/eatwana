@@ -1,20 +1,43 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Plus, Trash2, Loader2 } from 'lucide-react';
 import AlertSnackbar from '../../ui/AlertSnackbar';
 import axiosClient from '../../services/axiosClient';
+import { useParams } from 'react-router-dom';
+import { RippleLoader } from '../../ui/Loader';
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const MEAL_TYPES = ["Breakfast", "Lunch", "Dinner"];
 
-export default function TiffinMenuForm() {
+export default function UpdateMenuForm() {
     const [menuName, setMenuName] = useState('');
     const [loading, setLoading] = useState(false);
+    const [menuLoading, setMenuLoading] = useState(false);
     const [snackbar, setSnackbar] = useState({
         open: false,
         message: "",
         severity: "info",
     });
+    const id = useParams().id;
+    console.log("Updating menu with ID:", id);
+
+    useEffect(() => {
+        const fetchMenu = async () => {
+            try {
+                setMenuLoading(true);
+                const response = await axiosClient.get(`/api/v1/menu/${id}`);
+                const data = response.data.data;
+                setMenuName(data.menuName);
+                setWeek(data.week);
+            }
+            catch (error) {
+                console.log("Error fetching menu:", error);
+            } finally {
+                setMenuLoading(false);
+            }
+        };
+        fetchMenu();
+    }, [id]);
 
     const [week, setWeek] = useState(
         DAYS.map(day => ({
@@ -94,26 +117,26 @@ export default function TiffinMenuForm() {
         setLoading(true);
 
         try {
-            const response = await axiosClient.post('/api/v1/menu/add', {
+            const response = await axiosClient.put(`/api/v1/menu/update/${id}`, {
                 menuName,
                 week
             });
 
             // Axios stores response in response.data
             const data = response.data;
-console.log(response)
+            console.log(response)
             if (data.success) {
                 showSnackbar(data.message || 'Menu created successfully!', 'success');
 
                 // Reset form
-                setMenuName('');
-                setWeek(
-                    DAYS.map(day => ({
-                        day,
-                        meals: { Breakfast: [], Lunch: [], Dinner: [] },
-                        note: ''
-                    }))
-                );
+                // setMenuName('');
+                // setWeek(
+                //     DAYS.map(day => ({
+                //         day,
+                //         meals: { Breakfast: [], Lunch: [], Dinner: [] },
+                //         note: ''
+                //     }))
+                // );
             } else {
                 // Backend may send failed success:false with message
                 showSnackbar(data.message || 'Failed to create menu', 'error');
@@ -140,7 +163,13 @@ console.log(response)
         }
     };
 
-
+    if (menuLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <RippleLoader size={60} color="#e7582e" />
+            </div>
+        );
+    }
     return (
 
         <>
@@ -260,7 +289,7 @@ console.log(response)
                                 ) : (
                                     <>
                                         <Plus size={20} />
-                                        Create Menu
+                                        Update Menu
                                     </>
                                 )}
                             </button>

@@ -27,6 +27,7 @@ import CoomingSoon from "./pages/landing/CoomingSoon";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Sidebar from "./components/admin/Sidebar";
 import Menu from "./pages/admin/Menu";
+import UpdateMenu from "./pages/admin/UpdateMenu";
 
 
 
@@ -124,6 +125,15 @@ export default function App() {
             element={
               <Sidebar>
                 <AddMenu />
+              </Sidebar>
+
+            }
+          />
+          <Route
+            path="/menu/update/:id"
+            element={
+              <Sidebar>
+                <UpdateMenu />
               </Sidebar>
 
             }
