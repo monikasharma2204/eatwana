@@ -8,6 +8,7 @@ export default function Navbar() {
     const navLinks = [
         { name: 'Home', href: '/', type: 'route' },
         { name: 'Menu', href: '/menu', type: 'route' },
+        { name: 'Tiffin', href: '/tiffin', type: 'route' },
         { name: 'About', href: 'about', type: 'scroll' },
         { name: 'Contact', href: 'contact', type: 'scroll' },
     ];

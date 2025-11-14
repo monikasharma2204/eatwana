@@ -33,6 +33,7 @@ import UpdateMenu from "./pages/admin/UpdateMenu";
 import AddTiffin from "./pages/admin/AddTiffin";
 import Tiffin from "./pages/admin/Tiffin";
 import UpdateTiffin from "./pages/admin/UpdateTiffin";
+import UserTiffin from "./pages/landing/UserTiffin";
 
 
 
@@ -53,6 +54,7 @@ export default function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/menu" element={<UserMenu />} />
+          <Route path="/tiffin" element={<UserTiffin />} />
           <Route
             path="/profile"
             element={
