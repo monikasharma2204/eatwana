@@ -126,3 +126,21 @@ export const verifyOtp = async (req, res) => {
         res.status(500).json({ message: 'Error verifying OTP.' });
     }
 };
+
+
+export const validateUser = async (req, res) => {
+    try {
+        // Since authMiddleware already verified the token and set req.user
+        return res.status(200).json({
+            success: true,
+            user: req.user, // already sanitized (password removed)
+            message: "User is valid"
+        });
+    } catch (error) {
+        console.error("Validate User Error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        });
+    }
+};

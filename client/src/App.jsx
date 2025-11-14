@@ -35,6 +35,7 @@ import Tiffin from "./pages/admin/Tiffin";
 import UpdateTiffin from "./pages/admin/UpdateTiffin";
 import UserTiffin from "./pages/landing/UserTiffin";
 import TiffinDetailsPage from "./components/landing/TiffinDetailsPage";
+import DishDetailPage from "./pages/landing/DishDetailPage";
 
 
 
@@ -69,6 +70,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <TiffinDetailsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dish/:id"
+            element={
+              <ProtectedRoute>
+                <DishDetailPage />
               </ProtectedRoute>
             }
           />

@@ -10,6 +10,7 @@ import dishRoutes from "./routes/dishRoute.js";
 import subCategoryRoutes from "./routes/subCategoryRoute.js";
 import tiffinMenuRoutes from "./routes/tiffinMenuRoute.js";
 import tiffinRoutes from "./routes/tiffinRoute.js";
+import cartRoutes from "./routes/cartRoutes.js";
 
 
 import { errorHandler, notFound } from "./middleware/errorHandler.js";
@@ -63,6 +64,7 @@ app.use("/api/v1/dishes", dishRoutes);
 app.use("/api/v1/subcategory", subCategoryRoutes);
 app.use("/api/v1/menu", tiffinMenuRoutes);
 app.use("/api/v1/tiffin", tiffinRoutes);
+app.use("/api/v1/cart", cartRoutes);
 
 
 // Example Test Route

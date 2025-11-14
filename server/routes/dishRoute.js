@@ -11,6 +11,7 @@ import {
     deleteDish,
     getDishStats,
 } from "../controllers/dishController.js";
+import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 

@@ -10,41 +10,42 @@ import { RippleLoader } from "../ui/Loader";
 const ProtectedRoute = ({ children }) => {
     const dispatch = useDispatch();
     const { token, user } = useSelector((state) => state.user);
-
+    console.log(token, "tokern in protected route");
     const [loading, setLoading] = useState(false); // local state to wait for validation
 
-    // useEffect(() => {
-    //     const validateUser = async () => {
-    //         try {
-    //             // ✅ If no token in Redux, immediately logout
-    //             if (!token) {
-    //                 dispatch(logout());
-    //                 setLoading(false);
-    //                 return;
-    //             }
+    useEffect(() => {
+        const validateUser = async () => {
+            try {
+                // ✅ If no token in Redux, immediately logout
+                if (!token) {
+                    dispatch(logout());
+                    setLoading(false);
+                    return;
+                }
 
-    //             // ✅ Validate token with backend (optional but best practice)
-    //             const response = await axiosClient.get("/api/v1/auth/validate");
+                // ✅ Validate token with backend (optional but best practice)
+                const response = await axiosClient.get("/api/v1/auth/validate");
+                console.log(response, "response in protected route");
 
-    //             if (response.status === 200 && response.data.user) {
-    //                 // User is valid → update Redux if missing
-    //                 if (!user) {
-    //                     dispatch(loginSuccess({ user: response.data.user, token }));
-    //                 }
-    //                 setLoading(false);
-    //             } else {
-    //                 dispatch(logout());
-    //                 setLoading(false);
-    //             }
-    //         } catch (error) {
-    //             console.error("Token validation failed:", error);
-    //             dispatch(logout());
-    //             setLoading(false);
-    //         }
-    //     };
+                if (response.status === 200 && response.data.user) {
+                    // User is valid → update Redux if missing
+                    if (!user) {
+                        dispatch(loginSuccess({ user: response.data.user, token }));
+                    }
+                    setLoading(false);
+                } else {
+                    dispatch(logout());
+                    setLoading(false);
+                }
+            } catch (error) {
+                console.error("Token validation failed:", error);
+                dispatch(logout());
+                setLoading(false);
+            }
+        };
 
-    //     validateUser();
-    // }, [dispatch, token]);
+        validateUser();
+    }, [dispatch, token]);
 
     // 🌀 While validation is in progress
     if (loading) {

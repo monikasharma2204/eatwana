@@ -1,8 +1,9 @@
 
 import { Star, Leaf, Drumstick, Egg } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const DishCard = ({ dish }) => {
-    console.log("Dish data:", dish);
+    const navigate = useNavigate();
     const getCategoryIcon = () => {
         switch (dish.category) {
             case 'veg':
@@ -67,7 +68,7 @@ const DishCard = ({ dish }) => {
                             ₹{minPrice}
                         </p>
                     </div>
-                    <button className="px-6 py-2 rounded-full bg-linear-to-r from-primary to-secondary text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <button onClick={() => navigate(`/dish/${dish?._id}`)} className="px-6 py-2 rounded-full bg-linear-to-r from-primary to-secondary text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105">
                         Add
                     </button>
                 </div>
