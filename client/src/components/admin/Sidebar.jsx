@@ -53,7 +53,7 @@ const Sidebar = ({ children }) => {
         {
             id: 'tiffin',
             label: 'Tiffin',
-            icon: ShoppingBag,
+            icon: Package,
             // badge: 12,
             subItems: [
                 { label: 'Tiffin', path: '/tiffin' },

@@ -1,7 +1,37 @@
 import React from 'react'
+import TiffinForm from '../../components/admin/AddTifinForm';
+import UpdateTiffinForm from '../../components/admin/UpdateTiffinForm';
+import Breadcrumb from '../../ui/Breadcrumb';
+import { ChevronRight } from 'lucide-react';
 
 export default function UpdateTiffin() {
+    const handleSuccess = (tiffin) => {
+        console.log('Tiffin created:', tiffin);
+        // Handle success (e.g., redirect, show message, etc.)
+    };
+
+    const handleCancel = () => {
+        console.log('Form cancelled');
+        // Handle cancel (e.g., go back, close modal, etc.)
+    };
+
     return (
-        <div>UpdateTiffin</div>
+        <>
+            <Breadcrumb
+                items={[
+                    { label: 'Tiffin', href: '/tiffin' },
+                    { label: 'Update Tiffin' }
+                ]}
+                showHome={true}
+                homeIcon={true}
+                separator={<ChevronRight size={15} />}
+            />
+            <div className="min-h-screen bg-gray-50 py-8">
+                <UpdateTiffinForm
+                    onSuccess={handleSuccess}
+                    onCancel={handleCancel}
+                />
+            </div>
+        </>
     )
 }
