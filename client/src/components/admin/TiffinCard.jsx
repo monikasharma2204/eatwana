@@ -50,7 +50,7 @@ const TiffinCard = ({ tiffin, onView, onEdit, onDelete }) => {
                     {/* Action Buttons */}
                     <div className="absolute top-3 right-3 flex gap-2">
                         <button
-                            onClick={() => navigate(`/tiffin/update/${tiffin._id}`)}
+                            onClick={() => navigate(`/admin/tiffin/update/${tiffin._id}`)}
                             className="bg-white/20 hover:bg-white/30 p-2 rounded-lg transition-colors backdrop-blur-sm"
                             title="Edit"
                         >

@@ -34,10 +34,10 @@ const Sidebar = ({ children }) => {
             label: 'Dishes',
             icon: UtensilsCrossed,
             subItems: [
-                { label: 'All Dishes', path: '/dishes/all' },
-                { label: 'Add New Dish', path: '/dishes/add' },
-                { label: 'Sub Categories', path: '/dishes/sub-categories' },
-                { label: 'Add Sub Categories', path: '/dishes/sub-categories/add' },
+                { label: 'All Dishes', path: '/admin/dishes/all' },
+                { label: 'Add New Dish', path: '/admin/dishes/add' },
+                { label: 'Sub Categories', path: '/admin/sub-categories' },
+                { label: 'Add Sub Categories', path: '/admin/sub-categories/add' },
             ]
         },
         {
@@ -46,8 +46,8 @@ const Sidebar = ({ children }) => {
             icon: ShoppingBag,
             // badge: 12,
             subItems: [
-                { label: 'Menu', path: '/Menu' },
-                { label: 'Create Menu', path: '/menu/add' }
+                { label: 'Menu', path: '/admin/menu' },
+                { label: 'Create Menu', path: '/admin/menu/add' }
             ]
         },
         {
@@ -56,8 +56,8 @@ const Sidebar = ({ children }) => {
             icon: Package,
             // badge: 12,
             subItems: [
-                { label: 'Tiffin', path: '/tiffin' },
-                { label: 'Add Tiffin', path: '/tiffin/add' }
+                { label: 'Tiffin', path: '/admin/tiffin' },
+                { label: 'Add Tiffin', path: '/admin/tiffin/add' }
             ]
         },
         {

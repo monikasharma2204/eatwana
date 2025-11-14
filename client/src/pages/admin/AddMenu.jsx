@@ -8,7 +8,7 @@ export default function AddMenu() {
         <>
             <Breadcrumb
                 items={[
-                    { label: 'Menu', href: '/menu' },
+                    { label: 'Menu', href: '/admin/menu' },
                     { label: 'Add Menu' }
                 ]}
                 showHome={true}

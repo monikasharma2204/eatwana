@@ -209,7 +209,7 @@ const AddDishForm = () => {
         <>
             <Breadcrumb
                 items={[
-                    { label: 'Dish', href: '/dishes/all' },
+                    { label: 'Dish', href: '/admin/dishes/all' },
                     { label: 'Add Dish' }
                 ]}
                 showHome={true}

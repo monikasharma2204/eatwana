@@ -1,22 +1,36 @@
 import { useState } from 'react';
 import { Menu, X, User, LogOut } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+    const navigate = useNavigate();
     const navLinks = [
-        { name: 'Home', href: '#home' },
-        { name: 'Menu', href: '#menu' },
-        { name: 'About', href: '#about' },
-        { name: 'Contact', href: '#contact' },
+        { name: 'Home', href: '/', type: 'route' },
+        { name: 'Menu', href: '/menu', type: 'route' },
+        { name: 'About', href: 'about', type: 'scroll' },
+        { name: 'Contact', href: 'contact', type: 'scroll' },
     ];
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
     const toggleLogin = () => setIsLoggedIn(!isLoggedIn);
+    const handleScroll = (id) => {
+        const section = document.getElementById(id);
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+    const handleNavClick = (link) => {
+        setIsMenuOpen(false);
 
+        if (link.type === 'route') {
+            navigate(link.href);
+        } else {
+            handleScroll(link.href);
+        }
+    };
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-linear-to-br from-orange-50 via-white to-cyan-50 shadow-md">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
@@ -35,14 +49,14 @@ export default function Navbar() {
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex md:items-center md:space-x-8">
                         {navLinks.map((link) => (
-                            <a
+                            <button
                                 key={link.name}
-                                href={link.href}
+                                onClick={() => handleNavClick(link)}
                                 className="relative text-gray-700 hover:text-[#e7582e] font-medium text-base transition-colors duration-300 group"
                             >
                                 {link.name}
                                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#e7582e] to-[#f27636] group-hover:w-full transition-all duration-300"></span>
-                            </a>
+                            </button>
                         ))}
                     </div>
 
@@ -81,13 +95,8 @@ export default function Navbar() {
                         <button
                             onClick={toggleMenu}
                             className="p-2 rounded-lg text-[#125a69] hover:bg-gray-100 transition-colors duration-300"
-                            aria-label="Toggle menu"
                         >
-                            {isMenuOpen ? (
-                                <X className="w-6 h-6" />
-                            ) : (
-                                <Menu className="w-6 h-6" />
-                            )}
+                            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                         </button>
                     </div>
                 </div>
@@ -100,17 +109,18 @@ export default function Navbar() {
             >
                 <div className="px-4 pt-2 pb-4 space-y-3 bg-white border-t border-gray-100">
                     {navLinks.map((link, index) => (
-                        <a
+                        <button
                             key={link.name}
-                            href={link.href}
-                            onClick={() => setIsMenuOpen(false)}
-                            className="block px-4 py-2 rounded-lg text-gray-700 hover:text-[#e7582e] hover:bg-gray-50 font-medium transition-all duration-300 transform hover:translate-x-1"
+                            onClick={() => handleNavClick(link)}
+                            className="block w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:text-[#e7582e] hover:bg-gray-50 font-medium transition-all duration-300 transform hover:translate-x-1"
                             style={{
-                                animation: isMenuOpen ? `slideIn 0.3s ease-out ${index * 0.1}s both` : 'none'
+                                animation: isMenuOpen
+                                    ? `slideIn 0.3s ease-out ${index * 0.1}s both`
+                                    : 'none'
                             }}
                         >
                             {link.name}
-                        </a>
+                        </button>
                     ))}
 
                     {/* Mobile Auth Button */}

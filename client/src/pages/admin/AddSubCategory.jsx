@@ -8,7 +8,7 @@ export default function AddSubCategory() {
         <>
             <Breadcrumb
                 items={[
-                    { label: 'Sub-Category', href: '/sub-category' },
+                    { label: 'Sub-Category', href: '/admin/sub-categories' },
                     { label: 'Add Sub Category' }
                 ]}
                 showHome={true}

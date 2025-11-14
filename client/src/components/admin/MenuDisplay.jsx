@@ -142,7 +142,7 @@ const MenuDisplay = ({ menus, onDelete }) => {
                             {/* Action Buttons */}
                             <div className="flex gap-2">
                                 <button
-                                    onClick={() => navigate(`/menu/update/${menu._id}`)}
+                                    onClick={() => navigate(`/admin/menu/update/${menu._id}`)}
                                     className="flex items-center gap-2 bg-white text-third px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors font-medium shadow-md"
                                 >
                                     <Edit2 className="w-4 h-4" />

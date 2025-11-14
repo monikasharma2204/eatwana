@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import AdminLayout from "./layouts/AdminLayout";
+// Landing Page 
+import UserMenu from "./pages/landing/UserMenu";
 
 // Pages
 import Home from "./pages/landing/Home";
@@ -50,6 +52,7 @@ export default function App() {
         {/* ==================== MAIN ROUTES ==================== */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/menu" element={<UserMenu />} />
           <Route
             path="/profile"
             element={
@@ -73,7 +76,7 @@ export default function App() {
             }
           />
           <Route
-            path="/dishes/all"
+            path="/admin/dishes/all"
             element={
               <Sidebar>
                 <AllDish />
@@ -82,7 +85,7 @@ export default function App() {
             }
           />
           <Route
-            path="/dishes/add"
+            path="/admin/dishes/add"
             element={
               <Sidebar>
                 <AddDishForm />
@@ -90,7 +93,7 @@ export default function App() {
             }
           />
           <Route
-            path="/dishes/update/:id"
+            path="/admin/update/:id"
             element={
               <Sidebar>
                 <UpdateDishForm />
@@ -98,7 +101,7 @@ export default function App() {
             }
           />
           <Route
-            path="/dishes/sub-categories"
+            path="/admin/sub-categories"
             element={
               <Sidebar>
                 <SubCategory />
@@ -106,7 +109,7 @@ export default function App() {
             }
           />
           <Route
-            path="/dishes/sub-categories/add"
+            path="/admin/sub-categories/add"
             element={
               <Sidebar>
                 <AddSubCategory />
@@ -115,7 +118,7 @@ export default function App() {
             }
           />
           <Route
-            path="/menu"
+            path="/admin/menu"
             element={
               <Sidebar>
                 <Menu />
@@ -124,7 +127,7 @@ export default function App() {
             }
           />
           <Route
-            path="/menu/add"
+            path="/admin/menu/add"
             element={
               <Sidebar>
                 <AddMenu />
@@ -133,7 +136,7 @@ export default function App() {
             }
           />
           <Route
-            path="/menu/update/:id"
+            path="/admin/menu/update/:id"
             element={
               <Sidebar>
                 <UpdateMenu />
@@ -142,7 +145,7 @@ export default function App() {
             }
           />
           <Route
-            path="/tiffin"
+            path="/admin/tiffin"
             element={
               <Sidebar>
                 <Tiffin />
@@ -151,7 +154,7 @@ export default function App() {
             }
           />
           <Route
-            path="/tiffin/add"
+            path="/admin/tiffin/add"
             element={
               <Sidebar>
                 <AddTiffin />
@@ -160,7 +163,7 @@ export default function App() {
             }
           />
           <Route
-            path="/tiffin/update/:id"
+            path="/admin/tiffin/update/:id"
             element={
               <Sidebar>
                 <UpdateTiffin />

@@ -53,7 +53,7 @@ export default function SubCategoryTable({ subCategories, onDelete, onEdit }) {
                 {/* Header */}
                 <div className="mb-8 flex justify-end items-center">
                     <button
-                        onClick={() => navigate("/dishes/sub-categories/add")}
+                        onClick={() => navigate("/admin/sub-categories/add")}
                         className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg hover:bg-secondary transition-colors shadow-md"
                     >
                         <Plus size={20} />
