@@ -5,7 +5,8 @@ import axiosClient from '../../services/axiosClient';
 import AlertSnackbar from '../../ui/AlertSnackbar';
 import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess, setError, startLoading } from '../../app/auth/userSlice';
-// import { BlinkingDots } from '../../ui/Loader';
+import { DotsLoader } from '../../ui/Loader';
+
 
 
 export default function Login() {
@@ -99,7 +100,7 @@ export default function Login() {
                         {/* Top Logo */}
                         <div className="absolute top-8 left-8 text-white text-2xl font-bold flex items-center gap-2">
                             <div className="w-30 h-30 bg-white bg-opacity-20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                                <img src="/logo.png" alt="Logo" className="w-30 h-30" />
+                                <img src="/logo.png" alt="Logo" className="w-15 h-15" />
                             </div>
                         </div>
 
@@ -200,7 +201,7 @@ export default function Login() {
     shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200`}
                             >
                                 <div className="transition-opacity duration-300">
-                                    {loading ? <div className='py-2'><BlinkingDots size="md" color="theme" /></div> : "Login"}
+                                    {loading ? <div className='py-2'><DotsLoader size={15} color="#e7582e" /></div> : "Login"}
                                 </div>
                             </button>
 

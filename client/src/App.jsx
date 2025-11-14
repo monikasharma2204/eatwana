@@ -34,6 +34,7 @@ import AddTiffin from "./pages/admin/AddTiffin";
 import Tiffin from "./pages/admin/Tiffin";
 import UpdateTiffin from "./pages/admin/UpdateTiffin";
 import UserTiffin from "./pages/landing/UserTiffin";
+import TiffinDetailsPage from "./components/landing/TiffinDetailsPage";
 
 
 
@@ -60,6 +61,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tiffin/:id"
+            element={
+              <ProtectedRoute>
+                <TiffinDetailsPage />
               </ProtectedRoute>
             }
           />

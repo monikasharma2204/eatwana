@@ -1,8 +1,9 @@
 
 import { Star, Leaf, Drumstick, Egg } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const TiffinCard = ({ tiffin }) => {
-
+    const navigate = useNavigate();
     const getFoodTypeIcon = () => {
         switch (tiffin.foodType) {
             case 'veg':
@@ -106,7 +107,7 @@ const TiffinCard = ({ tiffin }) => {
                 </div>
 
                 {/* Subscribe Button */}
-                <button className="w-full py-3 rounded-full bg-linear-to-r from-primary to-secondary text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105">
+                <button onClick={() => { navigate(`/tiffin/${tiffin._id}`) }} className="w-full py-3 rounded-full bg-linear-to-r from-primary to-secondary text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105">
                     Subscribe Now
                 </button>
             </div>

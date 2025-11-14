@@ -16,7 +16,7 @@ router.post("/add", addMenu);
 router.get("/all", getAllMenus);
 
 // Get a menu by id
-router.get("/:id", getMenuById);
+router.get("/get/:id", getMenuById);
 
 // Update a menu
 router.put("/update/:id", updateMenu);

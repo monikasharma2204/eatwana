@@ -35,7 +35,7 @@ export const RippleLoader = ({ size = 60, color = '#3b82f6' }) => (
   </div>
 );
 
-const DotsLoader = ({ size = 12, color = '#3b82f6', spacing = 8 }) => (
+export const DotsLoader = ({ size = 12, color = '#3b82f6', spacing = 8 }) => (
   <div className="flex items-center gap-2" style={{ gap: spacing }}>
     <style>{`
       @keyframes dotBounce {
