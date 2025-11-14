@@ -16,7 +16,7 @@ export default function AddMenu() {
                 separator={<ChevronRight size={15} />}
             />
 
-            <div className='bg-gradient-to-br from-orange-50 to-teal-50 '>
+            <div className='bg-linear-to-br from-orange-50 to-teal-50 '>
                 <AddMenuForm />
             </div>
         </>

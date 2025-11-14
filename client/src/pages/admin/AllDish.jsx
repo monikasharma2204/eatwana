@@ -87,7 +87,7 @@ export default function AllDish() {
                 separator={<ChevronRight size={15} />}
             />
 
-            <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100 p-4 sm:p-6 md:p-8">
+            <div className="min-h-screen bg-linear-to-br from-gray-50 via-blue-50 to-gray-100 p-4 sm:p-6 md:p-8">
                 <div className="max-w-7xl mx-auto space-y-6">
                     {dishes.length > 0 ? (
                         dishes.map((dish) => (

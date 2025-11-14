@@ -76,7 +76,7 @@ function BreadcrumbDemo() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8">
+        <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 p-8">
             <div className="max-w-4xl mx-auto space-y-8">
                 <div className="bg-white rounded-lg shadow-sm p-6">
                     <h1 className="text-2xl font-bold text-gray-900 mb-2">

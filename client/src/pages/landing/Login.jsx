@@ -106,7 +106,7 @@ export default function Login() {
                         {/* Food Bowls */}
                         <div className="flex flex-col gap-8 items-center">
                             {/* Top Salad Bowl */}
-                            <div className="w-80 h-80 bg-gradient-to-br  rounded-full shadow-2xl flex items-center justify-center transform -rotate-3">
+                            <div className="w-80 h-80 bg-linear-to-br  rounded-full shadow-2xl flex items-center justify-center transform -rotate-3">
                                 <div className="w-72 h-72 rounded-full  overflow-hidden shadow-inner">
                                     <div className="w-72 h-72   overflow-hidden shadow-inner">
                                         <img src='/picture/d4.png' />
@@ -116,10 +116,10 @@ export default function Login() {
 
                             {/* Bottom Row Bowls */}
                             <div className="flex gap-8">
-                                <div className="w-56 h-56 bg-gradient-to-br  rounded-full shadow-2xl flex items-center justify-center transform rotate-6">
+                                <div className="w-56 h-56 bg-linear-to-br  rounded-full shadow-2xl flex items-center justify-center transform rotate-6">
                                     <img src='/picture/d1.png' />
                                 </div>
-                                <div className="w-56 h-56 bg-gradient-to-br rounded-full shadow-2xl flex items-center justify-center transform -rotate-50">
+                                <div className="w-56 h-56 bg-linear-to-br rounded-full shadow-2xl flex items-center justify-center transform -rotate-50">
                                     <img src="/picture/d2.png" className="rotate-6" alt="Rotated" />
                                 </div>
                             </div>
@@ -135,7 +135,7 @@ export default function Login() {
                 </div>
 
                 {/* Right Side - Login Form */}
-                <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-orange-50 to-gray-50 p-8 relative">
+                <div className="flex-1 flex items-center justify-center bg-linear-to-br from-orange-50 to-gray-50 p-8 relative">
                     {/* Lightning Bolt Decorations */}
                     <svg className="absolute top-12 right-24 w-12 h-12 text-third opacity-60" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M13 2L3 14h8l-2 8 10-12h-8z" />

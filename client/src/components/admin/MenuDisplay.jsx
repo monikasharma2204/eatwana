@@ -128,7 +128,7 @@ const MenuDisplay = ({ menus, onDelete }) => {
                     className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300"
                 >
                     {/* Menu Header */}
-                    <div className="bg-gradient-to-r from-primary to-secondary p-4 sm:p-6">
+                    <div className="bg-linear-to-br from-primary to-secondary p-4 sm:p-6">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                             <div className="flex-1">
                                 <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">

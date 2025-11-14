@@ -26,7 +26,7 @@ export default function ComingSoon() {
     };
 
     return (
-        <div className="h-screen w-full bg-gradient-to-br from-[#125a69] via-[#0d4450] to-[#125a69] relative overflow-hidden flex items-center justify-center">
+        <div className="h-screen w-full bg-linear-to-br from-[#125a69] via-[#0d4450] to-[#125a69] relative overflow-hidden flex items-center justify-center">
             {/* Animated background elements */}
             <div className="absolute inset-0 overflow-hidden">
                 {floatingItems.map((item) => (

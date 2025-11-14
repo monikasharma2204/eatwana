@@ -57,7 +57,7 @@ const Sidebar = ({ children }) => {
             // badge: 12,
             subItems: [
                 { label: 'Tiffin', path: '/tiffin' },
-                { label: 'Pending Orders', path: '/tiffin/add' }
+                { label: 'Add Tiffin', path: '/tiffin/add' }
             ]
         },
         {
@@ -177,7 +177,7 @@ const Sidebar = ({ children }) => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-orange-50/30 to-rose-50/30 font-['Inter',sans-serif]">
+        <div className="min-h-screen bg-linear-to-br from-gray-50 via-orange-50/30 to-rose-50/30 font-['Inter',sans-serif]">
             {isSidebarOpen && (
                 <div
                     className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
@@ -194,7 +194,7 @@ const Sidebar = ({ children }) => {
                 <div className="h-24 flex items-center justify-between px-6 border-b border-gray-100">
                     <div className="flex items-center gap-3">
                         <div className="relative">
-                            <div className="w-12 h-12 bg-gradient-to-br from-orange-500 via-rose-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/30">
+                            <div className="w-12 h-12 bg-linear-to-br from-orange-500 via-rose-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/30">
                                 <UtensilsCrossed className="w-7 h-7 text-white" />
                             </div>
                             <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white" />
@@ -251,7 +251,7 @@ const Sidebar = ({ children }) => {
                     <button className="relative p-2.5 text-gray-600 hover:text-orange-600 hover:bg-orange-50 rounded-xl transition-all">
                         <Bell className="w-6 h-6" />
                         {notifications > 0 && (
-                            <span className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-orange-500 to-rose-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                            <span className="absolute -top-1 -right-1 w-5 h-5 bg-linear-to-br from-orange-500 to-rose-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg animate-pulse">
                                 {notifications}
                             </span>
                         )}

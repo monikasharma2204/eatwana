@@ -249,7 +249,7 @@ const UpdateDishForm = () => {
     // Loading placeholder - Replace with your custom loader component
     if (pageLoading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+            <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 flex items-center justify-center">
                 {/* INSERT YOUR CUSTOM LOADER COMPONENT HERE */}
                 <div className="text-center">
                     <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-orange-500 border-t-transparent"></div>
@@ -271,7 +271,7 @@ const UpdateDishForm = () => {
                 separator={<ChevronRight size={15} />}
             />
 
-            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 px-4 sm:px-6 lg:px-8">
+            <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 py-8 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto">
                     {/* Bento Grid Layout */}
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 auto-rows-auto">
@@ -395,7 +395,7 @@ const UpdateDishForm = () => {
                         </div>
 
                         {/* Meal Type - Medium Box */}
-                        <div className="lg:col-span-4 bg-gradient-to-br from-third to-third/55 rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow text-white">
+                        <div className="lg:col-span-4 bg-linear-to-br from-third to-third/55 rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow text-white">
                             <label className="block text-sm font-semibold mb-3">
                                 Meal Type
                             </label>
@@ -548,7 +548,7 @@ const UpdateDishForm = () => {
                         </div>
 
                         {/* Availability Toggle - Small Box */}
-                        <div className="lg:col-span-5 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow">
+                        <div className="lg:col-span-5 bg-linear-to-br from-orange-500 to-orange-600 rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow">
                             <div className="flex items-center justify-between h-full">
                                 <div className="text-white">
                                     <h3 className="text-lg font-semibold mb-1">Availability</h3>

@@ -74,7 +74,7 @@ const Menu = () => {
                 onClose={handleClose}
                 position={{ vertical: "top", horizontal: "right" }}
             />
-            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8">
+            <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 py-8">
                 <div className="max-w-6xl mx-auto px-4">
                     <MenuDisplay
                         menus={menus}

@@ -152,7 +152,7 @@ export default function AddMenuForm() {
                 onClose={handleClose}
                 position={{ vertical: "top", horizontal: "right" }}
             />
-            <div className="min-h-screen bg-gradient-to-br from-orange-50 to-teal-50 p-4 md:p-8">
+            <div className="min-h-screen bg-linear-to-br from-orange-50 to-teal-50 p-4 md:p-8">
                 <div className="max-w-7xl mx-auto">
                     <form onSubmit={handleSubmit} className="space-y-6">
                         {/* Menu Name Card */}

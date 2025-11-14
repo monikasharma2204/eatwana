@@ -89,7 +89,7 @@ export default function SubCategoryForm() {
                 onClose={handleClose}
                 position={{ vertical: "top", horizontal: "right" }}
             />
-            <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
+            <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
                 <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
                     <div className="mb-8 text-center">
                         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ backgroundColor: '#e7582e' }}>

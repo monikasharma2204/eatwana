@@ -28,6 +28,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Sidebar from "./components/admin/Sidebar";
 import Menu from "./pages/admin/Menu";
 import UpdateMenu from "./pages/admin/UpdateMenu";
+import AddTiffin from "./pages/admin/AddTiffin";
+import Tiffin from "./pages/admin/Tiffin";
+import UpdateTiffin from "./pages/admin/UpdateTiffin";
 
 
 
@@ -134,6 +137,33 @@ export default function App() {
             element={
               <Sidebar>
                 <UpdateMenu />
+              </Sidebar>
+
+            }
+          />
+          <Route
+            path="/tiffin"
+            element={
+              <Sidebar>
+                <Tiffin />
+              </Sidebar>
+
+            }
+          />
+          <Route
+            path="/tiffin/add"
+            element={
+              <Sidebar>
+                <AddTiffin />
+              </Sidebar>
+
+            }
+          />
+          <Route
+            path="/tiffin/update/:id"
+            element={
+              <Sidebar>
+                <UpdateTiffin />
               </Sidebar>
 
             }

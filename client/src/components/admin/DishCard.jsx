@@ -46,7 +46,7 @@ const DishCard = ({ dish, onDelete }) => {
             <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden">
                 <div className="flex flex-col md:flex-row">
                     {/* Left Section - Image */}
-                    <div className="relative md:w-80 lg:w-96 flex-shrink-0">
+                    <div className="relative md:w-80 lg:w-96 shrink-0">
                         <div className="h-64 md:h-full overflow-hidden bg-gray-100">
                             <img
                                 src={currentDish.image}
@@ -149,7 +149,7 @@ const DishCard = ({ dish, onDelete }) => {
                             {/* Pricing Section - Horizontal Layout */}
                             <div className="mb-4 flex-1">
                                 <div className="text-xs text-gray-600 mb-2 font-semibold">Pricing & Quantities</div>
-                                <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200">
+                                <div className="bg-linear-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200">
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3">
                                         {currentDish.quantities.map((qty, index) => {
                                             const hasDiscount = qty.discountPrice > 0 && qty.discountPrice < qty.price;
@@ -289,7 +289,7 @@ const DishCardDemo = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6 md:p-8">
+        <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 p-4 sm:p-6 md:p-8">
             <div className="max-w-6xl mx-auto">
                 <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2 text-center">
                     Dish Card Component

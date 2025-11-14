@@ -43,10 +43,10 @@ export default function ForgotPassword() {
 
                     {/* Bottom Row Bowls */}
                     <div className="flex gap-8">
-                        <div className="w-56 h-56 bg-gradient-to-br  rounded-full shadow-2xl flex items-center justify-center transform rotate-6">
+                        <div className="w-56 h-56 bg-linear-to-br  rounded-full shadow-2xl flex items-center justify-center transform rotate-6">
                             <img src='/picture/d1.png' />
                         </div>
-                        <div className="w-56 h-56 bg-gradient-to-br rounded-full shadow-2xl flex items-center justify-center transform -rotate-50">
+                        <div className="w-56 h-56 bg-linear-to-br rounded-full shadow-2xl flex items-center justify-center transform -rotate-50">
                             <img src="/picture/d2.png" className="rotate-6" alt="Rotated" />
                         </div>
 
