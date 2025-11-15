@@ -67,24 +67,24 @@ const TiffinCard = ({ tiffin, onView, onEdit, onDelete }) => {
 
                     <div className="flex items-start justify-between mb-3 pr-20">
                         <div className="flex items-center gap-2">
-                            {getFoodTypeIcon(tiffin.foodType)}
+                            {getFoodTypeIcon(tiffin?.foodType)}
                             <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
-                                {getFoodTypeLabel(tiffin.foodType)}
+                                {getFoodTypeLabel(tiffin?.foodType)}
                             </span>
                         </div>
                         <div className="flex items-center gap-1 bg-white/20 px-3 py-1 rounded-full">
                             <Star className="w-4 h-4 fill-yellow-300 text-yellow-300" />
-                            <span className="font-semibold text-sm">{tiffin.rating.averageRating}</span>
-                            <span className="text-xs">({tiffin.rating.totalRatings})</span>
+                            <span className="font-semibold text-sm">{tiffin?.rating?.averageRating}</span>
+                            <span className="text-xs">({tiffin?.rating?.totalRatings})</span>
                         </div>
                     </div>
-                    <h3 className="text-2xl font-bold mb-2">{tiffin.name}</h3>
-                    <p className="text-sm text-white/90">{tiffin.menu.menuName}</p>
+                    <h3 className="text-2xl font-bold mb-2">{tiffin?.name}</h3>
+                    <p className="text-sm text-white/90">{tiffin?.menu?.menuName}</p>
                 </div>
 
                 {/* Tags */}
                 <div className="px-6 py-3 border-b flex flex-wrap gap-2">
-                    {tiffin.tags.map(tag => (
+                    {tiffin?.tags?.map(tag => (
                         <span
                             key={tag}
                             className="px-3 py-1 bg-third text-white rounded-full text-xs font-medium uppercase"
@@ -103,15 +103,15 @@ const TiffinCard = ({ tiffin, onView, onEdit, onDelete }) => {
                                 <IndianRupee className="w-5 h-5 text-primary" />
                                 <span className="text-3xl font-bold text-gray-800">
                                     {Math.floor(calculateDiscountedPrice(
-                                        tiffin.pricing.monthly.price,
-                                        tiffin.pricing.monthly.discount
+                                        tiffin?.pricing?.monthly?.price,
+                                        tiffin?.pricing?.monthly?.discount
                                     ))}
                                 </span>
                                 <span className="text-gray-500">/month</span>
                             </div>
-                            {tiffin.pricing.monthly.discount > 0 && (
+                            {tiffin?.pricing?.monthly?.discount > 0 && (
                                 <p className="text-green-600 text-sm font-medium mt-1">
-                                    Save {tiffin.pricing.monthly.discount}%
+                                    Save {tiffin?.pricing?.monthly?.discount}%
                                 </p>
                             )}
                         </div>

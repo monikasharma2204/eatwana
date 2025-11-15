@@ -1,13 +1,12 @@
 // src/store/actions/cartActions.js
+import { resetCart } from '../app/cart/cartSlice';
 import axiosClient from './axiosClient';
 
 // Add item to cart
 export const addToCart = (itemData) => async (dispatch) => {
     try {
         dispatch({ type: 'cart/setLoading', payload: true });
-
         const response = await axiosClient.post('/api/v1/cart/add', itemData);
-
         // Fetch updated cart after adding
         dispatch(fetchCart());
 
@@ -16,6 +15,7 @@ export const addToCart = (itemData) => async (dispatch) => {
             message: response.data.message || 'Item added to cart successfully'
         };
     } catch (error) {
+        console.log(error)
         dispatch({
             type: 'cart/setError',
             payload: error.response?.data?.message || 'Failed to add item to cart'
@@ -83,10 +83,7 @@ export const clearCart = () => async (dispatch) => {
 
         await axiosClient.delete('/api/v1/cart/clear');
 
-        dispatch({
-            type: 'cart/setCart',
-            payload: []
-        });
+        dispatch(resetCart());
 
         return { success: true, message: 'Cart cleared' };
     } catch (error) {

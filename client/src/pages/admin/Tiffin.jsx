@@ -59,7 +59,7 @@ const Tiffin = () => {
 
     const handleDelete = async (tiffin) => {
         try {
-            const response = await axiosClient.delete(`/api/v1/tiffin/${tiffin._id}`);
+            const response = await axiosClient.delete(`/api/v1/tiffin/delete/${tiffin._id}`);
             setTiffins(prevTiffins => prevTiffins.filter(t => t._id !== tiffin._id));
             showSnackbar("Tiffins Loaded Successfully", "success");
         } catch (error) {

@@ -36,6 +36,7 @@ import UpdateTiffin from "./pages/admin/UpdateTiffin";
 import UserTiffin from "./pages/landing/UserTiffin";
 import TiffinDetailsPage from "./components/landing/TiffinDetailsPage";
 import DishDetailPage from "./pages/landing/DishDetailPage";
+import CartPage from "./pages/landing/Cart";
 
 
 
@@ -78,6 +79,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <DishDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/cart"
+            element={
+              <ProtectedRoute>
+                <CartPage />
               </ProtectedRoute>
             }
           />

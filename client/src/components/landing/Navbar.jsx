@@ -6,7 +6,6 @@ import { logout } from '../../app/auth/userSlice';
 export default function Navbar() {
     const user = useSelector((state) => state.user);
     const cart = useSelector((state) => state.cart.cart);
-    console.log(cart, "cart in nav");
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
@@ -71,6 +70,9 @@ export default function Navbar() {
                     <div className="hidden md:block">
                         {user.token ? (
                             <div className="flex items-center space-x-4">
+                                <Link to="/profile" className="flex items-center space-x-2 text-third font-medium relative">
+                                    <User className="w-5 h-5" />
+                                </Link>
                                 <Link to="/cart" className="flex items-center space-x-2 text-third font-medium relative">
                                     <span className='absolute -top-2 -right-2 bg-red-500 text-white text-xs w-3 h-3 flex items-center justify-center rounded-full'>
                                         {cart?.length}

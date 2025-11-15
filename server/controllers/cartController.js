@@ -24,13 +24,12 @@ export const addToCart = async (req, res) => {
         // Case 1: Add Dish
         // ---------------------------
         if (itemType === "dish") {
-            const { dishId, quantityType } = req.body;
 
-            const dish = await Dish.findById(dishId);
+            const dish = await Dish.findById(req.body.dish);
             if (!dish) return res.status(404).json({ message: "Dish not found" });
 
             const selectedQtyOption = dish.quantities.find(
-                (q) => q.type === quantityType
+                (q) => q.type === req.body.selectedQuantity
             );
             if (!selectedQtyOption)
                 return res.status(400).json({ message: "Invalid quantity option" });
@@ -39,8 +38,8 @@ export const addToCart = async (req, res) => {
             const existingDish = await CartItem.findOne({
                 user: userId,
                 itemType: "dish",
-                dish: dishId,
-                selectedQuantity: quantityType,
+                dish: dish._id,
+                selectedQuantity: req.body.quantityType,
             });
 
             if (existingDish) {
@@ -54,8 +53,8 @@ export const addToCart = async (req, res) => {
 
             cartData = {
                 ...cartData,
-                dish: dishId,
-                selectedQuantity: quantityType,
+                dish: dish._id,
+                selectedQuantity: req.body.quantityType,
                 price,
             };
         }
@@ -172,5 +171,18 @@ export const removeFromCart = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({ message: "Failed to remove item", error: error.message });
+    }
+};
+export const clearCart = async (req, res) => {
+    try {
+        await CartItem.deleteMany({ user: req.user._id });
+
+        res.json({ message: "Cart cleared successfully" });
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to clear cart",
+            error: error.message
+        });
     }
 };

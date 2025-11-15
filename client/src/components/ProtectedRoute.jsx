@@ -10,7 +10,6 @@ import { RippleLoader } from "../ui/Loader";
 const ProtectedRoute = ({ children }) => {
     const dispatch = useDispatch();
     const { token, user } = useSelector((state) => state.user);
-    console.log(token, "tokern in protected route");
     const [loading, setLoading] = useState(false); // local state to wait for validation
 
     useEffect(() => {
@@ -25,7 +24,6 @@ const ProtectedRoute = ({ children }) => {
 
                 // ✅ Validate token with backend (optional but best practice)
                 const response = await axiosClient.get("/api/v1/auth/validate");
-                console.log(response, "response in protected route");
 
                 if (response.status === 200 && response.data.user) {
                     // User is valid → update Redux if missing
