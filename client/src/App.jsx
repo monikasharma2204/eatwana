@@ -37,6 +37,11 @@ import UserTiffin from "./pages/landing/UserTiffin";
 import TiffinDetailsPage from "./components/landing/TiffinDetailsPage";
 import DishDetailPage from "./pages/landing/DishDetailPage";
 import CartPage from "./pages/landing/Cart";
+import Customers from "./pages/admin/Customers";
+import ManageOrders from "./pages/admin/ManageOrders";
+import AdminLoginForm from "./pages/admin/AdminLoginForm";
+import FooterSection from "./components/landing/FooterSection";
+import AdminProtectedRoute from "./components/admin/AdminProtectedRoute";
 
 
 
@@ -46,6 +51,7 @@ export default function App() {
       <Routes>
         {/* ==================== AUTH ROUTES ==================== */}
         <Route element={<AuthLayout />}>
+          <Route path="/admin/auth/login" element={<AdminLoginForm />} />
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/signup" element={<Signup />} />
           <Route path="/auth/forgot" element={<ForgotPassword />} />
@@ -69,17 +75,17 @@ export default function App() {
           <Route
             path="/tiffin/:id"
             element={
-              <ProtectedRoute>
-                <TiffinDetailsPage />
-              </ProtectedRoute>
+
+              <TiffinDetailsPage />
+
             }
           />
           <Route
             path="/dish/:id"
             element={
-              <ProtectedRoute>
-                <DishDetailPage />
-              </ProtectedRoute>
+
+              <DishDetailPage />
+
             }
           />
           <Route
@@ -90,6 +96,7 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
         </Route>
 
         {/* ==================== ADMIN ROUTES ==================== */}
@@ -97,16 +104,18 @@ export default function App() {
           <Route
             path="/admin/dashboard"
             element={
-
-              <Sidebar>
-                Hello
-              </Sidebar>
+              <AdminProtectedRoute>
+                <Sidebar>
+                  Hello
+                </Sidebar>
+              </AdminProtectedRoute>
 
             }
           />
           <Route
             path="/admin/dishes/all"
             element={
+
               <Sidebar>
                 <AllDish />
               </Sidebar>
@@ -116,6 +125,7 @@ export default function App() {
           <Route
             path="/admin/dishes/add"
             element={
+
               <Sidebar>
                 <AddDishForm />
               </Sidebar>
@@ -196,6 +206,24 @@ export default function App() {
             element={
               <Sidebar>
                 <UpdateTiffin />
+              </Sidebar>
+
+            }
+          />
+          <Route
+            path="/admin/customers"
+            element={
+              <Sidebar>
+                <Customers />
+              </Sidebar>
+
+            }
+          />
+          <Route
+            path="/admin/orders"
+            element={
+              <Sidebar>
+                <ManageOrders />
               </Sidebar>
 
             }

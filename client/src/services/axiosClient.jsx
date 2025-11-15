@@ -1,27 +1,27 @@
 import axios from "axios";
 import { store } from "../app/store";
 import { logout } from "../app/auth/userSlice";
+import { logoutAdmin } from "../app/auth/adminSlice";
 
-// ========================================
-// 🔹 Create Axios Instance
-// ========================================
 const axiosClient = axios.create({
-    baseURL: import.meta.env.VITE_API_URL, // backend URL
-    headers: {
-        "Content-Type": "application/json",
-    },
-    timeout: 10000, // optional
+    baseURL: import.meta.env.VITE_API_URL,
+    headers: { "Content-Type": "application/json" },
 });
 
 // ========================================
-// 🔹 Request Interceptor: Attach Token
+// REQUEST INTERCEPTOR (very stable)
 // ========================================
 axiosClient.interceptors.request.use(
     (config) => {
-        const token = store.getState().user.token; // get token from Redux
+        const state = store.getState();
+        const adminToken = state.admin?.token;
+        const userToken = state.user?.token;
 
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+        // Priority: Admin token first
+        if (adminToken) {
+            config.headers.Authorization = `Bearer ${adminToken}`;
+        } else if (userToken) {
+            config.headers.Authorization = `Bearer ${userToken}`;
         }
 
         return config;
@@ -30,16 +30,26 @@ axiosClient.interceptors.request.use(
 );
 
 // ========================================
-// 🔹 Response Interceptor: Handle Unauthorized
+// RESPONSE INTERCEPTOR (auto logout correct role)
 // ========================================
 axiosClient.interceptors.response.use(
     (response) => response,
     (error) => {
+        const state = store.getState();
+        const adminToken = state.admin?.token;
+        const userToken = state.user?.token;
+
         if (error.response?.status === 401) {
-            // Token expired or invalid
-            console.warn("Unauthorized — token may have expired.");
-            store.dispatch(logout());
+            // If admin is logged in → logout admin
+            if (adminToken) {
+                store.dispatch(logoutAdmin());
+            }
+            // Else if user logged in → logout user
+            else if (userToken) {
+                store.dispatch(logout());
+            }
         }
+
         return Promise.reject(error);
     }
 );

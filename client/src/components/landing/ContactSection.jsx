@@ -30,20 +30,20 @@ export default function ContactSection() {
         {
             icon: Phone,
             label: 'Mobile Number',
-            value: '+91 98765 43210',
-            href: 'tel:+919876543210'
+            value: '+91 97082 77467',
+            href: 'tel:+919708277467'
         },
         {
             icon: Mail,
             label: 'Email ID',
-            value: 'info@cloudkitchen.com',
-            href: 'mailto:info@cloudkitchen.com'
+            value: 'eatwana@gmail.com',
+            href: 'mailto:eatwana@gmail.com'
         },
         {
             icon: MessageCircle,
             label: 'WhatsApp',
-            value: '+91 98765 43210',
-            href: 'https://wa.me/919876543210'
+            value: '+91 97082 77467',
+            href: 'https://wa.me/919708277467'
         }
     ];
 

@@ -58,9 +58,9 @@ export default function TiffinDetailsPage() {
 
     const handleAddToCart = async () => {
         if (!user) {
-          
+
             showSnackbar("Please login to add items to cart", "warning");
-            navigate('/login');
+            navigate('/auth/login');
             return;
         }
 

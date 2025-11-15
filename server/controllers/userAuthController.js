@@ -144,3 +144,20 @@ export const validateUser = async (req, res) => {
         });
     }
 };
+// ========================
+// 🔹 GET ALL USERS
+// ========================
+export const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find().select('-password');
+
+        res.status(200).json({
+            message: 'Users retrieved successfully!',
+            count: users.length,
+            users,
+        });
+    } catch (error) {
+        console.error('Get All Users Error:', error);
+        res.status(500).json({ message: 'Error retrieving users.' });
+    }
+};

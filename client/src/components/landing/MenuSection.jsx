@@ -1,7 +1,9 @@
 import React from 'react';
 import { Utensils, ChefHat, Sparkles, Dumbbell } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const MenuSection = () => {
+    const navigate = useNavigate()
     const menuCards = [
         {
             id: 1,
@@ -45,7 +47,7 @@ const MenuSection = () => {
         <section className="py-16 px-4 lg:px-20 bg-gradient-to-b from-white to-gray-50">
             <div className="max-w-7xl mx-auto">
                 {/* Section Header */}
-                    {/* <div className="text-center mb-12">
+                {/* <div className="text-center mb-12">
                         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
                             Our <span className="text-primary">Menu</span>
                         </h2>
@@ -84,12 +86,12 @@ const MenuSection = () => {
                                 </p>
 
                                 {/* Hover Indicator */}
-                                <div className="mt-5 flex items-center text-primary text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <Link to="/menu" className="mt-5 flex items-center text-primary text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                     View Details
                                     <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                     </svg>
-                                </div>
+                                </Link>
                             </div>
                         );
                     })}
@@ -97,7 +99,7 @@ const MenuSection = () => {
 
                 {/* CTA Button */}
                 <div className="text-center">
-                    <button className="bg-primary hover:bg-secondary text-white font-semibold px-10 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 text-lg">
+                    <button onClick={() => navigate("/menu")} className="bg-primary hover:bg-secondary text-white font-semibold px-10 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 text-lg">
                         Explore All Menu
                     </button>
                 </div>

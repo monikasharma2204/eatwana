@@ -30,6 +30,12 @@ const Sidebar = ({ children }) => {
             path: '/admin/dashboard'
         },
         {
+            id: 'order',
+            label: 'Order',
+            icon: DollarSign,
+            path: '/admin/orders'
+        },
+        {
             id: 'dishes',
             label: 'Dishes',
             icon: UtensilsCrossed,
@@ -64,35 +70,7 @@ const Sidebar = ({ children }) => {
             id: 'customers',
             label: 'Customers',
             icon: Users,
-            path: '/customers'
-        },
-        {
-            id: 'inventory',
-            label: 'Inventory',
-            icon: Package,
-            subItems: [
-                { label: 'Stock Management', path: '/inventory/stock' },
-                { label: 'Suppliers', path: '/inventory/suppliers' },
-                { label: 'Purchase Orders', path: '/inventory/purchase' }
-            ]
-        },
-        {
-            id: 'analytics',
-            label: 'Analytics',
-            icon: BarChart3,
-            path: '/analytics'
-        },
-        {
-            id: 'revenue',
-            label: 'Revenue',
-            icon: DollarSign,
-            path: '/revenue'
-        },
-        {
-            id: 'settings',
-            label: 'Settings',
-            icon: Settings,
-            path: '/settings'
+            path: '/admin/customers'
         }
     ];
 
@@ -210,7 +188,7 @@ const Sidebar = ({ children }) => {
                 </div>
 
                 {/* Search and Menu */}
-                <div className="px-4 py-4">
+                {/* <div className="px-4 py-4">
                     <div className="relative group">
                         <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                         <input
@@ -219,7 +197,7 @@ const Sidebar = ({ children }) => {
                             className="w-full pl-11 pr-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
                         />
                     </div>
-                </div>
+                </div> */}
 
                 <nav className="flex-1 overflow-y-auto px-4 h-[calc(100vh-12rem)] custom-scrollbar">
                     <div className="space-y-1 pb-4">
@@ -232,12 +210,12 @@ const Sidebar = ({ children }) => {
 
             {/* MAIN CONTENT */}
             <div className="lg:ml-80">
-                <header className="h-20 bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-30 shadow-sm flex items-center justify-between px-6">
+                <header className="h-20 bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-30 shadow-sm flex items-center justify-between px-6 rounded-2xl">
                     <button onClick={toggleSidebar} className="lg:hidden text-gray-600 hover:text-orange-600 p-2 rounded-lg transition-all">
                         <Menu className="w-6 h-6" />
                     </button>
 
-                    <div className="hidden md:block flex-1 max-w-2xl mx-8">
+                    {/* <div className="hidden md:block flex-1 max-w-2xl mx-8">
                         <div className="relative">
                             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                             <input
@@ -246,16 +224,16 @@ const Sidebar = ({ children }) => {
                                 className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/20"
                             />
                         </div>
-                    </div>
+                    </div> */}
 
-                    <button className="relative p-2.5 text-gray-600 hover:text-orange-600 hover:bg-orange-50 rounded-xl transition-all">
+                    {/* <button className="relative p-2.5 text-gray-600 hover:text-orange-600 hover:bg-orange-50 rounded-xl transition-all">
                         <Bell className="w-6 h-6" />
                         {notifications > 0 && (
                             <span className="absolute -top-1 -right-1 w-5 h-5 bg-linear-to-br from-orange-500 to-rose-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg animate-pulse">
                                 {notifications}
                             </span>
                         )}
-                    </button>
+                    </button> */}
                 </header>
 
                 <main className="p-4 sm:p-6 lg:p-8">{children}</main>

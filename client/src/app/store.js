@@ -15,11 +15,13 @@ import storage from 'redux-persist/lib/storage'; // defaults to localStorage for
 // 🔹 Import your slices (reducers)
 import userReducer from './auth/userSlice.js';
 import cartReducer from './cart/cartSlice.js';
+import adminReducer from './auth/adminSlice.js';
 
 // 🔹 Combine all reducers
 const rootReducer = combineReducers({
     user: userReducer,
     cart: cartReducer,
+    admin: adminReducer,
 });
 
 // 🔹 Configure persistence

@@ -13,8 +13,8 @@ const router = express.Router();
 
 router.post("/place", authMiddleware, placeOrder);
 router.get("/my-orders", authMiddleware, getUserOrders);
-router.get("/all", authMiddleware, getAllOrders);
-router.put("/status/:orderId", authMiddleware, updateOrderStatus);
+router.get("/all", getAllOrders);
+router.put("/status/:orderId", updateOrderStatus);
 
 router.put("/verify-upi/:orderId", authMiddleware, verifyUPIPayment);
 

@@ -1,22 +1,22 @@
 import { Phone, Mail, MessageCircle, MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function FooterSection() {
     const importantLinks = [
-        { name: 'Home', href: '#home' },
-        { name: 'About Us', href: '#about' },
-        { name: 'Menu', href: '#menu' },
-        { name: 'Tiffin Services', href: '#tiffin' },
-        { name: 'Restaurant Dishes', href: '#restaurant' },
-        { name: 'Special Orders', href: '#special' },
-        { name: 'Gym Menu', href: '#gym' },
-        { name: 'Contact Us', href: '#contact' }
+        { name: 'Home', href: '/' },
+        { name: 'About Us', href: '/#about' },
+        { name: 'Menu', href: '/menu' },
+        { name: 'Tiffin Services', href: '/tiffin' },
+        { name: 'Contact Us', href: '/#contact' }
     ];
 
     const contactInfo = [
-        { icon: Phone, text: '+91 98765 43210', href: 'tel:+919876543210' },
-        { icon: Mail, text: 'info@cloudkitchen.com', href: 'mailto:info@cloudkitchen.com' },
-        { icon: MessageCircle, text: 'WhatsApp: +91 98765 43210', href: 'https://wa.me/919876543210' },
-        { icon: MapPin, text: 'Serving across major cities', href: '#locations' }
+        { icon: Phone, text: '+91 97082 77467', href: 'tel:+919708277467' },
+        {
+            icon: Mail, text: 'eatwana@gmail.com', href: 'mailto:eatwana@gmail.com'
+        },
+        { icon: MessageCircle, text: 'WhatsApp: +91 97082 77467', href: 'https://wa.me/919708277467' },
+        // { icon: MapPin, text: 'Serving across major cities', href: '#locations' }
     ];
 
     return (
@@ -71,12 +71,12 @@ export default function FooterSection() {
                             <ul className="space-y-2.5">
                                 {importantLinks.map((link, index) => (
                                     <li key={index}>
-                                        <a
-                                            href={link.href}
+                                        <Link
+                                            to={link.href}
                                             className="text-white/80 hover:text-[#e7582e] text-sm transition-colors duration-300 hover:translate-x-1 inline-block"
                                         >
                                             {link.name}
-                                        </a>
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>
