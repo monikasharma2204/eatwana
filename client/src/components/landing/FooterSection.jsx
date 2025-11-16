@@ -132,9 +132,12 @@ export default function FooterSection() {
                     <p className="text-white/70 text-sm">
                         © 2025 Cloud Kitchen & Tiffin Service. All rights reserved.
                     </p>
-                    <p className="text-white/60 text-xs mt-2">
+                    <a href='https://tejasvi.vercel.app/'
+                        target='_blank'
+                        rel="noopener noreferrer"
+                        className="text-white/60 text-xs mt-2">
                         Designed & Developed by <span className="text-[#f27636] font-semibold hover:text-[#e7582e] transition-colors duration-300">Tejasvi Kumar</span>
-                    </p>
+                    </a>
                 </div>
             </div>
         </footer>
