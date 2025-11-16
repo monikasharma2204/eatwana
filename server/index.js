@@ -14,6 +14,8 @@ import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import adminRoutes from "./routes/adminRoute.js";
 import enquiryRoutes from "./routes/enquiryRoutes.js";
+import subscriptionRoutes from "./routes/subscriptionRoute.js";
+import dashboardRoutes from "./routes/adminDashboardRoutes.js";
 
 
 import { errorHandler, notFound } from "./middleware/errorHandler.js";
@@ -71,6 +73,8 @@ app.use("/api/v1/cart", cartRoutes);
 app.use("/api/v1/order", orderRoutes);
 app.use("/api/v1/admin/auth", adminRoutes);
 app.use("/api/v1/enquiry", enquiryRoutes);
+app.use("/api/v1/subscription", subscriptionRoutes);
+app.use("/api/v1/dashboard", dashboardRoutes);
 
 
 // Example Test Route

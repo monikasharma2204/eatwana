@@ -12,6 +12,7 @@ import {
     getDishStats,
 } from "../controllers/dishController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
+import { adminAuth } from "../middleware/adminAuthMiddleware.js";
 
 const router = express.Router();
 
@@ -23,10 +24,10 @@ router.get("/search", searchDishes);
 router.get("/tag/:tag", getDishesByTag);
 
 // 📝 CRUD routes
-router.post("/add", upload.single("image"), createDish);
+router.post("/add", adminAuth, upload.single("image"), createDish);
 router.get("/all", getAllDishes);
 router.get("/get/:id", getDishById);
-router.put("/update/:id", upload.single("image"), updateDish);
-router.delete("/delete/:id", deleteDish);
+router.put("/update/:id", adminAuth, upload.single("image"), updateDish);
+router.delete("/delete/:id", adminAuth, deleteDish);
 
 export default router;

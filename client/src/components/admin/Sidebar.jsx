@@ -3,15 +3,18 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
     Menu, X, Bell, ChevronDown, ChevronRight,
     LayoutDashboard, UtensilsCrossed, Users, ShoppingBag,
-    Settings, BarChart3, Package, DollarSign, Search, ClipboardCheck, IndianRupee
+    Settings, BarChart3, Package, Search, ClipboardCheck, IndianRupee, CalendarSync,
+    LogOut
 } from 'lucide-react';
+import { logoutAdmin } from '../../app/auth/adminSlice';
+import { useDispatch } from 'react-redux';
 
 const Sidebar = ({ children }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [expandedMenus, setExpandedMenus] = useState({});
     const [activeItem, setActiveItem] = useState('dashboard');
     const [notifications] = useState(3);
-
+    const dispatch = useDispatch()
     const navigate = useNavigate();
 
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -65,6 +68,12 @@ const Sidebar = ({ children }) => {
                 { label: 'Tiffin', path: '/admin/tiffin' },
                 { label: 'Add Tiffin', path: '/admin/tiffin/add' }
             ]
+        },
+        {
+            id: 'subscription',
+            label: 'Subscription',
+            icon: CalendarSync,
+            path: '/admin/subscription'
         },
         {
             id: 'customers',
@@ -216,7 +225,7 @@ const Sidebar = ({ children }) => {
 
             {/* MAIN CONTENT */}
             <div className="lg:ml-80">
-                <header className="h-20 bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-30 shadow-sm flex items-center justify-between px-6 rounded-2xl">
+                <header className="h-20 bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-30 shadow-sm flex items-center md:justify-end justify-between px-6 rounded-2xl">
                     <button onClick={toggleSidebar} className="lg:hidden text-gray-600 hover:text-orange-600 p-2 rounded-lg transition-all">
                         <Menu className="w-6 h-6" />
                     </button>
@@ -232,14 +241,14 @@ const Sidebar = ({ children }) => {
                         </div>
                     </div> */}
 
-                    {/* <button className="relative p-2.5 text-gray-600 hover:text-orange-600 hover:bg-orange-50 rounded-xl transition-all">
-                        <Bell className="w-6 h-6" />
-                        {notifications > 0 && (
+                    <button onClick={() => dispatch(logoutAdmin())} className="relative p-2.5 text-gray-600 hover:text-orange-600 hover:bg-orange-50 rounded-xl transition-all">
+                        <LogOut className="w-6 h-6" />
+                        {/* {notifications > 0 && (
                             <span className="absolute -top-1 -right-1 w-5 h-5 bg-linear-to-br from-orange-500 to-rose-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg animate-pulse">
                                 {notifications}
                             </span>
-                        )}
-                    </button> */}
+                        )} */}
+                    </button>
                 </header>
 
                 <main className="p-4 sm:p-6 lg:p-8">{children}</main>

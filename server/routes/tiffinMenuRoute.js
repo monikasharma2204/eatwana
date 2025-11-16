@@ -6,11 +6,12 @@ import {
     updateMenu,
     deleteMenu
 } from "../controllers/tiffinMenuController.js";
+import { adminAuth } from "../middleware/adminAuthMiddleware.js";
 
 const router = express.Router();
 
 // Add a weekly menu
-router.post("/add", addMenu);
+router.post("/add", adminAuth, addMenu);
 
 // Get all menus
 router.get("/all", getAllMenus);
@@ -19,9 +20,9 @@ router.get("/all", getAllMenus);
 router.get("/get/:id", getMenuById);
 
 // Update a menu
-router.put("/update/:id", updateMenu);
+router.put("/update/:id", adminAuth, updateMenu);
 
 // Delete a menu
-router.delete("/delete/:id", deleteMenu);
+router.delete("/delete/:id", adminAuth, deleteMenu);
 
 export default router;

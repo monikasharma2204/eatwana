@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/add", createEnquiry);
 router.get("/all", adminAuth, getAllEnquiries);
-router.get("/:id", getEnquiryById);
-router.delete("/:id", deleteEnquiry);
+router.get("/:id", adminAuth, getEnquiryById);
+router.delete("/:id", adminAuth, deleteEnquiry);
 
 export default router;

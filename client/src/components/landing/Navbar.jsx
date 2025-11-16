@@ -48,7 +48,12 @@ export default function Navbar() {
                     {/* Logo */}
                     <div className="shrink-0">
                         <Link to="/" className="flex items-center group">
-                            <div className="relative flex items-center space-x-2">
+                            <div className="relative flex items-center justify-center">
+                                <img
+                                    src="/EatwanaBowl.png"
+                                    alt="Eatwana Logo"
+                                    className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                                />
                                 <img
                                     src="/logotext.png"
                                     alt="Eatwana Logo"

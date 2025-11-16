@@ -43,6 +43,8 @@ import AdminLoginForm from "./pages/admin/AdminLoginForm";
 import FooterSection from "./components/landing/FooterSection";
 import AdminProtectedRoute from "./components/admin/AdminProtectedRoute";
 import Enquiries from "./pages/admin/Enquiries";
+import AdminSubscriptionPage from "./pages/admin/AdminSubscriptionPage";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 
 
 
@@ -107,7 +109,7 @@ export default function App() {
             element={
               <AdminProtectedRoute>
                 <Sidebar>
-                  Hello
+                  <AdminDashboardPage />
                 </Sidebar>
               </AdminProtectedRoute>
 
@@ -234,6 +236,15 @@ export default function App() {
             element={
               <Sidebar>
                 <Enquiries />
+              </Sidebar>
+
+            }
+          />
+          <Route
+            path="/admin/subscription"
+            element={
+              <Sidebar>
+                <AdminSubscriptionPage />
               </Sidebar>
 
             }
