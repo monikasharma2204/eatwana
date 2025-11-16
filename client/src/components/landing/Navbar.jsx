@@ -19,7 +19,7 @@ export default function Navbar() {
     ];
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-    const toggleLogin = () => setIsLoggedIn(!isLoggedIn);
+
     const handleScroll = (id) => {
         const section = document.getElementById(id);
         if (section) {
@@ -32,16 +32,22 @@ export default function Navbar() {
         if (link.type === 'route') {
             navigate(link.href);
         } else {
-            handleScroll(link.href);
+            // scroll type
+            if (location.pathname !== "/") {
+                navigate("/", { state: { scrollTo: link.href } });
+            } else {
+                handleScroll(link.href);
+            }
         }
     };
+
     return (
         <nav className="fixed top-0 left-0 right-0 z-50 bg-linear-to-br from-orange-50 via-white to-cyan-50 shadow-md">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
                     <div className="shrink-0">
-                        <a href="#home" className="flex items-center group">
+                        <Link to="/" className="flex items-center group">
                             <div className="relative flex items-center space-x-2">
                                 <img
                                     src="/logotext.png"
@@ -49,7 +55,7 @@ export default function Navbar() {
                                     className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
                                 />
                             </div>
-                        </a>
+                        </Link>
                     </div>
 
                     {/* Desktop Navigation */}
@@ -137,14 +143,19 @@ export default function Navbar() {
                     {/* Mobile Auth Button */}
                     <div className="pt-2">
                         {user.token ? (
-                            <div className="space-y-2">
-                                <Link to="/cart" className="flex items-center space-x-2 px-4 py-2 text-third font-medium">
-
+                            <div className="flex items-center space-x-4">
+                                <Link to="/profile" className="flex items-center space-x-2 text-third font-medium relative">
+                                    <User className="w-5 h-5" />
+                                </Link>
+                                <Link to="/cart" className="flex items-center space-x-2 text-third font-medium relative">
+                                    <span className='absolute -top-2 -right-2 bg-red-500 text-white text-xs w-3 h-3 flex items-center justify-center rounded-full'>
+                                        {cart?.length}
+                                    </span>
                                     <ShoppingCart className="w-5 h-5" />
                                 </Link>
                                 <button
                                     onClick={() => { dispatch(logout()) }}
-                                    className="w-full flex items-center justify-center space-x-2 px-4 py-2.5 rounded-lg text-white bg-third hover:bg-[#0d4450] font-semibold transition-all duration-300 transform hover:scale-105 shadow-md"
+                                    className="flex items-center space-x-2 px-4 py-2 rounded-lg text-white bg-third hover:bg-[#0d4450] transform hover:scale-105 transition duration-300 shadow-md hover:shadow-lg"
                                 >
                                     <LogOut className="w-4 h-4" />
                                     <span>Logout</span>
@@ -152,11 +163,14 @@ export default function Navbar() {
                             </div>
                         ) : (
                             <button
-                                onClick={toggleLogin}
-                                className="w-full flex items-center justify-center space-x-2 px-4 py-2.5 rounded-lg text-white font-semibold bg-gradient-to-r from-primary to-[#f27636] hover:from-[#f27636] hover:to-primary transition-all duration-300 transform hover:scale-105 shadow-md"
+                                className="relative px-6 py-2.5 rounded-lg text-white font-semibold overflow-hidden group"
                             >
-                                <User className="w-4 h-4" />
-                                <span>Login / Signup</span>
+                                <div className="absolute inset-0 bg-gradient-to-r from-primary to-[#f27636] transition-all duration-300 group-hover:scale-105"></div>
+                                <div className="absolute inset-0 bg-gradient-to-r from-[#f27636] to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <Link to="/auth/login" className="relative flex items-center space-x-2">
+                                    <User className="w-4 h-4" />
+                                    <span>Login / Signup</span>
+                                </Link>
                             </button>
                         )}
                     </div>

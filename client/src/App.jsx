@@ -42,6 +42,7 @@ import ManageOrders from "./pages/admin/ManageOrders";
 import AdminLoginForm from "./pages/admin/AdminLoginForm";
 import FooterSection from "./components/landing/FooterSection";
 import AdminProtectedRoute from "./components/admin/AdminProtectedRoute";
+import Enquiries from "./pages/admin/Enquiries";
 
 
 
@@ -224,6 +225,15 @@ export default function App() {
             element={
               <Sidebar>
                 <ManageOrders />
+              </Sidebar>
+
+            }
+          />
+          <Route
+            path="/admin/enquiries"
+            element={
+              <Sidebar>
+                <Enquiries />
               </Sidebar>
 
             }

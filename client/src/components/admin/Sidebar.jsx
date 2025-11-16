@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
     Menu, X, Bell, ChevronDown, ChevronRight,
     LayoutDashboard, UtensilsCrossed, Users, ShoppingBag,
-    Settings, BarChart3, Package, DollarSign, Search
+    Settings, BarChart3, Package, DollarSign, Search, ClipboardCheck, IndianRupee
 } from 'lucide-react';
 
 const Sidebar = ({ children }) => {
@@ -32,7 +32,7 @@ const Sidebar = ({ children }) => {
         {
             id: 'order',
             label: 'Order',
-            icon: DollarSign,
+            icon: IndianRupee,
             path: '/admin/orders'
         },
         {
@@ -71,6 +71,12 @@ const Sidebar = ({ children }) => {
             label: 'Customers',
             icon: Users,
             path: '/admin/customers'
+        },
+        {
+            id: 'enquiries',
+            label: 'Enquiries',
+            icon: ClipboardCheck,
+            path: '/admin/enquiries'
         }
     ];
 
