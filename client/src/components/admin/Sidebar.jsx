@@ -39,6 +39,17 @@ const Sidebar = ({ children }) => {
             path: '/admin/orders'
         },
         {
+            id: 'manualorder',
+            label: 'Manual Order',
+            icon: UtensilsCrossed,
+            subItems: [
+                { label: 'Create Customers', path: '/admin/customer/add' },
+                { label: 'All Customers', path: '/admin/manual/customer' },
+                { label: 'Attach Menu to Customer', path: '/admin/customer/mealplan' },
+                { label: 'Add Sub Categories', path: '/admin/sub-categories/add' },
+            ]
+        },
+        {
             id: 'dishes',
             label: 'Dishes',
             icon: UtensilsCrossed,

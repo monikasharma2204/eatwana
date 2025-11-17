@@ -16,6 +16,10 @@ import adminRoutes from "./routes/adminRoute.js";
 import enquiryRoutes from "./routes/enquiryRoutes.js";
 import subscriptionRoutes from "./routes/subscriptionRoute.js";
 import dashboardRoutes from "./routes/adminDashboardRoutes.js";
+import customerRoutes from "./routes/customerRoutes.js";
+import mealPlanRoutes from "./routes/mealPlanRoutes.js";
+import invoiceRoutes from "./routes/invoiceRoutes.js";
+import deliveryRoutes from "./routes/deliveryRoutes.js";
 
 
 import { errorHandler, notFound } from "./middleware/errorHandler.js";
@@ -75,6 +79,10 @@ app.use("/api/v1/admin/auth", adminRoutes);
 app.use("/api/v1/enquiry", enquiryRoutes);
 app.use("/api/v1/subscription", subscriptionRoutes);
 app.use("/api/v1/dashboard", dashboardRoutes);
+app.use("/api/v1/customer", customerRoutes);
+app.use("/api/v1/meal-plan", mealPlanRoutes);
+app.use("/api/v1/invoice", invoiceRoutes);
+app.use("/api/v1/delivery", deliveryRoutes);
 
 
 // Example Test Route

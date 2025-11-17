@@ -47,6 +47,9 @@ import AdminSubscriptionPage from "./pages/admin/AdminSubscriptionPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import Contact from "./pages/landing/Contact";
 import About from "./pages/landing/About";
+import AddCustomerForm from "./pages/admin/AddCustomerForm";
+import CreateMealPlanForm from "./pages/admin/CreateMealPlanForm";
+import ManualCustomers from "./pages/admin/ManualCustomers";
 
 
 
@@ -249,6 +252,33 @@ export default function App() {
             element={
               <Sidebar>
                 <AdminSubscriptionPage />
+              </Sidebar>
+
+            }
+          />
+          <Route
+            path="/admin/manual/customer"
+            element={
+              <Sidebar>
+                <ManualCustomers />
+              </Sidebar>
+
+            }
+          />
+          <Route
+            path="/admin/customer/add"
+            element={
+              <Sidebar>
+                <AddCustomerForm />
+              </Sidebar>
+
+            }
+          />
+          <Route
+            path="/admin/customer/mealplan"
+            element={
+              <Sidebar>
+                <CreateMealPlanForm />
               </Sidebar>
 
             }
