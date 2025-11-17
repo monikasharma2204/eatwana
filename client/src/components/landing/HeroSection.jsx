@@ -6,6 +6,9 @@ export default function HeroSection() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const navigate = useNavigate();
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
     // Array of food images
     const images = [
         "/picture/pic1.png",
@@ -62,14 +65,20 @@ export default function HeroSection() {
 
                         {/* CTA Buttons */}
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <button onClick={() => navigate("/menu")} className="group bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2">
+                            <button onClick={() => {
+                                navigate("/menu")
+                                window.scrollTo({ top: 0, behavior: "smooth" });
+                            }} className="group bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2">
                                 Order Now
                                 <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                                 </svg>
                             </button>
 
-                            <button onClick={() => navigate("/tiffin")} className="bg-white border-2 border-third text-third px-8 py-4 rounded-lg font-semibold text-lg shadow-lg hover:bg-third hover:text-white transform hover:scale-105 transition-all duration-300">
+                            <button onClick={() => {
+                                navigate("/tiffin")
+                                window.scrollTo({ top: 0, behavior: "smooth" });
+                            }} className="bg-white border-2 border-third text-third px-8 py-4 rounded-lg font-semibold text-lg shadow-lg hover:bg-third hover:text-white transform hover:scale-105 transition-all duration-300">
                                 View Menu
                             </button>
                         </div>

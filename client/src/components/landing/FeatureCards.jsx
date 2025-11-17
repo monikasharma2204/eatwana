@@ -82,7 +82,10 @@ const FeatureCards = () => {
 
                 {/* Bottom CTA */}
                 <div className="text-center mt-16">
-                    <button onClick={() => navigate("/menu")} className="px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+                    <button onClick={() => {
+                        navigate("/menu")
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                    }} className="px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
                         Get Started Today
                     </button>
                 </div>

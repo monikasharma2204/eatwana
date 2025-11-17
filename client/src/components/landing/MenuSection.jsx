@@ -4,6 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const MenuSection = () => {
     const navigate = useNavigate()
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
     const menuCards = [
         {
             id: 1,
@@ -86,7 +89,10 @@ const MenuSection = () => {
                                 </p>
 
                                 {/* Hover Indicator */}
-                                <Link to="/menu" className="mt-5 flex items-center text-primary text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <Link
+                                    onClick={() => scrollToTop()}
+
+                                    to="/menu" className="mt-5 flex items-center text-primary text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                     View Details
                                     <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -99,12 +105,15 @@ const MenuSection = () => {
 
                 {/* CTA Button */}
                 <div className="text-center">
-                    <button onClick={() => navigate("/menu")} className="bg-primary hover:bg-secondary text-white font-semibold px-10 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 text-lg">
+                    <button onClick={() => {
+                        navigate("/menu")
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                    }} className="bg-primary hover:bg-secondary text-white font-semibold px-10 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 text-lg">
                         Explore All Menu
                     </button>
                 </div>
             </div>
-        </section>
+        </section >
     );
 };
 

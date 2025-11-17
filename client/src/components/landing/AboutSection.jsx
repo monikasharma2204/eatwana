@@ -1,7 +1,9 @@
 import React from 'react';
 import { Heart, Clock, Users, Award, Leaf, Truck } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const AboutSection = () => {
+    const navigate = useNavigate();
     return (
         <section id='about' className="py-16 px-4 md:py-24 bg-gradient-to-b from-white to-gray-50">
             <div className="max-w-7xl mx-auto">
@@ -56,7 +58,11 @@ const AboutSection = () => {
 
                         {/* Call to Action */}
                         <div className="pt-4">
-                            <button className="bg-gradient-to-r from-primary to-secondary text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                            <button onClick={() => {
+                                navigate("/menu")
+                                window.scrollTo({ top: 0, behavior: "smooth" });
+                            }}
+                                className="bg-gradient-to-r from-primary to-secondary text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
                                 Explore Our Menu
                             </button>
                         </div>

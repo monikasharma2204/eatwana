@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 export default function FooterSection() {
 
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    };
+        const scrollToTop = () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        };
 
     const importantLinks = [
         { name: 'Home', href: '/' },

@@ -215,7 +215,7 @@ export default function Login() {
                             </div>
 
                             {/* Social Login Buttons */}
-                            <div className="flex gap-4">
+                            {/* <div className="flex gap-4">
                                 <button
                                     type="button"
                                     className="flex-1 py-3 px-4 bg-white border-2 border-gray-200 rounded-full flex items-center justify-center gap-3 hover:border-primary hover:shadow-md transition-all duration-200"
@@ -228,7 +228,7 @@ export default function Login() {
                                     </svg>
                                     <span className="text-gray-700 font-medium">Google</span>
                                 </button>
-                            </div>
+                            </div> */}
 
                             {/* Sign Up Link */}
                             <p className="text-center text-gray-600 mt-6">
