@@ -49,3 +49,57 @@ export const addPayment = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
+export const getAllInvoices = async (req, res) => {
+    try {
+        const invoices = await Invoice.find()
+            .populate("customer", "name mobile email address tokenBalance")
+            .populate("mealPlan", "totalPrice mealsPerDay pricePerMeal")
+            .sort({ createdAt: -1 }); // latest first
+
+        console.log(invoices)
+        res.json({
+            success: true,
+            count: invoices.length,
+            data: invoices
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+
+/**
+ * Get a single invoice by ID
+ */
+export const getInvoiceById = async (req, res) => {
+    try {
+        const { invoiceId } = req.params;
+
+        const invoice = await Invoice.findById(invoiceId)
+            .populate("customer", "name mobile email address tokenBalance")
+            .populate("mealPlan", "totalPrice mealsPerDay pricePerMeal");
+
+        if (!invoice) {
+            return res.status(404).json({
+                success: false,
+                message: "Invoice not found"
+            });
+        }
+
+        res.json({
+            success: true,
+            data: invoice
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};

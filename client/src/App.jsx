@@ -49,7 +49,10 @@ import Contact from "./pages/landing/Contact";
 import About from "./pages/landing/About";
 import AddCustomerForm from "./pages/admin/AddCustomerForm";
 import CreateMealPlanForm from "./pages/admin/CreateMealPlanForm";
-import ManualCustomers from "./pages/admin/ManualCustomers";
+import AdminManualCustomerPage from "./pages/admin/AdminManualCustomerPage";
+import MealPlanTable from "./pages/admin/MealPlanTable";
+import CustomerDeliveryTable from "./pages/admin/CustomerDeliveryTable";
+import InvoiceTable from "./pages/admin/InvoiceTable";
 
 
 
@@ -260,7 +263,7 @@ export default function App() {
             path="/admin/manual/customer"
             element={
               <Sidebar>
-                <ManualCustomers />
+                <AdminManualCustomerPage />
               </Sidebar>
 
             }
@@ -275,10 +278,37 @@ export default function App() {
             }
           />
           <Route
-            path="/admin/customer/mealplan"
+            path="/admin/customer/mealplan/add"
             element={
               <Sidebar>
                 <CreateMealPlanForm />
+              </Sidebar>
+
+            }
+          />
+          <Route
+            path="/admin/customer/mealplan"
+            element={
+              <Sidebar>
+                <MealPlanTable />
+              </Sidebar>
+
+            }
+          />
+          <Route
+            path="/admin/customer/delivery"
+            element={
+              <Sidebar>
+                <CustomerDeliveryTable />
+              </Sidebar>
+
+            }
+          />
+          <Route
+            path="/admin/invoice"
+            element={
+              <Sidebar>
+                <InvoiceTable />
               </Sidebar>
 
             }

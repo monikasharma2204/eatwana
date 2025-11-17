@@ -8,29 +8,49 @@ const deliverySchema = new mongoose.Schema({
         required: true
     },
 
+    mealPlan: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "MealPlan",
+        required: true,
+        comment: "Which meal plan this delivery belongs to"
+    },
+
+    tiffinMenu: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "TiffinMenu",
+        required: true,
+        comment: "Menu followed for this delivery"
+    },
+
     mealSlot: {
         type: String,
         enum: ["Breakfast", "Lunch", "Dinner"],
+        required: true
+    },
+
+    quantity: {
+        type: Number,
         required: true,
-        comment: "Which meal was delivered"
+        default: 1,
+        comment: "How many meals/thalis delivered"
+    },
+
+    tokenUsed: {
+        type: Number,
+        required: true,
+        comment: "Tokens deducted = quantity"
     },
 
     date: {
         type: Date,
         required: true,
-        comment: "Date and time of delivery"
+        default: Date.now
     },
 
     status: {
         type: String,
         enum: ["Delivered", "Missed", "Cancelled"],
         default: "Delivered"
-    },
-
-    tokenUsed: {
-        type: Number,
-        default: 1,
-        comment: "Each delivery consumes 1 token"
     }
 
 }, { timestamps: true });
