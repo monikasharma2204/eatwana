@@ -122,7 +122,7 @@ export default function ContactSection() {
                                             value={formData.name}
                                             onChange={handleChange}
                                             className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 outline-none"
-                                            placeholder="John Doe"
+                                            placeholder="Eatwana"
                                         />
                                     </div>
 
@@ -138,7 +138,7 @@ export default function ContactSection() {
                                             value={formData.email}
                                             onChange={handleChange}
                                             className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 outline-none"
-                                            placeholder="john@example.com"
+                                            placeholder="eatwana@gmail.com"
                                         />
                                     </div>
 
@@ -154,7 +154,7 @@ export default function ContactSection() {
                                             value={formData.mobile}
                                             onChange={handleChange}
                                             className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 outline-none"
-                                            placeholder="+91 98765 43210"
+                                            placeholder="+91 1234567890"
                                         />
                                     </div>
 

@@ -22,7 +22,7 @@ const AboutSection = () => {
                     <div className="order-2 md:order-1">
                         <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-third/20">
                             <img
-                                src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800&q=80"
+                                src="/picture/AboutImage.png"
                                 alt="Fresh healthy meals prepared in our kitchen"
                                 className="w-full h-[400px] md:h-[500px] object-cover"
                             />
@@ -30,7 +30,7 @@ const AboutSection = () => {
                             <div className="absolute bottom-6 left-6 right-6">
                                 <div className="bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-lg">
                                     <p className="text-third font-semibold text-lg">
-                                        Serving 500+ Happy Customers Daily
+                                        Serving 50+ Happy Customers Daily
                                     </p>
                                 </div>
                             </div>
@@ -101,11 +101,11 @@ const AboutSection = () => {
                 <div className="mt-20 bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 md:p-12 shadow-2xl">
                     <div className="grid sm:grid-cols-3 gap-8 text-center text-white">
                         <div>
-                            <div className="text-4xl md:text-5xl font-bold mb-2">500+</div>
+                            <div className="text-4xl md:text-5xl font-bold mb-2">50+</div>
                             <div className="text-white/90 text-lg">Daily Customers</div>
                         </div>
                         <div>
-                            <div className="text-4xl md:text-5xl font-bold mb-2">5000+</div>
+                            <div className="text-4xl md:text-5xl font-bold mb-2">500+</div>
                             <div className="text-white/90 text-lg">Meals Delivered</div>
                         </div>
                         <div>

@@ -45,6 +45,8 @@ import AdminProtectedRoute from "./components/admin/AdminProtectedRoute";
 import Enquiries from "./pages/admin/Enquiries";
 import AdminSubscriptionPage from "./pages/admin/AdminSubscriptionPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import Contact from "./pages/landing/Contact";
+import About from "./pages/landing/About";
 
 
 
@@ -66,7 +68,9 @@ export default function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/menu" element={<UserMenu />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/tiffin" element={<UserTiffin />} />
+          <Route path="/about" element={<About />} />
           <Route
             path="/profile"
             element={

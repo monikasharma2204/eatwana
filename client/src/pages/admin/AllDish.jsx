@@ -97,7 +97,7 @@ export default function AllDish() {
                                     _id: dish._id,
                                     name: dish.name,
                                     image: dish.image
-                                        ? `http://localhost:3000/${dish.image}` // ✅ convert uploads\path → uploads/path
+                                        ? `${import.meta.env.VITE_API_URL}/${dish.image}` // ✅ convert uploads\path → uploads/path
                                         : '/no-image.jpg',
                                     rating: dish.rating || 0,
                                     category: dish.category,

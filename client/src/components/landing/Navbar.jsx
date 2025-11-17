@@ -14,8 +14,8 @@ export default function Navbar() {
         { name: 'Home', href: '/', type: 'route' },
         { name: 'Menu', href: '/menu', type: 'route' },
         { name: 'Tiffin', href: '/tiffin', type: 'route' },
-        { name: 'About', href: 'about', type: 'scroll' },
-        { name: 'Contact', href: 'contact', type: 'scroll' },
+        { name: 'About', href: '/about', type: 'route' },
+        { name: 'Contact', href: '/contact', type: 'route' },
     ];
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);

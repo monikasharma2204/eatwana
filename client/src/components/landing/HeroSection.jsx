@@ -8,11 +8,11 @@ export default function HeroSection() {
     const navigate = useNavigate();
     // Array of food images
     const images = [
-        "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&h=600&fit=crop",
+        "/picture/pic1.png",
         "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=600&fit=crop",
+        "/picture/pic2.png",
         "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800&h=600&fit=crop"
+        "picture/AboutImage.png"
     ];
 
     useEffect(() => {
@@ -69,7 +69,7 @@ export default function HeroSection() {
                                 </svg>
                             </button>
 
-                            <button onClick={()=> navigate("/tiffin")} className="bg-white border-2 border-third text-third px-8 py-4 rounded-lg font-semibold text-lg shadow-lg hover:bg-third hover:text-white transform hover:scale-105 transition-all duration-300">
+                            <button onClick={() => navigate("/tiffin")} className="bg-white border-2 border-third text-third px-8 py-4 rounded-lg font-semibold text-lg shadow-lg hover:bg-third hover:text-white transform hover:scale-105 transition-all duration-300">
                                 View Menu
                             </button>
                         </div>

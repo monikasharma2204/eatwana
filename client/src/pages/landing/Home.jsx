@@ -10,8 +10,8 @@ export default function Home() {
     return (
         <>
             <HeroSection />
-            <FeatureCards />
             <MenuSection />
+            <FeatureCards />
             <AboutSection />
             <ContactSection />
 
