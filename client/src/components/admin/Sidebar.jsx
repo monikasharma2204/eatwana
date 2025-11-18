@@ -233,7 +233,7 @@ const Sidebar = ({ children }) => {
                     </div>
                 </div> */}
 
-                <nav className="flex-1 overflow-y-auto px-4 h-[calc(100vh-12rem)] custom-scrollbar">
+                <nav className="flex-1 overflow-y-auto px-4 h-[calc(100vh-10rem)] custom-scrollbar">
                     <div className="space-y-1 pb-4">
                         {menuItems.map((item) => (
                             <MenuItem key={item.id} item={item} />

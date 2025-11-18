@@ -418,6 +418,16 @@ const InvoiceTable = () => {
                                     <Eye className="w-4 h-4" />
                                     View
                                 </button>
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(`${import.meta.env.VITE_FRONTEND_URL}/invoice/${invoice._id}`);
+                                        showSnackbar('Link Copied', 'info');
+                                    }}
+                                    className="bg-primary text-white rounded-lg px-4 py-2 shadow hover:scale-[1.03] transition inline-flex items-center gap-2 text-sm"
+                                >
+                                    <Eye className="w-4 h-4" />
+                                    Copy
+                                </button>
                             </div>
                         </div>
                     ))}
