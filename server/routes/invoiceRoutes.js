@@ -11,5 +11,5 @@ router.post("/add-payment", adminAuth, addPayment);
 router.get("/all", adminAuth, getAllInvoices);
 
 // Get invoice by ID
-router.get("/:invoiceId", getInvoiceById);
+router.get("/get/:invoiceId", getInvoiceById);
 export default router;

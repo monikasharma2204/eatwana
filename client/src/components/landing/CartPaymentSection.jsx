@@ -28,9 +28,9 @@ const CartPaymentSection = ({ selectedPayment, onPaymentChange, amount }) => {
 
             {selectedPayment === 'upi' && (
                 <QRCodeGenerator
-                    upiId="9430512545@ybl"
-                    name="Tejasvi Kumar"
-                    note="This is testing"
+                    upiId="9708277467@okbizaxis"
+                    name="Eatwana"
+                    // note="This is testing"
                     amount={amount}
                 />
             )}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Filter, ChevronDown, X, Eye, Calendar, CreditCard, Users, TrendingUp, TrendingDown } from 'lucide-react';
 import AlertSnackbar from '../../ui/AlertSnackbar';
 import axiosClient from '../../services/axiosClient';
+import { useNavigate } from 'react-router-dom';
 
 
 const InvoiceTable = () => {
@@ -12,7 +13,7 @@ const InvoiceTable = () => {
     const [showFilters, setShowFilters] = useState(false);
     const [selectedInvoice, setSelectedInvoice] = useState(null);
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
-
+    const navigate = useNavigate();
     // Filter states
     const [filters, setFilters] = useState({
         dateFrom: '',
@@ -34,7 +35,6 @@ const InvoiceTable = () => {
             setLoading(true);
             const response = await axiosClient.get('/api/v1/invoice/all');
             if (response.data.success) {
-                console.log(response.data.data)
                 setInvoices(response.data.data);
                 setFilteredInvoices(response.data.data);
                 showSnackbar(`Loaded ${response.data.count} invoices successfully`, 'success');
@@ -338,7 +338,7 @@ const InvoiceTable = () => {
                                         <td className="px-6 py-4">
                                             <p className="text-sm text-gray-700">{formatDate(invoice?.createdAt)}</p>
                                         </td>
-                                        <td className="px-6 py-4 text-center">
+                                        <td className="px-6 py-4 text-center flex itmes-center justify-center space-x-2">
                                             <button
                                                 onClick={() => setSelectedInvoice(invoice)}
                                                 className="bg-primary text-white rounded-lg px-4 py-2 shadow hover:scale-[1.03] transition inline-flex items-center gap-2 text-sm"
@@ -346,6 +346,17 @@ const InvoiceTable = () => {
                                                 <Eye className="w-4 h-4" />
                                                 View
                                             </button>
+                                            <button
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(`${import.meta.env.VITE_FRONTEND_URL}/invoice/${invoice._id}`);
+                                                    showSnackbar('Link Copied', 'info');
+                                                }}
+                                                className="bg-primary text-white rounded-lg px-4 py-2 shadow hover:scale-[1.03] transition inline-flex items-center gap-2 text-sm"
+                                            >
+                                                <Eye className="w-4 h-4" />
+                                                Copy
+                                            </button>
+
                                         </td>
                                     </tr>
                                 ))}
@@ -552,7 +563,8 @@ const InvoiceTable = () => {
                                     </button>
                                     <button
                                         onClick={() => {
-                                            showSnackbar('Print functionality coming soon!', 'info');
+
+                                            navigate(`/admin/invoice/${selectedInvoice?._id}`)
                                         }}
                                         className="flex-1 bg-primary text-white rounded-lg px-4 py-3 shadow hover:scale-[1.02] transition font-medium"
                                     >
@@ -574,7 +586,7 @@ const InvoiceTable = () => {
                 onClose={handleCloseSnackbar}
                 position={{ vertical: 'top', horizontal: 'right' }}
             />
-        </div>
+        </div >
     );
 };
 

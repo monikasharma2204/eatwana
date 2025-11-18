@@ -53,6 +53,8 @@ import AdminManualCustomerPage from "./pages/admin/AdminManualCustomerPage";
 import MealPlanTable from "./pages/admin/MealPlanTable";
 import CustomerDeliveryTable from "./pages/admin/CustomerDeliveryTable";
 import InvoiceTable from "./pages/admin/InvoiceTable";
+import ViewInvoice from "./pages/admin/ViewInvoice";
+import ShareInvoice from "./pages/landing/ShareInvoice";
 
 
 
@@ -67,6 +69,8 @@ export default function App() {
           <Route path="/auth/signup" element={<Signup />} />
           <Route path="/auth/forgot" element={<ForgotPassword />} />
           <Route path="/auth/loader" element={<Loader />} />
+          <Route path="/invoice/:id" element={<ShareInvoice />} />
+
           {/* <Route path="/" element={<CoomingSoon />} /> */}
         </Route>
 
@@ -314,10 +318,20 @@ export default function App() {
             }
           />
 
+          <Route
+            path="/admin/invoice/:id"
+            element={
+              <Sidebar>
+                <ViewInvoice />
+              </Sidebar>
+
+            }
+          />
+
 
 
         </Route>
       </Routes>
-    </Router>
+    </Router >
   );
 }
