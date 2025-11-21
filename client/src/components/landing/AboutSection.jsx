@@ -4,43 +4,62 @@ import { useNavigate } from 'react-router-dom';
 
 const AboutSection = () => {
     const navigate = useNavigate();
+
+    const handleNavigate = (path) => {
+        navigate(path);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    const stats = [
+        { value: "50+", label: "Daily Customers" },
+        { value: "500+", label: "Meals Delivered" },
+        { value: "4.8★", label: "Customer Rating" }
+    ];
+
     return (
-        <section id='about' className="py-16 px-4 md:py-24 bg-gradient-to-b from-white to-gray-50">
+        <section
+            id="about"
+            aria-labelledby="about-heading"
+            className="py-16 px-4 md:py-24 bg-gradient-to-b from-white to-gray-50"
+        >
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
-                <div className="text-center mb-16 animate-fade-in">
-                    <h2 className="text-4xl md:text-5xl font-bold text-third mb-4">
+                <header className="text-center mb-16 animate-fade-in">
+                    <h2 id="about-heading" className="text-4xl md:text-5xl font-bold text-third mb-4">
                         About Us
                     </h2>
-                    <div className="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mb-6"></div>
+                    <div className="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mb-6" aria-hidden="true"></div>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                         Bringing homely, nutritious meals to students and working professionals
                     </p>
-                </div>
+                </header>
 
                 {/* Main Content Grid */}
                 <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
                     {/* Left - Image */}
-                    <div className="order-2 md:order-1">
+                    <figure className="order-2 md:order-1">
                         <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-third/20">
                             <img
-                                src="/picture/AboutImage.png"
-                                alt="Fresh healthy meals prepared in our kitchen"
+                                src="/picture/AboutImage.webp"
+                                alt="Fresh healthy meals being prepared in our hygienic cloud kitchen"
+                                loading="lazy"
+                                width="600"
+                                height="500"
                                 className="w-full h-[400px] md:h-[500px] object-cover"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-third/40 to-transparent"></div>
-                            <div className="absolute bottom-6 left-6 right-6">
+                            <div className="absolute inset-0 bg-gradient-to-t from-third/40 to-transparent" aria-hidden="true"></div>
+                            <figcaption className="absolute bottom-6 left-6 right-6">
                                 <div className="bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-lg">
                                     <p className="text-third font-semibold text-lg">
-                                        Serving 50+ Happy Customers Daily
+                                        Serving <strong>50+</strong> Happy Customers Daily
                                     </p>
                                 </div>
-                            </div>
+                            </figcaption>
                         </div>
-                    </div>
+                    </figure>
 
                     {/* Right - Content */}
-                    <div className="order-1 md:order-2 space-y-6">
+                    <article className="order-1 md:order-2 space-y-6">
                         <div className="space-y-4">
                             <h3 className="text-3xl font-bold text-third">
                                 Your Home Away From Home
@@ -57,69 +76,33 @@ const AboutSection = () => {
                         </div>
 
                         {/* Call to Action */}
-                        <div className="pt-4">
-                            <button onClick={() => {
-                                navigate("/menu")
-                                window.scrollTo({ top: 0, behavior: "smooth" });
-                            }}
-                                className="bg-gradient-to-r from-primary to-secondary text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                        <nav aria-label="About section navigation" className="pt-4">
+                            <button
+                                onClick={() => handleNavigate("/menu")}
+                                aria-label="Explore our full menu options"
+                                className="bg-gradient-to-r from-primary to-secondary text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+                            >
                                 Explore Our Menu
                             </button>
-                        </div>
-                    </div>
+                        </nav>
+                    </article>
                 </div>
-
-                {/* Feature Highlights */}
-                {/* <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-16">
-                    <FeatureCard
-                        icon={<Heart className="w-8 h-8" />}
-                        title="Healthy & Hygienic"
-                        description="Prepared in sanitized kitchens with fresh ingredients and nutritional balance in mind"
-                    />
-                    <FeatureCard
-                        icon={<Users className="w-8 h-8" />}
-                        title="Student Friendly"
-                        description="Affordable meal plans designed for student budgets without compromising on taste or nutrition"
-                    />
-                    <FeatureCard
-                        icon={<Award className="w-8 h-8" />}
-                        title="Expert Chefs"
-                        description="Our experienced culinary team brings authentic homestyle cooking to every dish"
-                    />
-                    <FeatureCard
-                        icon={<Truck className="w-8 h-8" />}
-                        title="Fast Delivery"
-                        description="Hot meals delivered on time, every time. We value your schedule as much as you do"
-                    />
-                    <FeatureCard
-                        icon={<Leaf className="w-8 h-8" />}
-                        title="Daily Fresh Meals"
-                        description="No preservatives, no frozen food. Everything is cooked fresh daily from scratch"
-                    />
-                    <FeatureCard
-                        icon={<Clock className="w-8 h-8" />}
-                        title="Flexible Plans"
-                        description="Choose from daily tiffin subscriptions or order à la carte based on your needs"
-                    />
-                </div> */}
 
                 {/* Stats Section */}
-                <div className="mt-20 bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 md:p-12 shadow-2xl">
-                    <div className="grid sm:grid-cols-3 gap-8 text-center text-white">
-                        <div>
-                            <div className="text-4xl md:text-5xl font-bold mb-2">50+</div>
-                            <div className="text-white/90 text-lg">Daily Customers</div>
-                        </div>
-                        <div>
-                            <div className="text-4xl md:text-5xl font-bold mb-2">500+</div>
-                            <div className="text-white/90 text-lg">Meals Delivered</div>
-                        </div>
-                        <div>
-                            <div className="text-4xl md:text-5xl font-bold mb-2">4.8★</div>
-                            <div className="text-white/90 text-lg">Customer Rating</div>
-                        </div>
-                    </div>
-                </div>
+                <aside
+                    aria-label="Our achievements and statistics"
+                    className="mt-20 bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 md:p-12 shadow-2xl"
+                >
+                    <dl className="grid sm:grid-cols-3 gap-8 text-center text-white">
+                        {stats.map((stat, index) => (
+                            <div key={index}>
+                                <dt className="sr-only">{stat.label}</dt>
+                                <dd className="text-4xl md:text-5xl font-bold mb-2">{stat.value}</dd>
+                                <dt className="text-white/90 text-lg">{stat.label}</dt>
+                            </div>
+                        ))}
+                    </dl>
+                </aside>
             </div>
         </section>
     );
@@ -127,13 +110,16 @@ const AboutSection = () => {
 
 const FeatureCard = ({ icon, title, description }) => {
     return (
-        <div className="bg-white rounded-xl p-6 shadow-lg border border-third/10 hover:shadow-2xl hover:border-third/30 transition-all duration-300 transform hover:-translate-y-1">
-            <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mb-4 text-white">
+        <article className="bg-white rounded-xl p-6 shadow-lg border border-third/10 hover:shadow-2xl hover:border-third/30 transition-all duration-300 transform hover:-translate-y-1">
+            <div
+                className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mb-4 text-white"
+                aria-hidden="true"
+            >
                 {icon}
             </div>
             <h4 className="text-xl font-bold text-third mb-2">{title}</h4>
             <p className="text-gray-600 leading-relaxed">{description}</p>
-        </div>
+        </article>
     );
 };
 

@@ -55,6 +55,7 @@ import CustomerDeliveryTable from "./pages/admin/CustomerDeliveryTable";
 import InvoiceTable from "./pages/admin/InvoiceTable";
 import ViewInvoice from "./pages/admin/ViewInvoice";
 import ShareInvoice from "./pages/landing/ShareInvoice";
+import Sitemap from "./pages/landing/Sitemap";
 
 
 
@@ -81,6 +82,7 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/tiffin" element={<UserTiffin />} />
           <Route path="/about" element={<About />} />
+          <Route path="/sitemap" element={<Sitemap />} />
           <Route
             path="/profile"
             element={

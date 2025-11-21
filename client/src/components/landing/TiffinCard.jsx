@@ -22,9 +22,9 @@ const TiffinCard = ({ tiffin }) => {
             {/* Image */}
             <div className="relative h-48 overflow-hidden">
                 <img
-                    src={tiffin.foodType === 'veg' ? './picture/veg_tiffin.png' :
-                        tiffin.foodType === 'non-veg' ? './picture/non_veg_tiffin.png' :
-                            './picture/egg_nonveg_tiffin.png'}
+                    src={tiffin.foodType === 'veg' ? './picture/veg_tiffin.webp' :
+                        tiffin.foodType === 'non-veg' ? './picture/non_veg_tiffin.webp' :
+                            './picture/egg_nonveg_tiffin.webp'}
                     alt={tiffin.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />

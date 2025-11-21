@@ -57,7 +57,7 @@ export default function ComingSoon() {
                     <div className="flex items-center justify-center mb-6">
                         <div className="bg-white rounded-3xl shadow-2xl">
                             <img
-                                src="/logo.png"
+                                src="/logo.webp"
                                 alt="Eatwana Logo"
                                 className="w-40 h-40 md:w-52 md:h-52 object-contain"
                             />

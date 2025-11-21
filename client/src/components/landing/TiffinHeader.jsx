@@ -36,7 +36,7 @@ const TiffinHeader = ({ data }) => {
             <div className="grid md:grid-cols-2 gap-8 items-start">
                 <div>
                     <img
-                        src="/picture/non_veg_tiffin.png"
+                        src="/picture/non_veg_tiffin.webp"
                         alt={data?.name}
                         className="w-full h-80 object-cover rounded-xl shadow-lg"
                     />

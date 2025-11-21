@@ -100,7 +100,7 @@ export default function Login() {
                         {/* Top Logo */}
                         <div className="absolute top-8 left-8 text-white text-2xl font-bold flex items-center gap-2">
                             <div className="w-30 h-30 bg-white bg-opacity-20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                                <img src="/logo.png" alt="Logo" className="w-15 h-15" />
+                                <img src="/logo.webp" alt="Logo" className="w-15 h-15" />
                             </div>
                         </div>
 
@@ -110,7 +110,7 @@ export default function Login() {
                             <div className="w-80 h-80 bg-linear-to-br  rounded-full shadow-2xl flex items-center justify-center transform -rotate-3">
                                 <div className="w-72 h-72 rounded-full  overflow-hidden shadow-inner">
                                     <div className="w-72 h-72   overflow-hidden shadow-inner">
-                                        <img src='/picture/d4.png' />
+                                        <img src='/picture/d4.webp' />
                                     </div>
                                 </div>
                             </div>
@@ -118,10 +118,10 @@ export default function Login() {
                             {/* Bottom Row Bowls */}
                             <div className="flex gap-8">
                                 <div className="w-56 h-56 bg-linear-to-br  rounded-full shadow-2xl flex items-center justify-center transform rotate-6">
-                                    <img src='/picture/d1.png' />
+                                    <img src='/picture/d1.webp' />
                                 </div>
                                 <div className="w-56 h-56 bg-linear-to-br rounded-full shadow-2xl flex items-center justify-center transform -rotate-50">
-                                    <img src="/picture/d2.png" className="rotate-6" alt="Rotated" />
+                                    <img src="/picture/d2.webp" className="rotate-6" alt="Rotated" />
                                 </div>
                             </div>
                         </div>

@@ -1,0 +1,24 @@
+User-agent: *
+Allow: /
+
+# Block all admin routes
+Disallow: /admin/
+Disallow: /admin/dashboard
+Disallow: /admin/dishes/
+Disallow: /admin/sub-categories/
+Disallow: /admin/menu/
+Disallow: /admin/tiffin/
+Disallow: /admin/customers/
+Disallow: /admin/orders/
+Disallow: /admin/enquiries/
+Disallow: /admin/subscription/
+Disallow: /admin/manual/
+Disallow: /admin/customer/
+Disallow: /admin/invoice/
+
+# Block auth routes (SEO irrelevant)
+Disallow: /auth/
+Disallow: /invoice/
+
+# Sitemap URL
+Sitemap: https://eatwana.in/sitemap.xml

@@ -3,16 +3,17 @@ import { Link } from 'react-router-dom';
 
 export default function FooterSection() {
 
-        const scrollToTop = () => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        };
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
 
     const importantLinks = [
         { name: 'Home', href: '/' },
         { name: 'About Us', href: '/about' },
         { name: 'Menu', href: '/menu' },
         { name: 'Tiffin Services', href: '/tiffin' },
-        { name: 'Contact Us', href: '/contact' }
+        { name: 'Contact Us', href: '/contact' },
+        { name: 'Sitemap', href: '/sitemap' }
     ];
 
     const contactInfo = [
@@ -30,7 +31,7 @@ export default function FooterSection() {
                     {/* Logo Section */}
                     <div className="lg:col-span-1 space-y-4">
                         <div className="flex items-center space-x-2 w-32">
-                            <img src='/logo.png' className='bg-white rounded-2xl p-4' />
+                            <img src='/logo.webp' className='bg-white rounded-2xl p-4' />
                         </div>
 
                         <p className="text-white/80 text-sm leading-relaxed">
