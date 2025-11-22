@@ -162,14 +162,43 @@ export default function Navbar() {
                         {/* MOBILE AUTH */}
                         <li className="pt-2">
                             {user.token ? (
-                                <button
-                                    onClick={() => dispatch(logout())}
-                                    className="flex w-full items-center space-x-2 px-4 py-2 
-                                    bg-third text-white rounded-lg"
-                                >
-                                    <LogOut className="w-4 h-4" />
-                                    Logout
-                                </button>
+
+                                <div className='flex items-center justify-between'>
+                                    <div className='flex items-center justify-start gap-4'>
+                                        <Link
+                                            to="/profile"
+                                            className="text-third"
+                                            title="Profile"
+                                        >
+                                            <User className="w-5 h-5" />
+                                        </Link>
+
+                                        <Link
+                                            to="/cart"
+                                            className="relative text-third"
+                                            title="Shopping Cart"
+                                        >
+                                            <ShoppingCart className="w-5 h-5" />
+                                            {cart?.length > 0 && (
+                                                <span className="absolute -top-2 -right-2 
+                                            bg-red-500 text-white text-xs w-4 h-4 flex 
+                                            items-center justify-center rounded-full">
+                                                    {cart.length}
+                                                </span>
+                                            )}
+                                        </Link>
+
+                                    </div>
+                                    <button
+                                        onClick={() => dispatch(logout())}
+                                        className="flex items-center px-4 py-2 rounded-lg 
+                                        bg-third text-white hover:bg-[#0d4450] transition"
+                                        title="Logout"
+                                    >
+                                        <LogOut className="w-4 h-4" />
+                                        Logout
+                                    </button>
+                                </div>
                             ) : (
                                 <Link
                                     to="/auth/login"

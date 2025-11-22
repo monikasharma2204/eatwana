@@ -41,12 +41,24 @@ const userSchema = new mongoose.Schema(
             enum: ['user', 'admin', 'delivery'],
             default: 'user',
         },
+        tokenBalance: {
+            type: Number,
+            default: 0,
+            comment: "Total remaining meal tokens for the customer"
+        },
+
 
         // For tiffin users
         planType: {
             type: String,
             enum: ['daily', 'weekly', 'monthly', 'quarterly', 'half-yearly', 'yearly', 'none'],
             default: 'none',
+        },
+        activePlan: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "MealPlan",
+            default: null,
+            comment: "Current active monthly plan assigned to customer"
         },
         isActive: {
             type: Boolean,

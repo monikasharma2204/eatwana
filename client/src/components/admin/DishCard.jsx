@@ -219,7 +219,7 @@ const DishCard = ({ dish, onDelete }) => {
                                 {/* Action Buttons */}
                                 <div className="flex gap-3">
                                     <button
-                                        onClick={() => navigate(`/dishes/update/${dish._id}`)}
+                                        onClick={() => navigate(`/admin/dishes/update/${dish._id}`)}
                                         className="flex-1 bg-third text-white py-3.5 px-4 rounded-xl font-bold hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg text-sm"
                                     >
                                         <Edit2 className="w-4 h-4" />

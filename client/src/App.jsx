@@ -151,7 +151,7 @@ export default function App() {
             }
           />
           <Route
-            path="/admin/update/:id"
+            path="/admin/dishes/update/:id"
             element={
               <Sidebar>
                 <UpdateDishForm />

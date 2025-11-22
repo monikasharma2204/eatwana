@@ -17,9 +17,9 @@ export default function MainLayout() {
                 href="https://wa.me/919708277467"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="fixed bottom-6 right-6 bg-primary text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-all duration-300 z-50"
+                className="fixed bottom-6 right-6  w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-all duration-300 z-50"
             >
-                <MessageCircle className="w-7 h-7" />
+                <img src="/whatsapp-48.png" />
             </a>
 
             {/* Floating Call Button */}

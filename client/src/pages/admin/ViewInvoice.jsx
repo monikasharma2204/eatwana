@@ -176,7 +176,7 @@ const ViewInvoice = () => {
             await new Promise(resolve => setTimeout(resolve, 150));
 
             const canvas = await html2canvas(clone, {
-                scale: 2,
+                scale: 1.5,  // Reduced from 2
                 useCORS: true,
                 logging: false,
                 backgroundColor: '#ffffff',
@@ -184,10 +184,11 @@ const ViewInvoice = () => {
                 windowWidth: 1200,
             });
 
+
             // Cleanup
             document.body.removeChild(container);
 
-            const imgData = canvas.toDataURL('image/png');
+            const imgData = canvas.toDataURL('image/jpeg', 0.7);
             const pdf = new jsPDF({
                 orientation: 'portrait',
                 unit: 'mm',
@@ -255,7 +256,7 @@ const ViewInvoice = () => {
                 position={{ vertical: 'top', horizontal: 'right' }}
             />
 
-            <div className="max-w-3xl mx-auto mb-6 flex justify-end">
+            <div className="max-w-3xl mx-auto mb-4 flex justify-end">
                 <button
                     onClick={downloadInvoice}
                     disabled={downloading}
@@ -277,7 +278,7 @@ const ViewInvoice = () => {
                 </button>
             </div>
 
-            <div ref={invoiceRef} className="max-w-3xl mx-auto bg-white p-8 sm:p-12 rounded-xl shadow-lg border border-third/20 relative overflow-hidden">
+            <div ref={invoiceRef} className="max-w-3xl mx-auto bg-white p-8 sm:p-8 rounded-xl shadow-lg border border-third/20 relative overflow-hidden">
                 {/* Watermark */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden">
                     <img
@@ -294,7 +295,7 @@ const ViewInvoice = () => {
                 {/* Content wrapper with relative positioning to appear above watermark */}
                 <div className="relative z-10">
                     {/* Header */}
-                    <div className="border-b-2 border-primary/20 pb-6 mb-8">
+                    <div className="border-b-2 border-primary/20 pb-4 mb-8">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                             <div>
                                 <img src='/logo.webp' className='w-18' alt="EatWana Logo" />
@@ -309,7 +310,7 @@ const ViewInvoice = () => {
                     </div>
 
                     {/* From & To Section */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                         {/* From */}
                         <div className="border border-third/20 rounded-xl p-5 bg-white shadow-sm">
                             <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">From</h3>
@@ -343,7 +344,7 @@ const ViewInvoice = () => {
                     </div>
 
                     {/* Meal Plan Summary */}
-                    <div className="border border-third/20 rounded-lg p-6 bg-third/5 mb-8">
+                    <div className="border border-third/20 rounded-lg p-4 bg-third/5 mb-6">
                         <h3 className="text-lg font-bold text-gray-800 mb-4">Meal Plan Summary</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div className="text-center sm:text-left">
@@ -362,7 +363,7 @@ const ViewInvoice = () => {
                     </div>
 
                     {/* Payment Summary */}
-                    <div className="bg-primary/10 border border-primary/20 rounded-lg p-6 mb-8">
+                    <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 mb-6">
                         <h3 className="text-lg font-bold text-gray-800 mb-4">Payment Summary</h3>
                         <div className="space-y-3">
                             <div className="flex justify-between items-center pb-3 border-b border-primary/10">
@@ -384,37 +385,19 @@ const ViewInvoice = () => {
                         </div>
                     </div>
 
-                    {/* Invoice Metadata */}
-                    <div className="bg-gray-50 rounded-lg p-5 mb-8">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <p className="text-sm text-gray-600">Invoice ID</p>
-                                <p className="font-semibold text-gray-800">{invoice._id}</p>
-                            </div>
-                            <div>
-                                <p className="text-sm text-gray-600">Created Date</p>
-                                <p className="font-semibold text-gray-800">{formatDate(invoice.createdAt)}</p>
-                            </div>
-                        </div>
-                    </div>
-
                     {/* Notes */}
-                    <div className="mb-6">
+                    <div className="mb-4">
                         <h3 className="text-base font-bold text-gray-800 mb-2">Notes</h3>
                         <ul className="space-y-1.5 text-sm text-gray-600">
                             <li className="flex items-start">
                                 <span className="mr-2">•</span>
                                 <span>This invoice is generated automatically by the system.</span>
                             </li>
-                            <li className="flex items-start">
-                                <span className="mr-2">•</span>
-                                <span>Please keep it for future reference.</span>
-                            </li>
                         </ul>
                     </div>
 
                     {/* Terms & Conditions */}
-                    <div className="border-t border-gray-200 pt-6">
+                    <div className="border-t border-gray-200 pt-4">
                         <h3 className="text-base font-bold text-gray-800 mb-2">Terms & Conditions</h3>
                         <ul className="space-y-1.5 text-sm text-gray-600">
                             <li className="flex items-start">
@@ -433,7 +416,7 @@ const ViewInvoice = () => {
                     </div>
 
                     {/* Footer */}
-                    <div className="mt-8 pt-6 border-t border-gray-200 text-center">
+                    <div className="mt-4 pt-2 border-t border-gray-200 text-center">
                         <p className="text-sm text-gray-500">Thank you for choosing EatWana!</p>
                         <p className="text-xs text-gray-400 mt-1">This is a computer-generated invoice and does not require a signature.</p>
                     </div>

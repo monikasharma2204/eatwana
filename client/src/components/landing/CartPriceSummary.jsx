@@ -20,8 +20,7 @@ const CartPriceSummary = ({ cartItems, onTotalChange }) => {
 
     const subtotal = calculateSubtotal();
     const gst = subtotal * 0.05;
-    const delivery = 40;
-    const total = subtotal + gst + delivery;
+    const total = subtotal;
 
     useEffect(() => {
         onTotalChange(total);
@@ -35,14 +34,10 @@ const CartPriceSummary = ({ cartItems, onTotalChange }) => {
                     <span>Subtotal</span>
                     <span>₹{subtotal.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between text-third/80">
+                {/* <div className="flex justify-between text-third/80">
                     <span>GST (5%)</span>
                     <span>₹{gst.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between text-third/80">
-                    <span>Delivery Charges</span>
-                    <span>₹{delivery.toFixed(2)}</span>
-                </div>
+                </div> */}
                 <div className="border-t border-third/20 pt-3 mt-3">
                     <div className="flex justify-between text-xl font-bold text-primary">
                         <span>Total Amount</span>

@@ -420,7 +420,7 @@ const Customers = () => {
                                             <span className="text-third">Address: </span>{user.address}
                                         </div>
 
-                                        <div className="flex gap-2">
+                                        {/* <div className="flex gap-2">
                                             <button className="flex-1 px-3 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition text-sm font-medium">
                                                 View
                                             </button>
@@ -436,7 +436,7 @@ const Customers = () => {
                                             >
                                                 {user.isActive ? 'Deactivate' : 'Activate'}
                                             </button>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 ))}
                             </div>
