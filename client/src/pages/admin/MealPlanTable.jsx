@@ -62,21 +62,21 @@ const MealPlanTable = () => {
         let filtered = [...mealPlans];
 
         // Status filter
-        if (filters.status !== 'all') {
+        if (filters?.status !== 'all') {
             filtered = filtered.filter(plan =>
                 filters.status === 'active' ? plan.isActive : !plan.isActive
             );
         }
 
         // Meal slot filter
-        if (filters.mealSlot !== 'all') {
+        if (filters?.mealSlot !== 'all') {
             filtered = filtered.filter(plan =>
                 plan.mealSlots.includes(filters.mealSlot)
             );
         }
 
         // Menu type filter
-        if (filters.menuType !== 'all') {
+        if (filters?.menuType !== 'all') {
             filtered = filtered.filter(plan =>
                 plan.tiffinMenu.menuType.toLowerCase() === filters.menuType.toLowerCase()
             );
@@ -96,10 +96,10 @@ const MealPlanTable = () => {
         if (filters.searchQuery.trim()) {
             const query = filters.searchQuery.toLowerCase();
             filtered = filtered.filter(plan =>
-                plan.customer.name.toLowerCase().includes(query) ||
-                plan.customer.mobile.includes(query) ||
-                plan.customer.email.toLowerCase().includes(query) ||
-                plan.tiffinMenu.menuName.toLowerCase().includes(query)
+                plan?.customer?.name?.toLowerCase()?.includes(query) ||
+                plan?.customer?.mobile?.includes(query) ||
+                plan?.customer?.email?.toLowerCase()?.includes(query) ||
+                plan?.tiffinMenu?.menuName?.toLowerCase()?.includes(query)
             );
         }
 
@@ -144,16 +144,16 @@ const MealPlanTable = () => {
     };
 
     const handleMarkDelivery = async () => {
-        if (!deliveryForm.mealSlot || deliveryForm.quantity < 1) {
+        if (!deliveryForm?.mealSlot || deliveryForm?.quantity < 1) {
             showSnackbar('Please fill all fields correctly', 'error');
             return;
         }
 
         try {
             const response = await axiosClient.post('/api/v1/delivery/deliver', {
-                customerId: deliveryModal.plan.customer._id,
-                mealSlot: deliveryForm.mealSlot,
-                quantity: parseInt(deliveryForm.quantity)
+                customerId: deliveryModal?.plan?.customer._id,
+                mealSlot: deliveryForm?.mealSlot,
+                quantity: parseInt(deliveryForm?.quantity)
             });
 
             if (response.data.success) {
@@ -197,9 +197,9 @@ const MealPlanTable = () => {
     };
 
     const calculateNewBalance = () => {
-        if (!deliveryModal.plan) return 0;
-        const tokensToConsume = deliveryForm.quantity;
-        return deliveryModal.plan.customer.tokenBalance - tokensToConsume;
+        if (!deliveryModal?.plan) return 0;
+        const tokensToConsume = deliveryForm?.quantity;
+        return deliveryModal?.plan?.customer?.tokenBalance - tokensToConsume;
     };
 
     if (loading) {
@@ -362,21 +362,21 @@ const MealPlanTable = () => {
                                     <tr key={plan._id} className="hover:bg-third/5 transition-colors">
                                         <td className="px-4 py-4">
                                             <div className="space-y-1">
-                                                <p className="font-semibold text-primary">{plan.customer.name}</p>
-                                                <p className="text-sm text-gray-600">{plan.customer.mobile}</p>
-                                                <p className="text-xs text-gray-500">{plan.customer.email}</p>
-                                                <p className="text-xs font-medium text-third">Balance: {plan.customer.tokenBalance} tokens</p>
+                                                <p className="font-semibold text-primary">{plan?.customer?.name}</p>
+                                                <p className="text-sm text-gray-600">{plan?.customer?.mobile}</p>
+                                                <p className="text-xs text-gray-500">{plan?.customer?.email}</p>
+                                                <p className="text-xs font-medium text-third">Balance: {plan?.customer?.tokenBalance} tokens</p>
                                             </div>
                                         </td>
                                         <td className="px-4 py-4">
-                                            <p className="font-medium text-gray-900">{plan.tiffinMenu.menuName}</p>
+                                            <p className="font-medium text-gray-900">{plan?.tiffinMenu?.menuName}</p>
                                             <span className="inline-block mt-1 px-2 py-1 rounded-full text-xs bg-third/10 border border-third/20 text-third">
-                                                {plan.tiffinMenu.menuType}
+                                                {plan?.tiffinMenu?.menuType}
                                             </span>
                                         </td>
                                         <td className="px-4 py-4">
                                             <div className="flex flex-wrap gap-1">
-                                                {plan.mealSlots.map((slot) => (
+                                                {plan?.mealSlots?.map((slot) => (
                                                     <span key={slot} className={`px-2 py-1 rounded-full text-xs font-medium border ${getMealSlotColor(slot)}`}>
                                                         {slot}
                                                     </span>
@@ -385,15 +385,15 @@ const MealPlanTable = () => {
                                         </td>
                                         <td className="px-4 py-4">
                                             <div className="space-y-1 text-sm">
-                                                <p><span className="font-medium">Total:</span> ₹{plan.totalPrice}</p>
-                                                <p><span className="font-medium">Paid:</span> ₹{plan.amountPaid}</p>
-                                                <p><span className="font-medium">Per Meal:</span> ₹{plan.pricePerMeal}</p>
+                                                <p><span className="font-medium">Total:</span> ₹{plan?.totalPrice}</p>
+                                                <p><span className="font-medium">Paid:</span> ₹{plan?.amountPaid}</p>
+                                                <p><span className="font-medium">Per Meal:</span> ₹{plan?.pricePerMeal}</p>
                                             </div>
                                         </td>
                                         <td className="px-4 py-4">
                                             <div className="space-y-1 text-sm">
-                                                <p><span className="font-medium">Generated:</span> {plan.tokensGenerated}</p>
-                                                <p className="text-third font-medium">Remaining: {plan.customer.tokenBalance}</p>
+                                                <p><span className="font-medium">Generated:</span> {plan?.tokensGenerated}</p>
+                                                <p className="text-third font-medium">Remaining: {plan?.customer?.tokenBalance}</p>
                                             </div>
                                         </td>
                                         <td className="px-4 py-4">
@@ -430,23 +430,23 @@ const MealPlanTable = () => {
                         <div key={plan._id} className="bg-white rounded-xl shadow border border-third/20 p-4">
                             <div className="space-y-4">
                                 <div>
-                                    <h3 className="font-bold text-lg text-primary">{plan.customer.name}</h3>
-                                    <p className="text-sm text-gray-600">{plan.customer.mobile}</p>
-                                    <p className="text-xs text-gray-500">{plan.customer.email}</p>
-                                    <p className="text-sm font-medium text-third mt-1">Token Balance: {plan.customer.tokenBalance}</p>
+                                    <h3 className="font-bold text-lg text-primary">{plan?.customer?.name}</h3>
+                                    <p className="text-sm text-gray-600">{plan?.customer?.mobile}</p>
+                                    <p className="text-xs text-gray-500">{plan?.customer?.email}</p>
+                                    <p className="text-sm font-medium text-third mt-1">Token Balance: {plan?.customer?.tokenBalance}</p>
                                 </div>
 
                                 <div className="border-t border-third/20 pt-3">
-                                    <p className="font-semibold text-gray-900">{plan.tiffinMenu.menuName}</p>
+                                    <p className="font-semibold text-gray-900">{plan?.tiffinMenu?.menuName}</p>
                                     <span className="inline-block mt-1 px-2 py-1 rounded-full text-xs bg-third/10 border border-third/20 text-third">
-                                        {plan.tiffinMenu.menuType}
+                                        {plan?.tiffinMenu?.menuType}
                                     </span>
                                 </div>
 
                                 <div>
                                     <p className="text-xs font-medium text-gray-500 mb-2">Meal Slots:</p>
                                     <div className="flex flex-wrap gap-2">
-                                        {plan.mealSlots.map((slot) => (
+                                        {plan?.mealSlots?.map((slot) => (
                                             <span key={slot} className={`px-3 py-1 rounded-full text-xs font-medium border ${getMealSlotColor(slot)}`}>
                                                 {slot}
                                             </span>
@@ -455,19 +455,19 @@ const MealPlanTable = () => {
                                 </div>
 
                                 <div className="bg-gray-50 rounded-lg p-3 space-y-1 text-sm">
-                                    <p><span className="font-medium">Total Price:</span> ₹{plan.totalPrice}</p>
-                                    <p><span className="font-medium">Amount Paid:</span> ₹{plan.amountPaid}</p>
-                                    <p><span className="font-medium">Price/Meal:</span> ₹{plan.pricePerMeal}</p>
+                                    <p><span className="font-medium">Total Price:</span> ₹{plan?.totalPrice}</p>
+                                    <p><span className="font-medium">Amount Paid:</span> ₹{plan?.amountPaid}</p>
+                                    <p><span className="font-medium">Price/Meal:</span> ₹{plan?.pricePerMeal}</p>
                                 </div>
 
                                 <div className="bg-third/5 rounded-lg p-3 space-y-1 text-sm">
-                                    <p><span className="font-medium">Tokens Generated:</span> {plan.tokensGenerated}</p>
-                                    <p className="text-third font-medium">Remaining Balance: {plan.customer.tokenBalance}</p>
+                                    <p><span className="font-medium">Tokens Generated:</span> {plan?.tokensGenerated}</p>
+                                    <p className="text-third font-medium">Remaining Balance: {plan?.customer?.tokenBalance}</p>
                                 </div>
 
                                 <div className="flex items-center justify-between">
                                     <span className={`px-3 py-1 rounded-full text-sm font-medium ${plan.isActive ? 'bg-green-100 text-green-700 border border-green-300' : 'bg-red-100 text-red-700 border border-red-300'}`}>
-                                        {plan.isActive ? 'Active' : 'Inactive'}
+                                        {plan?.isActive ? 'Active' : 'Inactive'}
                                     </span>
                                 </div>
 
@@ -490,12 +490,12 @@ const MealPlanTable = () => {
                     ))}
                 </div>
 
-                {filteredPlans.length === 0 && !loading && (
+                {filteredPlans?.length === 0 && !loading && (
                     <div className="bg-white rounded-xl shadow border border-third/20 p-12 text-center">
                         <p className="text-gray-500 text-lg">
                             {mealPlans.length === 0 ? 'No meal plans found' : 'No meal plans match your filters'}
                         </p>
-                        {mealPlans.length > 0 && (
+                        {mealPlans?.length > 0 && (
                             <button
                                 onClick={resetFilters}
                                 className="mt-4 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:scale-[1.02] transition-transform"
@@ -508,7 +508,7 @@ const MealPlanTable = () => {
             </div>
 
             {/* Mark Delivery Modal */}
-            {deliveryModal.open && (
+            {deliveryModal?.open && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-xl p-6 shadow-xl max-w-lg w-full">
                         <h2 className="text-2xl font-bold text-primary mb-4">Mark Delivery</h2>
@@ -516,18 +516,18 @@ const MealPlanTable = () => {
                         <div className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">Customer</label>
-                                <p className="text-gray-900 font-semibold">{deliveryModal.plan.customer.name}</p>
-                                <p className="text-sm text-gray-600">{deliveryModal.plan.customer.mobile}</p>
+                                <p className="text-gray-900 font-semibold">{deliveryModal?.plan?.customer?.name}</p>
+                                <p className="text-sm text-gray-600">{deliveryModal?.plan?.customer?.mobile}</p>
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">Meal Slot</label>
                                 <select
-                                    value={deliveryForm.mealSlot}
+                                    value={deliveryForm?.mealSlot}
                                     onChange={(e) => setDeliveryForm({ ...deliveryForm, mealSlot: e.target.value })}
                                     className="w-full px-4 py-2 border border-third/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                                 >
-                                    {deliveryModal.plan.mealSlots.map((slot) => (
+                                    {deliveryModal?.plan?.mealSlots.map((slot) => (
                                         <option key={slot} value={slot}>{slot}</option>
                                     ))}
                                 </select>
@@ -547,8 +547,8 @@ const MealPlanTable = () => {
                             <div className="bg-third/5 border border-third/20 rounded-lg p-4">
                                 <p className="font-medium text-gray-900 mb-2">Delivery Summary</p>
                                 <div className="space-y-1 text-sm">
-                                    <p>This delivery will consume <span className="font-semibold text-primary">{deliveryForm.quantity}</span> token(s)</p>
-                                    <p>Current Balance: <span className="font-semibold">{deliveryModal.plan.customer.tokenBalance}</span></p>
+                                    <p>This delivery will consume <span className="font-semibold text-primary">{deliveryForm?.quantity}</span> token(s)</p>
+                                    <p>Current Balance: <span className="font-semibold">{deliveryModal?.plan?.customer?.tokenBalance}</span></p>
                                     <p className="text-third font-semibold">New Balance: {calculateNewBalance()}</p>
                                 </div>
                             </div>
