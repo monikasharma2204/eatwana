@@ -39,7 +39,7 @@ const ViewInvoice = () => {
 
     const showSnackbar = (message, severity = 'success') => {
         setSnackbar({ open: true, message, severity });
-        setTimeout(() => setSnackbar(prev => ({ ...prev, open: false })), 8000);
+        setTimeout(() => setSnackbar(prev => ({ ...prev, open: false })), 4000);
     };
 
     const handleCloseSnackbar = () => {
@@ -252,7 +252,7 @@ const ViewInvoice = () => {
                 open={snackbar.open}
                 message={snackbar.message}
                 severity={snackbar.severity}
-                duration={8000}
+                duration={4000}
                 onClose={handleCloseSnackbar}
                 position={{ vertical: 'top', horizontal: 'right' }}
             />

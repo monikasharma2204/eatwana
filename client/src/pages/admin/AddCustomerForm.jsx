@@ -25,7 +25,7 @@ export default function AddCustomerForm() {
         setSnackbar({ open: true, message, severity });
         setTimeout(() => {
             setSnackbar(prev => ({ ...prev, open: false }));
-        }, 8000);
+        }, 4000);
     };
 
     const handleClose = () => {
@@ -205,7 +205,7 @@ export default function AddCustomerForm() {
                 open={snackbar.open}
                 message={snackbar.message}
                 severity={snackbar.severity}
-                duration={8000}
+                duration={4000}
                 onClose={handleClose}
                 position={{ vertical: "top", horizontal: "right" }}
             />

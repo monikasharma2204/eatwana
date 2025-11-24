@@ -601,7 +601,7 @@ const MealPlanTable = () => {
                 open={snackbar.open}
                 message={snackbar.message}
                 severity={snackbar.severity}
-                duration={8000}
+                duration={4000}
                 onClose={handleCloseSnackbar}
                 position={{ vertical: "top", horizontal: "right" }}
             />

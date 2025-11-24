@@ -322,18 +322,17 @@ const InvoiceTable = () => {
                                     const invoiceType = invoice.invoiceType || 'mealPlan';
                                     const totalAmount = invoice.totalAmount || invoice.amountPaid || 0;
                                     const itemsCount = invoice.items?.length || 0;
-                                    
+
                                     return (
                                         <tr key={invoice._id} className="hover:bg-gray-50 transition">
                                             <td className="px-6 py-4">
                                                 <p className="font-mono text-sm text-third">{invoice.invoiceNumber || invoice._id.slice(-8)}</p>
                                             </td>
                                             <td className="px-6 py-4">
-                                                <span className={`inline-flex px-3 py-1 rounded-full text-xs font-semibold ${
-                                                    invoiceType === 'dish' ? 'bg-blue-100 text-blue-700' :
-                                                    invoiceType === 'tiffin' ? 'bg-purple-100 text-purple-700' :
-                                                    'bg-green-100 text-green-700'
-                                                }`}>
+                                                <span className={`inline-flex px-3 py-1 rounded-full text-xs font-semibold ${invoiceType === 'dish' ? 'bg-blue-100 text-blue-700' :
+                                                        invoiceType === 'tiffin' ? 'bg-purple-100 text-purple-700' :
+                                                            'bg-green-100 text-green-700'
+                                                    }`}>
                                                     {invoiceType.toUpperCase()}
                                                 </span>
                                             </td>
@@ -372,11 +371,10 @@ const InvoiceTable = () => {
                                             </td>
                                             <td className="px-6 py-4">
                                                 <div className="space-y-1">
-                                                    <span className={`inline-flex px-2 py-1 rounded text-xs font-semibold ${
-                                                        invoice.paymentStatus === 'paid' ? 'bg-green-100 text-green-700' :
-                                                        invoice.paymentStatus === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                                                        'bg-red-100 text-red-700'
-                                                    }`}>
+                                                    <span className={`inline-flex px-2 py-1 rounded text-xs font-semibold ${invoice.paymentStatus === 'paid' ? 'bg-green-100 text-green-700' :
+                                                            invoice.paymentStatus === 'pending' ? 'bg-yellow-100 text-yellow-700' :
+                                                                'bg-red-100 text-red-700'
+                                                        }`}>
                                                         {invoice.paymentStatus?.toUpperCase() || 'PENDING'}
                                                     </span>
                                                     <p className="text-xs text-gray-600">{invoice.paymentMethod?.toUpperCase() || 'COD'}</p>
@@ -413,25 +411,23 @@ const InvoiceTable = () => {
                         const invoiceType = invoice.invoiceType || 'mealPlan';
                         const totalAmount = invoice.totalAmount || invoice.amountPaid || 0;
                         const itemsCount = invoice.items?.length || 0;
-                        
+
                         return (
                             <div key={invoice._id} className="bg-white border border-third/20 shadow rounded-xl p-4 flex flex-col gap-3">
                                 {/* Header */}
                                 <div className="flex items-start justify-between">
                                     <div>
                                         <div className="flex items-center gap-2 mb-1">
-                                            <span className={`inline-flex px-2 py-1 rounded text-xs font-semibold ${
-                                                invoiceType === 'dish' ? 'bg-blue-100 text-blue-700' :
-                                                invoiceType === 'tiffin' ? 'bg-purple-100 text-purple-700' :
-                                                'bg-green-100 text-green-700'
-                                            }`}>
+                                            <span className={`inline-flex px-2 py-1 rounded text-xs font-semibold ${invoiceType === 'dish' ? 'bg-blue-100 text-blue-700' :
+                                                    invoiceType === 'tiffin' ? 'bg-purple-100 text-purple-700' :
+                                                        'bg-green-100 text-green-700'
+                                                }`}>
                                                 {invoiceType.toUpperCase()}
                                             </span>
-                                            <span className={`inline-flex px-2 py-1 rounded text-xs font-semibold ${
-                                                invoice.paymentStatus === 'paid' ? 'bg-green-100 text-green-700' :
-                                                invoice.paymentStatus === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                                                'bg-red-100 text-red-700'
-                                            }`}>
+                                            <span className={`inline-flex px-2 py-1 rounded text-xs font-semibold ${invoice.paymentStatus === 'paid' ? 'bg-green-100 text-green-700' :
+                                                    invoice.paymentStatus === 'pending' ? 'bg-yellow-100 text-yellow-700' :
+                                                        'bg-red-100 text-red-700'
+                                                }`}>
                                                 {invoice.paymentStatus?.toUpperCase() || 'PENDING'}
                                             </span>
                                         </div>
@@ -535,7 +531,7 @@ const InvoiceTable = () => {
                 {selectedInvoice && (() => {
                     const invoiceType = selectedInvoice.invoiceType || 'mealPlan';
                     const totalAmount = selectedInvoice.totalAmount || selectedInvoice.amountPaid || 0;
-                    
+
                     return (
                         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={() => setSelectedInvoice(null)}>
                             <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
@@ -543,11 +539,10 @@ const InvoiceTable = () => {
                                     <div>
                                         <div className="flex items-center gap-2 mb-1">
                                             <h2 className="text-2xl font-bold text-third">Invoice Details</h2>
-                                            <span className={`inline-flex px-2 py-1 rounded text-xs font-semibold ${
-                                                invoiceType === 'dish' ? 'bg-blue-100 text-blue-700' :
-                                                invoiceType === 'tiffin' ? 'bg-purple-100 text-purple-700' :
-                                                'bg-green-100 text-green-700'
-                                            }`}>
+                                            <span className={`inline-flex px-2 py-1 rounded text-xs font-semibold ${invoiceType === 'dish' ? 'bg-blue-100 text-blue-700' :
+                                                    invoiceType === 'tiffin' ? 'bg-purple-100 text-purple-700' :
+                                                        'bg-green-100 text-green-700'
+                                                }`}>
                                                 {invoiceType.toUpperCase()}
                                             </span>
                                         </div>
@@ -650,11 +645,10 @@ const InvoiceTable = () => {
                                             </div>
                                             <div className="flex justify-between">
                                                 <span className="text-gray-600">Payment Status</span>
-                                                <span className={`font-medium ${
-                                                    selectedInvoice.paymentStatus === 'paid' ? 'text-green-600' :
-                                                    selectedInvoice.paymentStatus === 'pending' ? 'text-yellow-600' :
-                                                    'text-red-600'
-                                                }`}>
+                                                <span className={`font-medium ${selectedInvoice.paymentStatus === 'paid' ? 'text-green-600' :
+                                                        selectedInvoice.paymentStatus === 'pending' ? 'text-yellow-600' :
+                                                            'text-red-600'
+                                                    }`}>
                                                     {selectedInvoice.paymentStatus?.toUpperCase() || 'PENDING'}
                                                 </span>
                                             </div>
@@ -749,7 +743,7 @@ const InvoiceTable = () => {
                 open={snackbar.open}
                 message={snackbar.message}
                 severity={snackbar.severity}
-                duration={8000}
+                duration={4000}
                 onClose={handleCloseSnackbar}
                 position={{ vertical: 'top', horizontal: 'right' }}
             />
