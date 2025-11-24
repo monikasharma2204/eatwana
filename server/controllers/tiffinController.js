@@ -4,7 +4,7 @@ import { Tiffin } from "../models/tiffinModel.js";
 export const createTiffin = async (req, res) => {
     try {
         const tiffin = await Tiffin.create(req.body);
-
+        console.log(tiffin.pricing.monthly)
         res.status(201).json({
             success: true,
             message: "Tiffin created successfully",

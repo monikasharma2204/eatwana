@@ -4,7 +4,7 @@ const cartSchema = new mongoose.Schema(
     {
         user: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
+            ref: "Customer",
             required: true,
         },
 
@@ -36,6 +36,14 @@ const cartSchema = new mongoose.Schema(
         selectedPlan: {
             type: String, // e.g., "oneTime", "monthly"
             default: null,
+        },
+
+        // For Tiffin → delivery timings (array for multiple timings)
+        deliveryTimings: {
+            type: [String],
+            enum: ["breakfast", "lunch", "dinner"],
+            default: [],
+            comment: "Delivery timings for tiffin: can include breakfast, lunch, and/or dinner"
         },
 
         // Final price after discount

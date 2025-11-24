@@ -15,26 +15,34 @@ const tiffinSchema = new mongoose.Schema({
     },
 
     // Pricing plans & discounts
+    // Structure: 
+    // - oneTime: simple { price, discount } (single delivery)
+    // - Other plans: { oneTime: { price, discount }, twoTime: { price, discount }, threeTime: { price, discount } }
+    // Example: monthly.oneTime.price (for 1 timing), monthly.twoTime.price (for 2 timings), monthly.threeTime.price (for 3 timings)
     pricing: {
         oneTime: {
-            price: { type: Number, required: true },
+            price: { type: Number, default: 0 },
             discount: { type: Number, default: 0 }
         },
         monthly: {
-            price: { type: Number, required: true },
-            discount: { type: Number, default: 0 }
+            oneTime: { price: { type: Number, default: 0 }, discount: { type: Number, default: 0 } },
+            twoTime: { price: { type: Number, default: 0 }, discount: { type: Number, default: 0 } },
+            threeTime: { price: { type: Number, default: 0 }, discount: { type: Number, default: 0 } }
         },
         quarterly: {
-            price: { type: Number, required: true },
-            discount: { type: Number, default: 0 }
+            oneTime: { price: { type: Number, default: 0 }, discount: { type: Number, default: 0 } },
+            twoTime: { price: { type: Number, default: 0 }, discount: { type: Number, default: 0 } },
+            threeTime: { price: { type: Number, default: 0 }, discount: { type: Number, default: 0 } }
         },
         halfYearly: {
-            price: { type: Number, required: true },
-            discount: { type: Number, default: 0 }
+            oneTime: { price: { type: Number, default: 0 }, discount: { type: Number, default: 0 } },
+            twoTime: { price: { type: Number, default: 0 }, discount: { type: Number, default: 0 } },
+            threeTime: { price: { type: Number, default: 0 }, discount: { type: Number, default: 0 } }
         },
         annual: {
-            price: { type: Number, required: true },
-            discount: { type: Number, default: 0 }
+            oneTime: { price: { type: Number, default: 0 }, discount: { type: Number, default: 0 } },
+            twoTime: { price: { type: Number, default: 0 }, discount: { type: Number, default: 0 } },
+            threeTime: { price: { type: Number, default: 0 }, discount: { type: Number, default: 0 } }
         }
     },
 

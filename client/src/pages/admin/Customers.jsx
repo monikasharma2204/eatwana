@@ -125,7 +125,7 @@ const Customers = () => {
         const fetchAllUsers = async () => {
             try {
                 setLoading(true)
-                const response = await axiosClient.get("/api/v1/auth/get/all")
+                const response = await axiosClient.get("/api/v1/customer/get/all")
                 setUsers(response.data.users)
             } catch (error) {
                 console.log(error);

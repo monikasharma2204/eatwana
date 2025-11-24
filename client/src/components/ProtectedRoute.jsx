@@ -23,7 +23,7 @@ const ProtectedRoute = ({ children }) => {
                 }
 
                 // ✅ Validate token with backend (optional but best practice)
-                const response = await axiosClient.get("/api/v1/auth/validate");
+                const response = await axiosClient.get("/api/v1/customer/validate");
 
                 if (response.status === 200 && response.data.user) {
                     // User is valid → update Redux if missing

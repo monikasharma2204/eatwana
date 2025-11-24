@@ -63,7 +63,7 @@ export const addToCart = async (req, res) => {
         // Case 2: Add Tiffin
         // ---------------------------
         if (itemType === "tiffin") {
-            const { tiffinId, plan } = req.body;
+            const { tiffinId, plan, deliveryTimings } = req.body;
 
             const tiffin = await Tiffin.findById(tiffinId);
             if (!tiffin) return res.status(404).json({ message: "Tiffin not found" });
@@ -71,7 +71,41 @@ export const addToCart = async (req, res) => {
             if (!tiffin.pricing[plan])
                 return res.status(400).json({ message: "Invalid plan selected" });
 
-            // 🔍 Check if tiffin with same plan already exists
+            // Validate delivery timings (array)
+            if (!deliveryTimings || !Array.isArray(deliveryTimings) || deliveryTimings.length === 0) {
+                return res.status(400).json({ message: "Please select at least one delivery timing (breakfast, lunch, or dinner)" });
+            }
+
+            // Validate each timing
+            const validTimings = ["breakfast", "lunch", "dinner"];
+            const invalidTimings = deliveryTimings.filter(t => !validTimings.includes(t));
+            if (invalidTimings.length > 0) {
+                return res.status(400).json({ message: `Invalid delivery timings: ${invalidTimings.join(", ")}` });
+            }
+
+            // Remove duplicates and sort
+            const uniqueTimings = [...new Set(deliveryTimings)].sort();
+            const timingCount = uniqueTimings.length;
+
+            // Handle oneTime plan differently (simple pricing structure)
+            let pricingInfo;
+            if (plan === "oneTime") {
+                // For oneTime plan, use simple pricing structure
+                pricingInfo = tiffin.pricing.oneTime;
+                if (!pricingInfo || !pricingInfo.price || pricingInfo.price === 0) {
+                    return res.status(400).json({ message: `Pricing not configured for oneTime plan` });
+                }
+            } else {
+                // For other plans, use timing-based pricing
+                const timingCountKey = timingCount === 1 ? "oneTime" : timingCount === 2 ? "twoTime" : "threeTime";
+                pricingInfo = tiffin.pricing[plan]?.[timingCountKey];
+                if (!pricingInfo || !pricingInfo.price || pricingInfo.price === 0) {
+                    return res.status(400).json({ message: `Pricing not configured for ${plan} plan with ${timingCount} timing(s)` });
+                }
+            }
+
+            // 🔍 Check if tiffin with same plan and timings already exists
+            // Sort timings for comparison
             const existingTiffin = await CartItem.findOne({
                 user: userId,
                 itemType: "tiffin",
@@ -80,21 +114,29 @@ export const addToCart = async (req, res) => {
             });
 
             if (existingTiffin) {
-                return res.status(400).json({
-                    success: false,
-                    message: "This tiffin (same plan) is already in your cart.",
-                });
+                // Check if timings match (sort both for comparison)
+                const existingTimings = (existingTiffin.deliveryTimings || []).sort().join(",");
+                const newTimings = uniqueTimings.join(",");
+                
+                if (existingTimings === newTimings) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "This tiffin (same plan and timings) is already in your cart.",
+                    });
+                }
             }
 
-            const basePrice = tiffin.pricing[plan].price;
-            const discount = tiffin.pricing[plan].discount || 0;
+            const basePrice = pricingInfo.price;
+            const discount = pricingInfo.discount || 0;
+            const discountAmount = (basePrice * discount) / 100;
 
-            price = basePrice - discount;
+            price = basePrice - discountAmount;
 
             cartData = {
                 ...cartData,
                 tiffin: tiffinId,
                 selectedPlan: plan,
+                deliveryTimings: uniqueTimings,
                 price,
             };
         }

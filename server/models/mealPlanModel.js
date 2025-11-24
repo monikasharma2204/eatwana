@@ -11,7 +11,7 @@ const mealPlanSchema = new mongoose.Schema({
     // Attach your pre-defined weekly tiffin menu
     tiffinMenu: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "TiffinMenu",
+        ref: "Tiffin", // ✅ Changed from "TiffinMenu" to "Tiffin"
         required: true,
         comment: "Pre-built weekly tiffin menu selected for the customer"
     },
@@ -34,7 +34,7 @@ const mealPlanSchema = new mongoose.Schema({
     // Amount customer actually paid at the time of plan activation
     amountPaid: {
         type: Number,
-        required: true,
+        default: 0,
         comment: "Amount paid initially by customer for this plan"
     },
 
@@ -66,13 +66,27 @@ const mealPlanSchema = new mongoose.Schema({
 
     tokensGenerated: {
         type: Number,
-        required: true,
+        default: 0,
         comment: "Tokens generated from AMOUNT PAID = amountPaid / pricePerMeal"
     },
 
     isActive: {
         type: Boolean,
-        default: true
+        default: false, // ✅ Changed to false by default
+        comment: "Activated only after payment confirmation"
+    },
+
+    // ✅ NEW FIELDS
+    pendingApproval: {
+        type: Boolean,
+        default: true,
+        comment: "True until order is confirmed and payment verified"
+    },
+
+    relatedOrder: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Order",
+        comment: "The order that created this meal plan"
     }
 
 }, { timestamps: true });

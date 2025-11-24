@@ -1,14 +1,53 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axiosClient from '../../services/axiosClient';
+import AlertSnackbar from '../../ui/AlertSnackbar';
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState('');
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        message: "",
+        severity: "info",
+    });
 
-    const handleSubmit = (e) => {
+    const showSnackbar = (message, severity = "info") => {
+        setSnackbar({ open: true, message, severity });
+    };
+
+    const handleClose = () => {
+        setSnackbar((prev) => ({ ...prev, open: false }));
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setIsSubmitted(true);
-        setTimeout(() => setIsSubmitted(false), 3000);
+        
+        if (!email) {
+            showSnackbar("Please enter your email address", "warning");
+            return;
+        }
+
+        try {
+            setLoading(true);
+            const response = await axiosClient.post("/api/v1/customer/forgot-password", {
+                email,
+            });
+
+            if (response.status === 200) {
+                setIsSubmitted(true);
+                showSnackbar(response.data.message || "OTP sent to your email!", "success");
+                setTimeout(() => setIsSubmitted(false), 5000);
+            }
+        } catch (error) {
+            showSnackbar(
+                error.response?.data?.message || "Failed to send reset link. Please try again.",
+                "error"
+            );
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -63,6 +102,13 @@ export default function ForgotPassword() {
 
             {/* Right Side - Forgot Password Form */}
             <div className="w-full lg:w-1/2 bg-[#f5f0eb] flex items-center justify-center p-8 relative">
+                <AlertSnackbar
+                    open={snackbar.open}
+                    message={snackbar.message}
+                    severity={snackbar.severity}
+                    onClose={handleClose}
+                    position={{ vertical: 'top', horizontal: 'right' }}
+                />
                 <svg className="absolute top-8 right-8 w-12 h-12 text-third opacity-70" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z" />
                 </svg>
@@ -97,9 +143,10 @@ export default function ForgotPassword() {
 
                     <button
                         onClick={handleSubmit}
-                        className="w-full bg-primary hover:bg-secondary text-white font-semibold py-4 rounded-full transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200"
+                        disabled={loading || isSubmitted}
+                        className="w-full bg-primary hover:bg-secondary text-white font-semibold py-4 rounded-full transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                     >
-                        Send Reset Link
+                        {loading ? "Sending..." : isSubmitted ? "Sent!" : "Send Reset Link"}
                     </button>
 
                     <div className="mt-8 text-center">

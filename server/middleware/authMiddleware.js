@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import User from "../models/userModel.js";   // Make sure this path matches your project
+import Customer from "../models/customerModel.js";   // Make sure this path matches your project
 
 export const authMiddleware = async (req, res, next) => {
     try {
@@ -16,7 +16,7 @@ export const authMiddleware = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.USER_JWT_SECRET);
 
         // Fetch user
-        const user = await User.findById(decoded.id).select("-password");
+        const user = await Customer.findById(decoded.id).select("-password");
 
         if (!user) {
             return res.status(401).json({

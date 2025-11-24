@@ -34,7 +34,7 @@ import AddTiffin from "./pages/admin/AddTiffin";
 import Tiffin from "./pages/admin/Tiffin";
 import UpdateTiffin from "./pages/admin/UpdateTiffin";
 import UserTiffin from "./pages/landing/UserTiffin";
-import TiffinDetailsPage from "./components/landing/TiffinDetailsPage";
+
 import DishDetailPage from "./pages/landing/DishDetailPage";
 import CartPage from "./pages/landing/Cart";
 import Customers from "./pages/admin/Customers";
@@ -56,6 +56,7 @@ import InvoiceTable from "./pages/admin/InvoiceTable";
 import ViewInvoice from "./pages/admin/ViewInvoice";
 import ShareInvoice from "./pages/landing/ShareInvoice";
 import Sitemap from "./pages/landing/Sitemap";
+import TiffinDetailsPage from "./pages/landing/TiffinDetailsPage";
 
 
 
@@ -70,7 +71,7 @@ export default function App() {
           <Route path="/auth/signup" element={<Signup />} />
           <Route path="/auth/forgot" element={<ForgotPassword />} />
           <Route path="/auth/loader" element={<Loader />} />
-          <Route path="/invoice/:id" element={<ShareInvoice />} />
+          <Route path="/invoice/:id" element={<ViewInvoice />} />
 
           {/* <Route path="/" element={<CoomingSoon />} /> */}
         </Route>

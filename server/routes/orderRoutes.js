@@ -4,7 +4,8 @@ import {
     updateOrderStatus,
     getUserOrders,
     getAllOrders,
-    verifyUPIPayment
+    verifyUPIPayment,
+    confirmPayment
 } from "../controllers/orderController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import { adminAuth } from "../middleware/adminAuthMiddleware.js";
@@ -18,6 +19,7 @@ router.get("/all", adminAuth, getAllOrders);
 router.put("/status/:orderId", adminAuth, updateOrderStatus);
 
 router.put("/verify-upi/:orderId", authMiddleware, verifyUPIPayment);
+router.put('/payment/:orderId', adminAuth, confirmPayment);
 
 
 export default router;

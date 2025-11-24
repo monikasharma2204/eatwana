@@ -175,47 +175,48 @@ const ViewInvoice = () => {
             // Wait for styles to apply
             await new Promise(resolve => setTimeout(resolve, 150));
 
+            // Optimized canvas settings for smaller file size
             const canvas = await html2canvas(clone, {
-                scale: 1.5,  // Reduced from 2
+                scale: 1.5, // Reduced from 2 to 1.5 for smaller file size
                 useCORS: true,
                 logging: false,
                 backgroundColor: '#ffffff',
                 width: 800,
-                windowWidth: 1200,
+                windowWidth: 800,
+                height: clone.scrollHeight,
             });
-
 
             // Cleanup
             document.body.removeChild(container);
 
-            const imgData = canvas.toDataURL('image/jpeg', 0.7);
+            // Convert to JPEG with optimized quality for much smaller file size
+            const imgData = canvas.toDataURL('image/jpeg', 0.85); // JPEG at 85% quality
+
             const pdf = new jsPDF({
                 orientation: 'portrait',
                 unit: 'mm',
-                format: 'a4'
+                format: 'a4',
+                compress: true // Enable PDF compression
             });
 
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = pdf.internal.pageSize.getHeight();
-
-            const margin = 5;
+            const margin = 10;
             const contentWidth = pdfWidth - (margin * 2);
             const imgHeight = (canvas.height * contentWidth) / canvas.width;
 
-            let heightLeft = imgHeight;
-            let position = margin;
-
-            pdf.addImage(imgData, 'PNG', margin, position, contentWidth, imgHeight);
-            heightLeft -= (pdfHeight - margin * 2);
-
-            while (heightLeft > 0) {
-                position = heightLeft - imgHeight + margin;
-                pdf.addPage();
-                pdf.addImage(imgData, 'PNG', margin, position, contentWidth, imgHeight);
-                heightLeft -= (pdfHeight - margin * 2);
+            // Fit to one page - scale down if needed
+            if (imgHeight > (pdfHeight - margin * 2)) {
+                const scale = (pdfHeight - margin * 2) / imgHeight;
+                const scaledWidth = contentWidth * scale;
+                const scaledHeight = imgHeight * scale;
+                const xOffset = (pdfWidth - scaledWidth) / 2;
+                pdf.addImage(imgData, 'JPEG', xOffset, margin, scaledWidth, scaledHeight, undefined, 'FAST');
+            } else {
+                pdf.addImage(imgData, 'JPEG', margin, margin, contentWidth, imgHeight, undefined, 'FAST');
             }
 
-            pdf.save(`Invoice-${invoice._id}.pdf`);
+            pdf.save(`Invoice-${invoice.invoiceNumber || invoice._id}.pdf`);
             showSnackbar('Invoice downloaded successfully!', 'success');
         } catch (error) {
             console.error('PDF Generation Error:', error);
@@ -278,148 +279,169 @@ const ViewInvoice = () => {
                 </button>
             </div>
 
-            <div ref={invoiceRef} className="max-w-3xl mx-auto bg-white p-8 sm:p-8 rounded-xl shadow-lg border border-third/20 relative overflow-hidden">
-                {/* Watermark */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden">
-                    <img
-                        src="/logo.webp"
-                        alt="Watermark"
-                        className="w-[400px] h-auto opacity-[0.06] select-none"
-                        style={{
-                            // transform: 'rotate(-30deg)',
-                            filter: 'grayscale(100%)'
-                        }}
-                    />
+            <div ref={invoiceRef} className="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow-lg border border-third/20" style={{ width: '800px' }}>
+                {/* Header - Compact */}
+                <div className="border-b-2 border-primary/20 pb-3 mb-4">
+                    <div className="flex justify-between items-start">
+                        <div>
+                            <img src='/logo.webp' className='w-16 h-auto' alt="EatWana Logo" />
+                            <p className="text-xs text-gray-600 mt-1">Cloud Kitchen & Tiffin Service</p>
+                        </div>
+                        <div className="text-right">
+                            <p className="text-xl font-bold text-gray-800">INVOICE</p>
+                            <p className="text-xs text-gray-600 mt-1">#{invoice.invoiceNumber || invoice._id}</p>
+                            <p className="text-xs text-gray-600">{formatDate(invoice.createdAt)}</p>
+                            <span className={`inline-block mt-1 px-2 py-0.5 rounded text-xs font-semibold ${(invoice.invoiceType || 'mealPlan') === 'dish' ? 'bg-blue-100 text-blue-700' :
+                                (invoice.invoiceType || 'mealPlan') === 'tiffin' ? 'bg-purple-100 text-purple-700' :
+                                    'bg-green-100 text-green-700'
+                                }`}>
+                                {(invoice.invoiceType || 'mealPlan').toUpperCase()}
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
-                {/* Content wrapper with relative positioning to appear above watermark */}
-                <div className="relative z-10">
-                    {/* Header */}
-                    <div className="border-b-2 border-primary/20 pb-4 mb-8">
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                            <div>
-                                <img src='/logo.webp' className='w-18' alt="EatWana Logo" />
-                                <p className="text-sm text-gray-600">Cloud Kitchen & Tiffin Service</p>
-                            </div>
-                            <div className="text-left sm:text-right">
-                                <p className="text-2xl font-bold text-gray-800">INVOICE</p>
-                                <p className="text-sm text-gray-600 mt-1">#{invoice._id}</p>
-                                <p className="text-sm text-gray-600">{formatDate(invoice.createdAt)}</p>
-                            </div>
-                        </div>
+                {/* From & To Section - Compact */}
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                    {/* From */}
+                    <div className="border border-third/20 rounded-lg p-3 bg-white">
+                        <h3 className="text-xs font-semibold text-gray-500 uppercase mb-2">From</h3>
+                        <p className="font-bold text-gray-800 text-sm">EatWana Cloud Kitchen</p>
+                        <p className="text-xs text-gray-600">D.V.C, Road, Gardanibhag</p>
+                        <p className="text-xs text-gray-600">Patna - 1</p>
+                        <p className="text-xs text-gray-600 mt-1">Phone: +91 97082 77467</p>
+                        <p className="text-xs text-gray-600">Email: eatwana@gmail.com</p>
                     </div>
 
-                    {/* From & To Section */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-                        {/* From */}
-                        <div className="border border-third/20 rounded-xl p-5 bg-white shadow-sm">
-                            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">From</h3>
-                            <div className="space-y-1.5">
-                                <p className="font-bold text-gray-800 text-lg">EatWana Cloud Kitchen</p>
-                                <p className="text-sm text-gray-600">D.V.C, Road</p>
-                                <p className="text-sm text-gray-600">Gardanibhag, Patna - 1</p>
-                                <p className="text-sm text-gray-600 mt-2">
-                                    <span className="font-medium">Phone:</span> +91 97082 77467
-                                </p>
-                                <p className="text-sm text-gray-600">
-                                    <span className="font-medium">Email:</span> eatwana@gmail.com
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* To */}
-                        <div className="border border-third/20 rounded-xl p-5 bg-white shadow-sm">
-                            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">To</h3>
-                            <div className="space-y-1.5">
-                                <p className="font-bold text-gray-800 text-lg">{invoice.customer.name}</p>
-                                <p className="text-sm text-gray-600">{invoice.customer.address}</p>
-                                <p className="text-sm text-gray-600 mt-2">
-                                    <span className="font-medium">Phone:</span> {invoice.customer.mobile}
-                                </p>
-                                <p className="text-sm text-gray-600">
-                                    <span className="font-medium">Email:</span> {invoice.customer.email}
-                                </p>
-                            </div>
-                        </div>
+                    {/* To */}
+                    <div className="border border-third/20 rounded-lg p-3 bg-white">
+                        <h3 className="text-xs font-semibold text-gray-500 uppercase mb-2">To</h3>
+                        <p className="font-bold text-gray-800 text-sm">{invoice.customer?.name || 'N/A'}</p>
+                        <p className="text-xs text-gray-600">{invoice.deliveryAddress || invoice.customer?.address || 'N/A'}</p>
+                        <p className="text-xs text-gray-600 mt-1">Phone: {invoice.customer?.mobile || 'N/A'}</p>
+                        <p className="text-xs text-gray-600">Email: {invoice.customer?.email || 'N/A'}</p>
                     </div>
+                </div>
 
-                    {/* Meal Plan Summary */}
-                    <div className="border border-third/20 rounded-lg p-4 bg-third/5 mb-6">
-                        <h3 className="text-lg font-bold text-gray-800 mb-4">Meal Plan Summary</h3>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div className="text-center sm:text-left">
-                                <p className="text-sm text-gray-600 mb-1">Meals Per Day</p>
-                                <p className="text-2xl font-bold text-primary">{invoice.mealPlan.mealsPerDay}</p>
-                            </div>
-                            <div className="text-center sm:text-left">
-                                <p className="text-sm text-gray-600 mb-1">Price Per Meal</p>
-                                <p className="text-2xl font-bold text-primary">₹{invoice.mealPlan.pricePerMeal}</p>
-                            </div>
-                            <div className="text-center sm:text-left">
-                                <p className="text-sm text-gray-600 mb-1">Total Price</p>
-                                <p className="text-2xl font-bold text-primary">₹{invoice.mealPlan.totalPrice}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Payment Summary */}
-                    <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 mb-6">
-                        <h3 className="text-lg font-bold text-gray-800 mb-4">Payment Summary</h3>
-                        <div className="space-y-3">
-                            <div className="flex justify-between items-center pb-3 border-b border-primary/10">
-                                <span className="text-gray-700 font-medium">Amount Paid</span>
-                                <span className="text-xl font-bold text-primary">₹{invoice.amountPaid}</span>
-                            </div>
-                            <div className="flex justify-between items-center pb-3 border-b border-primary/10">
-                                <span className="text-gray-700 font-medium">Tokens Created</span>
-                                <span className="text-lg font-semibold text-gray-800">{invoice.tokensCreated}</span>
-                            </div>
-                            <div className="flex justify-between items-center pb-3 border-b border-primary/10">
-                                <span className="text-gray-700 font-medium">Previous Token Balance</span>
-                                <span className="text-lg font-semibold text-gray-800">{invoice.previousTokenBalance}</span>
-                            </div>
-                            <div className="flex justify-between items-center pt-2">
-                                <span className="text-gray-700 font-bold">New Token Balance</span>
-                                <span className="text-xl font-bold text-primary">{invoice.newTokenBalance}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Notes */}
+                {/* Items Table (for Dish/Tiffin) */}
+                {(invoice.invoiceType === 'dish' || invoice.invoiceType === 'tiffin') && invoice.items && invoice.items.length > 0 && (
                     <div className="mb-4">
-                        <h3 className="text-base font-bold text-gray-800 mb-2">Notes</h3>
-                        <ul className="space-y-1.5 text-sm text-gray-600">
-                            <li className="flex items-start">
-                                <span className="mr-2">•</span>
-                                <span>This invoice is generated automatically by the system.</span>
-                            </li>
-                        </ul>
+                        <h3 className="text-sm font-bold text-gray-800 mb-2">Order Items</h3>
+                        <table className="w-full border-collapse border border-third/20 text-xs">
+                            <thead>
+                                <tr className="bg-primary/10">
+                                    <th className="border border-third/20 p-2 text-left">Item</th>
+                                    <th className="border border-third/20 p-2 text-center">Qty</th>
+                                    <th className="border border-third/20 p-2 text-right">Unit Price</th>
+                                    <th className="border border-third/20 p-2 text-right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {invoice.items.map((item, idx) => (
+                                    <tr key={idx}>
+                                        <td className="border border-third/20 p-2">
+                                            <p className="font-medium text-gray-800">{item.itemName}</p>
+                                            <p className="text-gray-500 text-xs">
+                                                {item.selectedVariant && `${item.selectedVariant}`}
+                                                {item.category && ` • ${item.category}`}
+                                            </p>
+                                        </td>
+                                        <td className="border border-third/20 p-2 text-center">{item.quantity}</td>
+                                        <td className="border border-third/20 p-2 text-right">₹{item.unitPrice.toLocaleString()}</td>
+                                        <td className="border border-third/20 p-2 text-right font-semibold">₹{item.totalPrice.toLocaleString()}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
+                )}
 
-                    {/* Terms & Conditions */}
-                    <div className="border-t border-gray-200 pt-4">
-                        <h3 className="text-base font-bold text-gray-800 mb-2">Terms & Conditions</h3>
-                        <ul className="space-y-1.5 text-sm text-gray-600">
-                            <li className="flex items-start">
-                                <span className="mr-2">•</span>
-                                <span>Meals are non-refundable once delivered.</span>
-                            </li>
-                            <li className="flex items-start">
-                                <span className="mr-2">•</span>
-                                <span>Token deductions happen instantly upon meal delivery.</span>
-                            </li>
-                            <li className="flex items-start">
-                                <span className="mr-2">•</span>
-                                <span>Billing disputes must be reported within 24 hours.</span>
-                            </li>
-                        </ul>
+                {/* Meal Plan Summary (only for mealPlan) */}
+                {invoice.invoiceType === 'mealPlan' && invoice.mealPlan && (
+                    <div className="border border-third/20 rounded-lg p-3 bg-third/5 mb-4">
+                        <h3 className="text-sm font-bold text-gray-800 mb-2">Meal Plan Summary</h3>
+                        <div className="grid grid-cols-3 gap-3">
+                            <div className="text-center">
+                                <p className="text-xs text-gray-600 mb-1">Meals/Day</p>
+                                <p className="text-lg font-bold text-primary">{invoice.mealPlan.mealsPerDay}</p>
+                            </div>
+                            <div className="text-center">
+                                <p className="text-xs text-gray-600 mb-1">Price/Meal</p>
+                                <p className="text-lg font-bold text-primary">₹{invoice.mealPlan.pricePerMeal}</p>
+                            </div>
+                            <div className="text-center">
+                                <p className="text-xs text-gray-600 mb-1">Total Price</p>
+                                <p className="text-lg font-bold text-primary">₹{invoice.mealPlan.totalPrice?.toLocaleString()}</p>
+                            </div>
+                        </div>
                     </div>
+                )}
 
-                    {/* Footer */}
-                    <div className="mt-4 pt-2 border-t border-gray-200 text-center">
-                        <p className="text-sm text-gray-500">Thank you for choosing EatWana!</p>
-                        <p className="text-xs text-gray-400 mt-1">This is a computer-generated invoice and does not require a signature.</p>
+                {/* Payment Summary - Compact */}
+                <div className="bg-primary/10 border border-primary/20 rounded-lg p-3 mb-3">
+                    <h3 className="text-sm font-bold text-gray-800 mb-2">Payment Summary</h3>
+                    <div className="space-y-1.5 text-xs">
+                        <div className="flex justify-between">
+                            <span className="text-gray-700">Subtotal</span>
+                            <span className="font-medium">₹{invoice.subtotal?.toLocaleString() || (invoice.totalAmount || invoice.amountPaid || 0).toLocaleString()}</span>
+                        </div>
+                        {invoice.discount > 0 && (
+                            <div className="flex justify-between">
+                                <span className="text-gray-700">Discount</span>
+                                <span className="font-medium text-green-600">-₹{invoice.discount.toLocaleString()}</span>
+                            </div>
+                        )}
+                        <div className="flex justify-between pt-1 border-t border-primary/20">
+                            <span className="text-gray-800 font-bold">Total Amount</span>
+                            <span className="text-lg font-bold text-primary">₹{(invoice.totalAmount || invoice.amountPaid || 0).toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between pt-1">
+                            <span className="text-gray-600">Payment Method</span>
+                            <span className="font-medium">{(invoice.paymentMethod || 'COD').toUpperCase()}</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span className="text-gray-600">Payment Status</span>
+                            <span className={`font-medium ${invoice.paymentStatus === 'paid' ? 'text-green-600' :
+                                invoice.paymentStatus === 'pending' ? 'text-yellow-600' :
+                                    'text-red-600'
+                                }`}>
+                                {(invoice.paymentStatus || 'PENDING').toUpperCase()}
+                            </span>
+                        </div>
+                        {invoice.utrNumber && (
+                            <div className="flex justify-between">
+                                <span className="text-gray-600">UTR/Transaction ID</span>
+                                <span className="font-mono text-xs">{invoice.utrNumber}</span>
+                            </div>
+                        )}
                     </div>
+                </div>
+
+                {/* Token Details (only for mealPlan) */}
+                {invoice.invoiceType === 'mealPlan' && invoice.tokensCreated > 0 && (
+                    <div className="bg-gray-50 border border-third/20 rounded-lg p-3 mb-3">
+                        <h3 className="text-sm font-bold text-gray-800 mb-2">Token Transaction</h3>
+                        <div className="space-y-1 text-xs">
+                            <div className="flex justify-between">
+                                <span className="text-gray-600">Tokens Created</span>
+                                <span className="font-bold text-green-600">+{invoice.tokensCreated}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="text-gray-600">Previous Balance</span>
+                                <span className="font-medium">{invoice.previousTokenBalance || 0}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="text-gray-600">New Balance</span>
+                                <span className="font-bold text-primary">{invoice.newTokenBalance || 0}</span>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Footer - Compact */}
+                <div className="border-t border-gray-200 pt-2 text-center">
+                    <p className="text-xs text-gray-500">Thank you for choosing EatWana!</p>
+                    <p className="text-xs text-gray-400 mt-1">This is a computer-generated invoice and does not require a signature.</p>
                 </div>
             </div>
         </div>

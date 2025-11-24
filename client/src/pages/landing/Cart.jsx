@@ -55,36 +55,46 @@ const CartPage = () => {
 
             // Prepare order data
             const orderData = {
-                items: cartData.cart.map(item => ({
-                    itemType: item.itemType || 'dish',
-
-                    // ✅ FIXED: Send actual tiffin/dish ID, not cart item ID
-                    itemId:
-                        item.itemType === "tiffin"
+                items: cartData.cart.map(item => {
+                    const baseItem = {
+                        itemType: item.itemType || 'dish',
+                        // ✅ Send actual tiffin/dish ID, not cart item ID
+                        itemId: item.itemType === "tiffin"
                             ? item.tiffin?._id
                             : item.dish?._id,
+                        quantity: item.quantity || 1,
+                        price: item.price
+                    };
 
-                    quantity: item.quantity || 1,
-                    selectedVariant: item.selectedPlan || null,
-                    price: item.price
-                })),
+                    // ✅ FIXED: Handle tiffin-specific fields
+                    if (item.itemType === "tiffin") {
+                        baseItem.selectedVariant = item.selectedPlan || "oneTime";
+                        baseItem.deliveryTimings = item.deliveryTimings || [];
+                    } else {
+                        // For dishes
+                        baseItem.selectedVariant = item.selectedQuantity || null;
+                    }
 
-                address: paymentData.address, // ✅ Use address from dialog
+                    return baseItem;
+                }),
+                address: paymentData.address,
                 paymentMethod: selectedPayment,
                 utrNumber: selectedPayment === 'upi' ? paymentData.utr : null
             };
+
+            console.log("Order data during place order:", JSON.stringify(orderData, null, 2));
 
             // Place order via API
             const response = await axiosClient.post("/api/v1/order/place", orderData);
 
             // Check if order was successful
-            if (response.status == 201) {
+            if (response.status === 201) {
                 // Clear cart after successful order
                 const clearResult = await dispatch(clearCart());
 
                 if (clearResult.success) {
                     // Success notification
-                    showSnackbar("Order confirmed successfully! ", "success");
+                    showSnackbar("Order confirmed successfully!", "success");
 
                     // Close dialog
                     setIsDialogOpen(false);
@@ -94,8 +104,10 @@ const CartPage = () => {
                 } else {
                     // Order placed but cart clear failed (non-critical)
                     console.warn('Order placed but failed to clear cart:', clearResult.message);
-                    showSnackbar(`Order confirmed! But please refresh to update your cart.
-Order ID: ${response.data.order?._id || 'N/A'}`, "success");
+                    showSnackbar(
+                        `Order confirmed! But please refresh to update your cart.\nOrder ID: ${response.data.order?._id || 'N/A'}`,
+                        "success"
+                    );
                     setIsDialogOpen(false);
                 }
             } else {

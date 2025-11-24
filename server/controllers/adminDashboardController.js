@@ -1,4 +1,4 @@
-import User from "../models/userModel.js";
+import Customer from "../models/customerModel.js";
 import Order from "../models/orderModel.js";
 import Subscription from "../models/subscriptionModel.js";
 import Dish from "../models/dishModel.js";
@@ -11,7 +11,7 @@ export const getAdminDashboard = async (req, res) => {
         today.setHours(0, 0, 0, 0);
 
         // === BASIC COUNTS === //
-        const totalUsers = await User.countDocuments();
+        const totalUsers = await Customer.countDocuments();
         const totalDishes = await Dish.countDocuments();
         const totalTiffins = await Tiffin.countDocuments();
         const totalEnquiries = await Enquiry.countDocuments();

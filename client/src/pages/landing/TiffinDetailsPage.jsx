@@ -5,16 +5,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../services/cartAction';
 import AlertSnackbar from '../../ui/AlertSnackbar';
-import TiffinHeader from './TiffinHeader';
-import TiffinMenuTabs from './TiffinMenuTabs';
-import PricingPlans from './PricingPlans';
-import TiffinAddToCartBar from './TiffinAddToCartBar';
-
+import { PricingPlans, TiffinAddToCartBar, TiffinHeader, TiffinMenuTabs } from '../../components/landing/TiffinDetail';
 
 
 
 export default function TiffinDetailsPage() {
     const [selectedPlan, setSelectedPlan] = useState('monthly');
+    const [deliveryTimings, setDeliveryTimings] = useState([]);
     const [loading, setLoading] = useState(false);
     const [tiffin, setTiffin] = useState(null);
     const [menu, setMenu] = useState(null);
@@ -28,6 +25,7 @@ export default function TiffinDetailsPage() {
         message: "",
         severity: "info",
     });
+
     const showSnackbar = (message, severity = "info") => {
         setSnackbar({ open: true, message, severity });
     };
@@ -35,13 +33,16 @@ export default function TiffinDetailsPage() {
     const handleClose = () => {
         setSnackbar((prev) => ({ ...prev, open: false }));
     };
+
     const fetchTiffin = async () => {
         try {
             setLoading(true);
             const res = await axiosClient.get(`/api/v1/tiffin/get/${id}`);
+            console.log(res.data.data);
             setTiffin(res.data?.data);
         } catch (err) {
             console.error('Error fetching tiffin:', err);
+            showSnackbar('Failed to load tiffin details', 'error');
         } finally {
             setLoading(false);
         }
@@ -53,12 +54,12 @@ export default function TiffinDetailsPage() {
             setMenu(res.data?.data);
         } catch (err) {
             console.error('Error fetching menu:', err);
+            showSnackbar('Failed to load menu', 'error');
         }
     };
 
     const handleAddToCart = async () => {
         if (!user) {
-
             showSnackbar("Please login to add items to cart", "warning");
             navigate('/auth/login');
             return;
@@ -69,25 +70,37 @@ export default function TiffinDetailsPage() {
             return;
         }
 
-        setAddingToCart(true);
-
-        const cartData = {
-            itemType: 'tiffin',
-            tiffinId: id,
-            plan: selectedPlan
-        };
-
-        const result = await dispatch(addToCart(cartData));
-
-        if (result.success) {
-            showSnackbar(result.message || 'Tiffin added to cart successfully!', "success");
-            // Optionally navigate to cart page
-            // navigate('/cart');
-        } else {
-            showSnackbar(result.message || 'Failed to add to cart', "warning");
+        if (!deliveryTimings || deliveryTimings.length === 0) {
+            showSnackbar('Please select at least one delivery timing (breakfast, lunch, or dinner)', "warning");
+            return;
         }
 
-        setAddingToCart(false);
+        setAddingToCart(true);
+
+        try {
+            const cartData = {
+                itemType: 'tiffin',
+                tiffinId: id,
+                plan: selectedPlan,
+                deliveryTimings: deliveryTimings
+            };
+
+            const result = await dispatch(addToCart(cartData));
+
+            if (result.success) {
+                const timingLabels = deliveryTimings.map(t =>
+                    t === 'breakfast' ? 'Breakfast' : t === 'lunch' ? 'Lunch' : 'Dinner'
+                ).join(', ');
+                showSnackbar(`Tiffin added to cart successfully! (${timingLabels})`, "success");
+                setDeliveryTimings([]);
+            } else {
+                showSnackbar(result.message || 'Failed to add to cart', "warning");
+            }
+        } catch (error) {
+            showSnackbar('Error adding to cart', "error");
+        } finally {
+            setAddingToCart(false);
+        }
     };
 
     useEffect(() => {
@@ -102,8 +115,8 @@ export default function TiffinDetailsPage() {
 
     if (loading && !tiffin) {
         return (
-            <div className="min-h-screen bg-linear-to-br from-orange-50 via-white to-amber-50 flex items-center justify-center">
-                <Loader className="w-12 h-12 animate-spin text-primary" />
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+                <Loader className="w-12 h-12 animate-spin text-orange-500" />
             </div>
         );
     }
@@ -118,7 +131,7 @@ export default function TiffinDetailsPage() {
                 onClose={handleClose}
                 position={{ vertical: "top", horizontal: "right" }}
             />
-            <div className="min-h-screen bg-linear-to-br from-orange-50 via-white to-amber-50">
+            <div className="min-h-screen bg-gray-50 pb-32">
                 <div className="max-w-7xl mx-auto px-4 py-8">
                     <TiffinHeader data={tiffin} />
                     <TiffinMenuTabs menu={menu} />
@@ -131,6 +144,8 @@ export default function TiffinDetailsPage() {
                         selectedPlan={selectedPlan}
                         pricing={tiffin?.pricing}
                         tiffinId={id}
+                        deliveryTimings={deliveryTimings}
+                        onDeliveryTimingsChange={setDeliveryTimings}
                         onAddToCart={handleAddToCart}
                         isLoading={addingToCart}
                     />

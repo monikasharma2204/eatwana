@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, Check, Smartphone, Banknote, AlertCircle, MapPin } from 'lucide-react';
 
 const PaymentDialog = ({ isOpen, onClose, selectedPayment, amount, onConfirm, userAddress }) => {
@@ -7,12 +7,17 @@ const PaymentDialog = ({ isOpen, onClose, selectedPayment, amount, onConfirm, us
     const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState('');
 
+    useEffect(() => {
+        if (userAddress) {
+            setAddress(userAddress);
+        }
+    }, [userAddress]);
+
     if (!isOpen) return null;
 
     const handleConfirm = async () => {
         setError('');
 
-        // Validation for address
         if (!address.trim()) {
             setError('Please enter your delivery address');
             return;
@@ -23,7 +28,6 @@ const PaymentDialog = ({ isOpen, onClose, selectedPayment, amount, onConfirm, us
             return;
         }
 
-        // Validation for UPI
         if (selectedPayment === 'upi' && !utr.trim()) {
             setError('Please enter your UTR Number');
             return;
@@ -37,13 +41,11 @@ const PaymentDialog = ({ isOpen, onClose, selectedPayment, amount, onConfirm, us
         setIsProcessing(true);
 
         try {
-            // Call the parent's confirm handler with address
             await onConfirm({
                 utr: selectedPayment === 'upi' ? utr.trim() : null,
                 address: address.trim()
             });
 
-            // Reset state
             setUtr('');
             setAddress('');
             setError('');
@@ -65,40 +67,24 @@ const PaymentDialog = ({ isOpen, onClose, selectedPayment, amount, onConfirm, us
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fadeIn">
-            {/* Backdrop */}
-            <div
-                className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-                onClick={handleClose}
-            />
+            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={handleClose} />
 
-            {/* Dialog */}
             <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-                {/* Header */}
-                <div className="bg-gradient-to-r from-primary to-secondary p-6 text-white sticky top-0 z-10">
+                <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white sticky top-0 z-10">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                            {selectedPayment === 'upi' ? (
-                                <Smartphone className="w-6 h-6" />
-                            ) : (
-                                <Banknote className="w-6 h-6" />
-                            )}
+                            {selectedPayment === 'upi' ? <Smartphone className="w-6 h-6" /> : <Banknote className="w-6 h-6" />}
                             <h2 className="text-2xl font-bold">
                                 {selectedPayment === 'upi' ? 'UPI Payment' : 'Cash on Delivery'}
                             </h2>
                         </div>
-                        <button
-                            onClick={handleClose}
-                            disabled={isProcessing}
-                            className="p-1 hover:bg-white/20 rounded-full transition-colors disabled:opacity-50"
-                        >
+                        <button onClick={handleClose} disabled={isProcessing} className="p-1 hover:bg-white/20 rounded-full transition-colors disabled:opacity-50">
                             <X className="w-6 h-6" />
                         </button>
                     </div>
                 </div>
 
-                {/* Content */}
                 <div className="p-6 space-y-6">
-                    {/* Error Message */}
                     {error && (
                         <div className="flex items-start gap-3 p-4 bg-red-50 rounded-xl border border-red-200">
                             <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
@@ -106,17 +92,15 @@ const PaymentDialog = ({ isOpen, onClose, selectedPayment, amount, onConfirm, us
                         </div>
                     )}
 
-                    {/* Amount Display */}
-                    <div className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl p-4 text-center">
-                        <p className="text-sm text-third/60 mb-1">Total Amount</p>
-                        <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
+                    <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-4 text-center">
+                        <p className="text-sm text-gray-600 mb-1">Total Amount</p>
+                        <p className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
                             ₹{amount.toFixed(2)}
                         </p>
                     </div>
 
-                    {/* Delivery Address - MANDATORY */}
                     <div className="space-y-2">
-                        <label className="flex items-center gap-2 text-sm font-semibold text-third/80">
+                        <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
                             <MapPin className="w-4 h-4" />
                             Delivery Address <span className="text-red-500">*</span>
                         </label>
@@ -127,19 +111,18 @@ const PaymentDialog = ({ isOpen, onClose, selectedPayment, amount, onConfirm, us
                                 setError('');
                             }}
                             placeholder="Enter your complete delivery address including house number, street, landmark, city, and pincode"
-                            className="w-full px-4 py-3 border-2 border-third/20 rounded-xl focus:border-primary focus:outline-none transition-colors resize-none"
+                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none transition-colors resize-none"
                             rows={4}
                             disabled={isProcessing}
                         />
-                        <p className="text-xs text-third/50">
+                        <p className="text-xs text-gray-500">
                             Please provide a complete address for accurate delivery
                         </p>
                     </div>
 
-                    {/* UPI Input or Cash Message */}
                     {selectedPayment === 'upi' ? (
                         <div className="space-y-2">
-                            <label className="block text-sm font-semibold text-third/80">
+                            <label className="block text-sm font-semibold text-gray-700">
                                 Enter Your UTR Number <span className="text-red-500">*</span>
                             </label>
                             <input
@@ -150,19 +133,12 @@ const PaymentDialog = ({ isOpen, onClose, selectedPayment, amount, onConfirm, us
                                     setError('');
                                 }}
                                 placeholder="Enter 12-digit UTR Number"
-                                className="w-full px-4 py-3 border-2 border-third/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
+                                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none transition-colors"
                                 disabled={isProcessing}
                             />
                             <div className="space-y-1">
-                                <p className="text-xs text-third/50">
-                                    ✓ Complete your payment via UPI app first
-                                </p>
-                                <p className="text-xs text-third/50">
-                                    ✓ Supported: Google Pay, PhonePe, Paytm, and more
-                                </p>
-                                <p className="text-xs text-third/50">
-                                    ✓ Find UTR in your transaction history
-                                </p>
+                                <p className="text-xs text-gray-600">✓ Complete your payment via UPI app first</p>
+                                <p className="text-xs text-gray-600">✓ Find UTR in your transaction history</p>
                             </div>
                         </div>
                     ) : (
@@ -176,29 +152,21 @@ const PaymentDialog = ({ isOpen, onClose, selectedPayment, amount, onConfirm, us
                                     </p>
                                 </div>
                             </div>
-                            <p className="text-sm text-third/60 text-center">
-                                Please keep exact change ready for a smooth delivery experience.
-                            </p>
                         </div>
                     )}
 
-                    {/* Action Buttons */}
                     <div className="flex gap-3 pt-2">
                         <button
                             onClick={handleClose}
-                            className="flex-1 px-6 py-3 border-2 border-third/20 rounded-xl font-semibold text-third/70 hover:bg-third/5 transition-colors"
+                            className="flex-1 px-6 py-3 border-2 border-gray-300 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
                             disabled={isProcessing}
                         >
                             Cancel
                         </button>
                         <button
                             onClick={handleConfirm}
-                            disabled={
-                                isProcessing ||
-                                !address.trim() ||
-                                (selectedPayment === 'upi' && !utr.trim())
-                            }
-                            className="flex-1 px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-semibold hover:scale-[1.02] transition-transform disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            disabled={isProcessing || !address.trim() || (selectedPayment === 'upi' && !utr.trim())}
+                            className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:scale-[1.02] transition-transform disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
                             {isProcessing ? (
                                 <>

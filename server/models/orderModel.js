@@ -13,13 +13,19 @@ const orderItemSchema = new mongoose.Schema({
     },
     quantity: { type: Number, default: 1 },
     selectedVariant: { type: String },
+    deliveryTimings: {
+        type: [String],
+        enum: ["breakfast", "lunch", "dinner"],
+        default: [],
+        comment: "Delivery timings for tiffin items (can include multiple timings)"
+    },
     price: { type: Number, required: true }
 }, { _id: false });
 
 const orderSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "Customer",
         required: true
     },
 
@@ -39,7 +45,12 @@ const orderSchema = new mongoose.Schema({
         default: "pending"
     },
 
-    /** ✅ New field added */
+    paymentMethod: {
+        type: String,
+        enum: ["upi", "cod"],
+        default: "cod"
+    },
+
     utrNumber: {
         type: String,
         default: null
@@ -62,6 +73,39 @@ const orderSchema = new mongoose.Schema({
     address: {
         type: String,
         required: true
+    },
+
+    // ✅ Invoice generation tracking flags
+    dishInvoiceGenerated: {
+        type: Boolean,
+        default: false,
+        comment: "Tracks if dish invoice has been generated"
+    },
+
+    tiffinInvoiceGenerated: {
+        type: Boolean,
+        default: false,
+        comment: "Tracks if tiffin invoice has been generated"
+    },
+
+    // ✅ NEW: Meal plan invoice tracking
+    mealPlanInvoiceGenerated: {
+        type: Boolean,
+        default: false,
+        comment: "Tracks if meal plan invoice has been generated"
+    },
+
+    // ✅ Store item data for invoice generation
+    dishItemsData: {
+        type: Array,
+        default: [],
+        comment: "Dish items data for invoice generation"
+    },
+
+    tiffinItemsData: {
+        type: Array,
+        default: [],
+        comment: "Tiffin items data for invoice generation"
     },
 
     upiPayment: {

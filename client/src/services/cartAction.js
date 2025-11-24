@@ -36,7 +36,7 @@ export const fetchCart = () => async (dispatch) => {
         dispatch({ type: 'cart/setLoading', payload: true });
 
         const response = await axiosClient.get('/api/v1/cart/get');
-
+        console.log(response.data.cart)
         dispatch({
             type: 'cart/setCart',
             payload: response.data.cart || []

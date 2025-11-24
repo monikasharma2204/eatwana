@@ -40,7 +40,7 @@ export default function Login() {
             // 🟡 Start Loading
             dispatch(startLoading());
 
-            const response = await axiosClient.post("/api/v1/auth/login", {
+            const response = await axiosClient.post("/api/v1/customer/login", {
                 email,
                 password,
             });

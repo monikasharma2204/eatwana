@@ -121,7 +121,7 @@ const MealPlanTable = () => {
     };
 
     const getUniqueMenuTypes = () => {
-        const types = mealPlans.map(plan => plan.tiffinMenu.menuType);
+        const types = mealPlans?.map(plan => plan?.tiffinMenu?.menuType);
         return [...new Set(types)];
     };
 

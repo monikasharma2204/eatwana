@@ -9,10 +9,26 @@ const TiffinForm = ({ onSuccess, onCancel }) => {
         menu: '',
         pricing: {
             oneTime: { price: '', discount: '' },
-            monthly: { price: '', discount: '' },
-            quarterly: { price: '', discount: '' },
-            halfYearly: { price: '', discount: '' },
-            annual: { price: '', discount: '' }
+            monthly: {
+                oneTime: { price: '', discount: '' },
+                twoTime: { price: '', discount: '' },
+                threeTime: { price: '', discount: '' }
+            },
+            quarterly: {
+                oneTime: { price: '', discount: '' },
+                twoTime: { price: '', discount: '' },
+                threeTime: { price: '', discount: '' }
+            },
+            halfYearly: {
+                oneTime: { price: '', discount: '' },
+                twoTime: { price: '', discount: '' },
+                threeTime: { price: '', discount: '' }
+            },
+            annual: {
+                oneTime: { price: '', discount: '' },
+                twoTime: { price: '', discount: '' },
+                threeTime: { price: '', discount: '' }
+            }
         },
         tags: [],
         foodType: '',
@@ -70,19 +86,31 @@ const TiffinForm = ({ onSuccess, onCancel }) => {
         }
 
         // Validate pricing
-        Object.keys(formData.pricing).forEach(period => {
-            const price = formData.pricing[period].price;
-            const discount = formData.pricing[period].discount;
+        // Validate oneTime plan (simple structure)
+        const oneTimePrice = formData.pricing.oneTime?.price;
+        const oneTimeDiscount = formData.pricing.oneTime?.discount;
+        if (oneTimePrice && oneTimePrice <= 0) {
+            newErrors['pricing_oneTime'] = 'Price must be greater than 0';
+        }
+        if (oneTimeDiscount && (oneTimeDiscount < 0 || oneTimeDiscount > 100)) {
+            newErrors['discount_oneTime'] = 'Discount must be between 0-100%';
+        }
 
-            // Only validate if price is entered
-            if (price && price <= 0) {
-                newErrors[`pricing_${period}`] = 'Price must be greater than 0';
-            }
+        // Validate other plans (timing-based structure)
+        const plansToValidate = ['monthly', 'quarterly', 'halfYearly', 'annual'];
+        plansToValidate.forEach(period => {
+            const timingKeys = ['oneTime', 'twoTime', 'threeTime'];
+            timingKeys.forEach(timingKey => {
+                const price = formData.pricing[period]?.[timingKey]?.price;
+                const discount = formData.pricing[period]?.[timingKey]?.discount;
 
-            // Only validate discount if entered
-            if (discount && (discount < 0 || discount > 100)) {
-                newErrors[`discount_${period}`] = 'Discount must be between 0-100%';
-            }
+                if (price && price <= 0) {
+                    newErrors[`pricing_${period}_${timingKey}`] = 'Price must be greater than 0';
+                }
+                if (discount && (discount < 0 || discount > 100)) {
+                    newErrors[`discount_${period}_${timingKey}`] = 'Discount must be between 0-100%';
+                }
+            });
         });
 
         setErrors(newErrors);
@@ -96,16 +124,36 @@ const TiffinForm = ({ onSuccess, onCancel }) => {
 
         setLoading(true);
         try {
-            // Convert pricing values to numbers
+            // Convert pricing values to numbers with correct structure
+            const processedPricing = {};
+
+            // Handle oneTime (simple structure)
+            processedPricing.oneTime = {
+                price: Number(formData.pricing.oneTime.price) || 0,
+                discount: Number(formData.pricing.oneTime.discount) || 0
+            };
+
+            // Handle other periods (nested timing structure)
+            ['monthly', 'quarterly', 'halfYearly', 'annual'].forEach(period => {
+                processedPricing[period] = {
+                    oneTime: {
+                        price: Number(formData.pricing[period].oneTime.price) || 0,
+                        discount: Number(formData.pricing[period].oneTime.discount) || 0
+                    },
+                    twoTime: {
+                        price: Number(formData.pricing[period].twoTime.price) || 0,
+                        discount: Number(formData.pricing[period].twoTime.discount) || 0
+                    },
+                    threeTime: {
+                        price: Number(formData.pricing[period].threeTime.price) || 0,
+                        discount: Number(formData.pricing[period].threeTime.discount) || 0
+                    }
+                };
+            });
+
             const processedData = {
                 ...formData,
-                pricing: Object.keys(formData.pricing).reduce((acc, key) => {
-                    acc[key] = {
-                        price: Number(formData.pricing[key].price),
-                        discount: Number(formData.pricing[key].discount || 0)
-                    };
-                    return acc;
-                }, {})
+                pricing: processedPricing
             };
 
             const response = await axiosClient.post('/api/v1/tiffin/add', processedData);
@@ -116,7 +164,7 @@ const TiffinForm = ({ onSuccess, onCancel }) => {
                     if (onSuccess) onSuccess(response.data.data);
                 }, 1500);
                 setTimeout(() => {
-                    navigate("/tiffin")
+                    navigate("/admin/tiffin")
                 }, 2000);
             }
         } catch (error) {
@@ -125,7 +173,6 @@ const TiffinForm = ({ onSuccess, onCancel }) => {
             setLoading(false);
         }
     };
-
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -137,19 +184,40 @@ const TiffinForm = ({ onSuccess, onCancel }) => {
         }
     };
 
-    const handlePricingChange = (period, field, value) => {
-        setFormData(prev => ({
-            ...prev,
-            pricing: {
-                ...prev.pricing,
-                [period]: {
-                    ...prev.pricing[period],
-                    [field]: value
-                }
+    const handlePricingChange = (period, timingKey, field, value) => {
+        setFormData(prev => {
+            if (period === 'oneTime') {
+                // Simple structure for oneTime
+                return {
+                    ...prev,
+                    pricing: {
+                        ...prev.pricing,
+                        oneTime: {
+                            ...prev.pricing.oneTime,
+                            [field]: value
+                        }
+                    }
+                };
+            } else {
+                // Timing-based structure for other plans
+                return {
+                    ...prev,
+                    pricing: {
+                        ...prev.pricing,
+                        [period]: {
+                            ...prev.pricing[period],
+                            [timingKey]: {
+                                ...prev.pricing[period][timingKey],
+                                [field]: value
+                            }
+                        }
+                    }
+                };
             }
-        }));
-        if (errors[`${field}_${period}`]) {
-            setErrors(prev => ({ ...prev, [`${field}_${period}`]: '' }));
+        });
+        const errorKey = timingKey ? `${field}_${period}_${timingKey}` : `${field}_${period}`;
+        if (errors[errorKey]) {
+            setErrors(prev => ({ ...prev, [errorKey]: '' }));
         }
     };
 
@@ -331,62 +399,94 @@ const TiffinForm = ({ onSuccess, onCancel }) => {
                 {/* Pricing Section - Spans full width */}
                 <div className="lg:col-span-3 bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
                     <h3 className="text-xl font-semibold mb-4 text-third">Pricing Plans</h3>
+                    <p className="text-sm text-gray-600 mb-4">Set prices based on number of delivery timings (1-time, 2-time, or 3-time delivery)</p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                        {pricingPeriods.map(({ key, label }) => (
-                            <div key={key} className="bg-linear-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200">
-                                <h4 className="font-semibold text-third mb-3 text-center">{label}</h4>
-
-                                <div className="space-y-3">
-                                    <div>
-                                        <label className="block text-xs font-medium text-gray-600 mb-1">
-                                            Price (₹)
-                                        </label>
-                                        <input
-                                            type="number"
-                                            value={formData.pricing[key].price}
-                                            onChange={(e) => handlePricingChange(key, 'price', e.target.value)}
-                                            className={`w-full px-3 py-2 rounded-lg border ${errors[`pricing_${key}`] ? 'border-red-500' : 'border-gray-300'
-                                                } focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm`}
-                                            placeholder="0"
-                                            min="0"
-                                            step="0.01"
-                                        />
-                                        {errors[`pricing_${key}`] && (
-                                            <p className="text-red-500 text-xs mt-1">{errors[`pricing_${key}`]}</p>
-                                        )}
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-xs font-medium text-gray-600 mb-1">
-                                            Discount (%)
-                                        </label>
-                                        <input
-                                            type="number"
-                                            value={formData.pricing[key].discount}
-                                            onChange={(e) => handlePricingChange(key, 'discount', e.target.value)}
-                                            className={`w-full px-3 py-2 rounded-lg border ${errors[`discount_${key}`] ? 'border-red-500' : 'border-gray-300'
-                                                } focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm`}
-                                            placeholder="0"
-                                            min="0"
-                                            max="100"
-                                        />
-                                        {errors[`discount_${key}`] && (
-                                            <p className="text-red-500 text-xs mt-1">{errors[`discount_${key}`]}</p>
-                                        )}
-                                    </div>
-
-                                    {formData.pricing[key].price && (
-                                        <div className="text-center pt-2 border-t border-gray-300">
-                                            <p className="text-xs text-gray-500">Final Price</p>
-                                            <p className="text-lg font-bold text-primary">
-                                                ₹{(formData.pricing[key].price * (1 - (formData.pricing[key].discount || 0) / 100)).toFixed(2)}
-                                            </p>
+                        {pricingPeriods.map(({ key, label }) => {
+                            // For oneTime plan, show simple pricing
+                            if (key === 'oneTime') {
+                                return (
+                                    <div key={key} className="bg-linear-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200">
+                                        <h4 className="font-semibold text-third mb-3 text-center">{label}</h4>
+                                        <div className="space-y-3">
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-600 mb-1">Price (₹)</label>
+                                                <input
+                                                    type="number"
+                                                    value={formData.pricing.oneTime.price}
+                                                    onChange={(e) => handlePricingChange('oneTime', null, 'price', e.target.value)}
+                                                    className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm"
+                                                    placeholder="0"
+                                                    min="0"
+                                                    step="0.01"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-600 mb-1">Discount (%)</label>
+                                                <input
+                                                    type="number"
+                                                    value={formData.pricing.oneTime.discount}
+                                                    onChange={(e) => handlePricingChange('oneTime', null, 'discount', e.target.value)}
+                                                    className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm"
+                                                    placeholder="0"
+                                                    min="0"
+                                                    max="100"
+                                                />
+                                            </div>
                                         </div>
-                                    )}
+                                    </div>
+                                );
+                            }
+
+                            // For other plans, show timing-based pricing
+                            const timingOptions = [
+                                { key: 'oneTime', label: '1-Time Delivery', icon: '1️⃣' },
+                                { key: 'twoTime', label: '2-Time Delivery', icon: '2️⃣' },
+                                { key: 'threeTime', label: '3-Time Delivery', icon: '3️⃣' }
+                            ];
+
+                            return (
+                                <div key={key} className="bg-linear-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200">
+                                    <h4 className="font-semibold text-third mb-3 text-center">{label}</h4>
+                                    <div className="space-y-4">
+                                        {timingOptions.map((timing) => (
+                                            <div key={timing.key} className="border border-gray-200 rounded-lg p-2 bg-white">
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <span className="text-lg">{timing.icon}</span>
+                                                    <span className="text-xs font-medium text-gray-700">{timing.label}</span>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <div>
+                                                        <label className="block text-xs text-gray-600 mb-1">Price (₹)</label>
+                                                        <input
+                                                            type="number"
+                                                            value={formData.pricing[key]?.[timing.key]?.price || ''}
+                                                            onChange={(e) => handlePricingChange(key, timing.key, 'price', e.target.value)}
+                                                            className="w-full px-2 py-1.5 rounded border border-gray-300 focus:ring-1 focus:ring-primary focus:border-transparent outline-none text-xs"
+                                                            placeholder="0"
+                                                            min="0"
+                                                            step="0.01"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-xs text-gray-600 mb-1">Discount (%)</label>
+                                                        <input
+                                                            type="number"
+                                                            value={formData.pricing[key]?.[timing.key]?.discount || ''}
+                                                            onChange={(e) => handlePricingChange(key, timing.key, 'discount', e.target.value)}
+                                                            className="w-full px-2 py-1.5 rounded border border-gray-300 focus:ring-1 focus:ring-primary focus:border-transparent outline-none text-xs"
+                                                            placeholder="0"
+                                                            min="0"
+                                                            max="100"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
 

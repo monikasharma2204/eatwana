@@ -4,7 +4,7 @@ import {
     Menu, X, Bell, ChevronDown, ChevronRight,
     LayoutDashboard, UtensilsCrossed, Users, ShoppingBag,
     Settings, BarChart3, Package, Search, ClipboardCheck, IndianRupee, CalendarSync,
-    LogOut, NotepadText
+    LogOut, NotepadText, Truck
 } from 'lucide-react';
 import { logoutAdmin } from '../../app/auth/adminSlice';
 import { useDispatch } from 'react-redux';
@@ -44,11 +44,23 @@ const Sidebar = ({ children }) => {
             icon: UtensilsCrossed,
             subItems: [
                 { label: 'Create Customers', path: '/admin/customer/add' },
-                { label: 'All Customers', path: '/admin/manual/customer' },
                 { label: 'Attach Menu to Customer', path: '/admin/customer/mealplan/add' },
-                { label: 'Update Delivery Status', path: '/admin/customer/mealplan' },
-                { label: 'Tiffin Delivery', path: '/admin/customer/delivery' },
             ]
+        },
+        {
+            id: 'delivery',
+            label: 'Delivery',
+            icon: Truck,
+            subItems: [
+                { label: 'Update Delivery Status', path: '/admin/customer/mealplan' },
+                { label: 'Tiffin Delivery', path: '/admin/customer/delivery' }
+            ]
+        },
+        {
+            id: 'customers',
+            label: 'Customers',
+            icon: Users,
+            path: '/admin/manual/customer'
         },
         {
             id: 'invoice',
@@ -88,18 +100,6 @@ const Sidebar = ({ children }) => {
             ]
         },
 
-        {
-            id: 'subscription',
-            label: 'Subscription',
-            icon: CalendarSync,
-            path: '/admin/subscription'
-        },
-        {
-            id: 'customers',
-            label: 'Customers',
-            icon: Users,
-            path: '/admin/customers'
-        },
         {
             id: 'enquiries',
             label: 'Enquiries',

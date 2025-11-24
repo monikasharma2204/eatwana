@@ -12,10 +12,26 @@ const UpdateTiffinForm = ({ onSuccess, onCancel }) => {
         menu: '',
         pricing: {
             oneTime: { price: '', discount: '' },
-            monthly: { price: '', discount: '' },
-            quarterly: { price: '', discount: '' },
-            halfYearly: { price: '', discount: '' },
-            annual: { price: '', discount: '' }
+            monthly: {
+                oneTime: { price: '', discount: '' },
+                twoTime: { price: '', discount: '' },
+                threeTime: { price: '', discount: '' }
+            },
+            quarterly: {
+                oneTime: { price: '', discount: '' },
+                twoTime: { price: '', discount: '' },
+                threeTime: { price: '', discount: '' }
+            },
+            halfYearly: {
+                oneTime: { price: '', discount: '' },
+                twoTime: { price: '', discount: '' },
+                threeTime: { price: '', discount: '' }
+            },
+            annual: {
+                oneTime: { price: '', discount: '' },
+                twoTime: { price: '', discount: '' },
+                threeTime: { price: '', discount: '' }
+            }
         },
         tags: [],
         foodType: '',
@@ -60,29 +76,72 @@ const UpdateTiffinForm = ({ onSuccess, onCancel }) => {
             console.log('Tiffin fetched:', response);
             if (response.data.success) {
                 const tiffinData = response.data.data;
+                // Handle both old and new pricing structures for backward compatibility
+                const pricing = tiffinData.pricing || {};
+                
                 setFormData({
                     name: tiffinData.name || '',
                     menu: tiffinData.menu?._id || '',
                     pricing: {
                         oneTime: {
-                            price: tiffinData.pricing?.oneTime?.price || '',
-                            discount: tiffinData.pricing?.oneTime?.discount || ''
+                            price: pricing.oneTime?.price || (typeof pricing.oneTime === 'object' && pricing.oneTime?.price) || '',
+                            discount: pricing.oneTime?.discount || (typeof pricing.oneTime === 'object' && pricing.oneTime?.discount) || ''
                         },
                         monthly: {
-                            price: tiffinData.pricing?.monthly?.price || '',
-                            discount: tiffinData.pricing?.monthly?.discount || ''
+                            oneTime: {
+                                price: pricing.monthly?.oneTime?.price || (typeof pricing.monthly === 'object' && !pricing.monthly?.oneTime && pricing.monthly?.price) || '',
+                                discount: pricing.monthly?.oneTime?.discount || (typeof pricing.monthly === 'object' && !pricing.monthly?.oneTime && pricing.monthly?.discount) || ''
+                            },
+                            twoTime: {
+                                price: pricing.monthly?.twoTime?.price || '',
+                                discount: pricing.monthly?.twoTime?.discount || ''
+                            },
+                            threeTime: {
+                                price: pricing.monthly?.threeTime?.price || '',
+                                discount: pricing.monthly?.threeTime?.discount || ''
+                            }
                         },
                         quarterly: {
-                            price: tiffinData.pricing?.quarterly?.price || '',
-                            discount: tiffinData.pricing?.quarterly?.discount || ''
+                            oneTime: {
+                                price: pricing.quarterly?.oneTime?.price || (typeof pricing.quarterly === 'object' && !pricing.quarterly?.oneTime && pricing.quarterly?.price) || '',
+                                discount: pricing.quarterly?.oneTime?.discount || (typeof pricing.quarterly === 'object' && !pricing.quarterly?.oneTime && pricing.quarterly?.discount) || ''
+                            },
+                            twoTime: {
+                                price: pricing.quarterly?.twoTime?.price || '',
+                                discount: pricing.quarterly?.twoTime?.discount || ''
+                            },
+                            threeTime: {
+                                price: pricing.quarterly?.threeTime?.price || '',
+                                discount: pricing.quarterly?.threeTime?.discount || ''
+                            }
                         },
                         halfYearly: {
-                            price: tiffinData.pricing?.halfYearly?.price || '',
-                            discount: tiffinData.pricing?.halfYearly?.discount || ''
+                            oneTime: {
+                                price: pricing.halfYearly?.oneTime?.price || (typeof pricing.halfYearly === 'object' && !pricing.halfYearly?.oneTime && pricing.halfYearly?.price) || '',
+                                discount: pricing.halfYearly?.oneTime?.discount || (typeof pricing.halfYearly === 'object' && !pricing.halfYearly?.oneTime && pricing.halfYearly?.discount) || ''
+                            },
+                            twoTime: {
+                                price: pricing.halfYearly?.twoTime?.price || '',
+                                discount: pricing.halfYearly?.twoTime?.discount || ''
+                            },
+                            threeTime: {
+                                price: pricing.halfYearly?.threeTime?.price || '',
+                                discount: pricing.halfYearly?.threeTime?.discount || ''
+                            }
                         },
                         annual: {
-                            price: tiffinData.pricing?.annual?.price || '',
-                            discount: tiffinData.pricing?.annual?.discount || ''
+                            oneTime: {
+                                price: pricing.annual?.oneTime?.price || (typeof pricing.annual === 'object' && !pricing.annual?.oneTime && pricing.annual?.price) || '',
+                                discount: pricing.annual?.oneTime?.discount || (typeof pricing.annual === 'object' && !pricing.annual?.oneTime && pricing.annual?.discount) || ''
+                            },
+                            twoTime: {
+                                price: pricing.annual?.twoTime?.price || '',
+                                discount: pricing.annual?.twoTime?.discount || ''
+                            },
+                            threeTime: {
+                                price: pricing.annual?.threeTime?.price || '',
+                                discount: pricing.annual?.threeTime?.discount || ''
+                            }
                         }
                     },
                     tags: tiffinData.tags || [],
@@ -117,19 +176,31 @@ const UpdateTiffinForm = ({ onSuccess, onCancel }) => {
         }
 
         // Validate pricing
-        Object.keys(formData.pricing).forEach(period => {
-            const price = formData.pricing[period].price;
-            const discount = formData.pricing[period].discount;
+        // Validate oneTime plan (simple structure)
+        const oneTimePrice = formData.pricing.oneTime?.price;
+        const oneTimeDiscount = formData.pricing.oneTime?.discount;
+        if (oneTimePrice && oneTimePrice <= 0) {
+            newErrors['pricing_oneTime'] = 'Price must be greater than 0';
+        }
+        if (oneTimeDiscount && (oneTimeDiscount < 0 || oneTimeDiscount > 100)) {
+            newErrors['discount_oneTime'] = 'Discount must be between 0-100%';
+        }
 
-            // Only validate if price is entered
-            if (price && price <= 0) {
-                newErrors[`pricing_${period}`] = 'Price must be greater than 0';
-            }
+        // Validate other plans (timing-based structure)
+        const plansToValidate = ['monthly', 'quarterly', 'halfYearly', 'annual'];
+        plansToValidate.forEach(period => {
+            const timingKeys = ['oneTime', 'twoTime', 'threeTime'];
+            timingKeys.forEach(timingKey => {
+                const price = formData.pricing[period]?.[timingKey]?.price;
+                const discount = formData.pricing[period]?.[timingKey]?.discount;
 
-            // Only validate discount if entered
-            if (discount && (discount < 0 || discount > 100)) {
-                newErrors[`discount_${period}`] = 'Discount must be between 0-100%';
-            }
+                if (price && price <= 0) {
+                    newErrors[`pricing_${period}_${timingKey}`] = 'Price must be greater than 0';
+                }
+                if (discount && (discount < 0 || discount > 100)) {
+                    newErrors[`discount_${period}_${timingKey}`] = 'Discount must be between 0-100%';
+                }
+            });
         });
 
         setErrors(newErrors);
@@ -146,13 +217,70 @@ const UpdateTiffinForm = ({ onSuccess, onCancel }) => {
             // Convert pricing values to numbers
             const processedData = {
                 ...formData,
-                pricing: Object.keys(formData.pricing).reduce((acc, key) => {
-                    acc[key] = {
-                        price: Number(formData.pricing[key].price),
-                        discount: Number(formData.pricing[key].discount || 0)
-                    };
-                    return acc;
-                }, {})
+                pricing: {
+                    // Handle oneTime plan (simple structure)
+                    oneTime: {
+                        price: Number(formData.pricing.oneTime.price || 0),
+                        discount: Number(formData.pricing.oneTime.discount || 0)
+                    },
+                    // Handle other plans (timing-based structure)
+                    monthly: {
+                        oneTime: {
+                            price: Number(formData.pricing.monthly.oneTime.price || 0),
+                            discount: Number(formData.pricing.monthly.oneTime.discount || 0)
+                        },
+                        twoTime: {
+                            price: Number(formData.pricing.monthly.twoTime.price || 0),
+                            discount: Number(formData.pricing.monthly.twoTime.discount || 0)
+                        },
+                        threeTime: {
+                            price: Number(formData.pricing.monthly.threeTime.price || 0),
+                            discount: Number(formData.pricing.monthly.threeTime.discount || 0)
+                        }
+                    },
+                    quarterly: {
+                        oneTime: {
+                            price: Number(formData.pricing.quarterly.oneTime.price || 0),
+                            discount: Number(formData.pricing.quarterly.oneTime.discount || 0)
+                        },
+                        twoTime: {
+                            price: Number(formData.pricing.quarterly.twoTime.price || 0),
+                            discount: Number(formData.pricing.quarterly.twoTime.discount || 0)
+                        },
+                        threeTime: {
+                            price: Number(formData.pricing.quarterly.threeTime.price || 0),
+                            discount: Number(formData.pricing.quarterly.threeTime.discount || 0)
+                        }
+                    },
+                    halfYearly: {
+                        oneTime: {
+                            price: Number(formData.pricing.halfYearly.oneTime.price || 0),
+                            discount: Number(formData.pricing.halfYearly.oneTime.discount || 0)
+                        },
+                        twoTime: {
+                            price: Number(formData.pricing.halfYearly.twoTime.price || 0),
+                            discount: Number(formData.pricing.halfYearly.twoTime.discount || 0)
+                        },
+                        threeTime: {
+                            price: Number(formData.pricing.halfYearly.threeTime.price || 0),
+                            discount: Number(formData.pricing.halfYearly.threeTime.discount || 0)
+                        }
+                    },
+                    annual: {
+                        oneTime: {
+                            price: Number(formData.pricing.annual.oneTime.price || 0),
+                            discount: Number(formData.pricing.annual.oneTime.discount || 0)
+                        },
+                        twoTime: {
+                            price: Number(formData.pricing.annual.twoTime.price || 0),
+                            discount: Number(formData.pricing.annual.twoTime.discount || 0)
+                        },
+                        threeTime: {
+                            price: Number(formData.pricing.annual.threeTime.price || 0),
+                            discount: Number(formData.pricing.annual.threeTime.discount || 0)
+                        }
+                    }
+                }
             };
 
             const response = await axiosClient.put(`/api/v1/tiffin/update/${id}`, processedData);
@@ -184,19 +312,40 @@ const UpdateTiffinForm = ({ onSuccess, onCancel }) => {
         }
     };
 
-    const handlePricingChange = (period, field, value) => {
-        setFormData(prev => ({
-            ...prev,
-            pricing: {
-                ...prev.pricing,
-                [period]: {
-                    ...prev.pricing[period],
-                    [field]: value
-                }
+    const handlePricingChange = (period, timingKey, field, value) => {
+        setFormData(prev => {
+            if (period === 'oneTime') {
+                // Simple structure for oneTime
+                return {
+                    ...prev,
+                    pricing: {
+                        ...prev.pricing,
+                        oneTime: {
+                            ...prev.pricing.oneTime,
+                            [field]: value
+                        }
+                    }
+                };
+            } else {
+                // Timing-based structure for other plans
+                return {
+                    ...prev,
+                    pricing: {
+                        ...prev.pricing,
+                        [period]: {
+                            ...prev.pricing[period],
+                            [timingKey]: {
+                                ...prev.pricing[period][timingKey],
+                                [field]: value
+                            }
+                        }
+                    }
+                };
             }
-        }));
-        if (errors[`${field}_${period}`]) {
-            setErrors(prev => ({ ...prev, [`${field}_${period}`]: '' }));
+        });
+        const errorKey = timingKey ? `${field}_${period}_${timingKey}` : `${field}_${period}`;
+        if (errors[errorKey]) {
+            setErrors(prev => ({ ...prev, [errorKey]: '' }));
         }
     };
 
@@ -384,62 +533,94 @@ const UpdateTiffinForm = ({ onSuccess, onCancel }) => {
                 {/* Pricing Section - Spans full width */}
                 <div className="lg:col-span-3 bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
                     <h3 className="text-xl font-semibold mb-4 text-third">Pricing Plans</h3>
+                    <p className="text-sm text-gray-600 mb-4">Set prices based on number of delivery timings (1-time, 2-time, or 3-time delivery)</p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                        {pricingPeriods.map(({ key, label }) => (
-                            <div key={key} className="bg-linear-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200">
-                                <h4 className="font-semibold text-third mb-3 text-center">{label}</h4>
-
-                                <div className="space-y-3">
-                                    <div>
-                                        <label className="block text-xs font-medium text-gray-600 mb-1">
-                                            Price (₹)
-                                        </label>
-                                        <input
-                                            type="number"
-                                            value={formData.pricing[key].price}
-                                            onChange={(e) => handlePricingChange(key, 'price', e.target.value)}
-                                            className={`w-full px-3 py-2 rounded-lg border ${errors[`pricing_${key}`] ? 'border-red-500' : 'border-gray-300'
-                                                } focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm`}
-                                            placeholder="0"
-                                            min="0"
-                                            step="0.01"
-                                        />
-                                        {errors[`pricing_${key}`] && (
-                                            <p className="text-red-500 text-xs mt-1">{errors[`pricing_${key}`]}</p>
-                                        )}
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-xs font-medium text-gray-600 mb-1">
-                                            Discount (%)
-                                        </label>
-                                        <input
-                                            type="number"
-                                            value={formData.pricing[key].discount}
-                                            onChange={(e) => handlePricingChange(key, 'discount', e.target.value)}
-                                            className={`w-full px-3 py-2 rounded-lg border ${errors[`discount_${key}`] ? 'border-red-500' : 'border-gray-300'
-                                                } focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm`}
-                                            placeholder="0"
-                                            min="0"
-                                            max="100"
-                                        />
-                                        {errors[`discount_${key}`] && (
-                                            <p className="text-red-500 text-xs mt-1">{errors[`discount_${key}`]}</p>
-                                        )}
-                                    </div>
-
-                                    {formData.pricing[key].price && (
-                                        <div className="text-center pt-2 border-t border-gray-300">
-                                            <p className="text-xs text-gray-500">Final Price</p>
-                                            <p className="text-lg font-bold text-primary">
-                                                ₹{(formData.pricing[key].price * (1 - (formData.pricing[key].discount || 0) / 100)).toFixed(2)}
-                                            </p>
+                        {pricingPeriods.map(({ key, label }) => {
+                            // For oneTime plan, show simple pricing
+                            if (key === 'oneTime') {
+                                return (
+                                    <div key={key} className="bg-linear-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200">
+                                        <h4 className="font-semibold text-third mb-3 text-center">{label}</h4>
+                                        <div className="space-y-3">
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-600 mb-1">Price (₹)</label>
+                                                <input
+                                                    type="number"
+                                                    value={formData.pricing.oneTime.price}
+                                                    onChange={(e) => handlePricingChange('oneTime', null, 'price', e.target.value)}
+                                                    className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm"
+                                                    placeholder="0"
+                                                    min="0"
+                                                    step="0.01"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-600 mb-1">Discount (%)</label>
+                                                <input
+                                                    type="number"
+                                                    value={formData.pricing.oneTime.discount}
+                                                    onChange={(e) => handlePricingChange('oneTime', null, 'discount', e.target.value)}
+                                                    className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm"
+                                                    placeholder="0"
+                                                    min="0"
+                                                    max="100"
+                                                />
+                                            </div>
                                         </div>
-                                    )}
+                                    </div>
+                                );
+                            }
+
+                            // For other plans, show timing-based pricing
+                            const timingOptions = [
+                                { key: 'oneTime', label: '1-Time Delivery', icon: '1️⃣' },
+                                { key: 'twoTime', label: '2-Time Delivery', icon: '2️⃣' },
+                                { key: 'threeTime', label: '3-Time Delivery', icon: '3️⃣' }
+                            ];
+
+                            return (
+                                <div key={key} className="bg-linear-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200">
+                                    <h4 className="font-semibold text-third mb-3 text-center">{label}</h4>
+                                    <div className="space-y-4">
+                                        {timingOptions.map((timing) => (
+                                            <div key={timing.key} className="border border-gray-200 rounded-lg p-2 bg-white">
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <span className="text-lg">{timing.icon}</span>
+                                                    <span className="text-xs font-medium text-gray-700">{timing.label}</span>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <div>
+                                                        <label className="block text-xs text-gray-600 mb-1">Price (₹)</label>
+                                                        <input
+                                                            type="number"
+                                                            value={formData.pricing[key]?.[timing.key]?.price || ''}
+                                                            onChange={(e) => handlePricingChange(key, timing.key, 'price', e.target.value)}
+                                                            className="w-full px-2 py-1.5 rounded border border-gray-300 focus:ring-1 focus:ring-primary focus:border-transparent outline-none text-xs"
+                                                            placeholder="0"
+                                                            min="0"
+                                                            step="0.01"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-xs text-gray-600 mb-1">Discount (%)</label>
+                                                        <input
+                                                            type="number"
+                                                            value={formData.pricing[key]?.[timing.key]?.discount || ''}
+                                                            onChange={(e) => handlePricingChange(key, timing.key, 'discount', e.target.value)}
+                                                            className="w-full px-2 py-1.5 rounded border border-gray-300 focus:ring-1 focus:ring-primary focus:border-transparent outline-none text-xs"
+                                                            placeholder="0"
+                                                            min="0"
+                                                            max="100"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
 

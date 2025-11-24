@@ -48,10 +48,10 @@ export default function Signup() {
             // 🟡 Start Loading
             dispatch(startLoading());
 
-            const response = await axiosClient.post("/api/v1/auth/signup", {
+            const response = await axiosClient.post("/api/v1/customer/signup", {
                 name,
                 email,
-                phone: mobile,
+                mobile,
                 password,
             });
 
