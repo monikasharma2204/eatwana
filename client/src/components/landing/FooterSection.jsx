@@ -13,7 +13,8 @@ export default function FooterSection() {
         { name: 'Menu', href: '/menu' },
         { name: 'Tiffin Services', href: '/tiffin' },
         { name: 'Contact Us', href: '/contact' },
-        { name: 'Sitemap', href: '/sitemap' }
+        { name: 'Sitemap', href: '/sitemap' },
+        { name: 'Admin Login', href: '/admin/auth/login' }
     ];
 
     const contactInfo = [
