@@ -32,7 +32,6 @@ const Tiffin = () => {
         const fetchTiffins = async () => {
             try {
                 const response = await axiosClient.get("/api/v1/tiffin/all");
-                console.log("Fetched tiffins:", response.data.data);
                 setTiffins(response.data.data);
 
             } catch (error) {
