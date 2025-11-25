@@ -74,30 +74,30 @@ const DeliveryDrawer = ({ isOpen, onClose, customer, deliveries, loading }) => {
                                     <User className="w-6 h-6 text-primary" />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-lg text-primary">{customer.name}</h3>
-                                    <p className="text-sm text-third/70">{customer.email}</p>
+                                    <h3 className="font-bold text-lg text-primary">{customer?.name}</h3>
+                                    <p className="text-sm text-third/70">{customer?.email}</p>
                                 </div>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                                 <div className="flex items-center gap-2">
                                     <Phone className="w-4 h-4 text-third/60" />
-                                    <span className="text-third">{customer.mobile}</span>
+                                    <span className="text-third">{customer?.mobile}</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <MapPin className="w-4 h-4 text-third/60" />
-                                    <span className="text-third">{customer.address}</span>
+                                    <span className="text-third">{customer?.address}</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Coins className="w-4 h-4 text-third/60" />
-                                    <span className={`font-semibold ${customer.tokenBalance > 20 ? 'text-green-600' : 'text-red-600'}`}>
-                                        {customer.tokenBalance} Tokens
+                                    <span className={`font-semibold ${customer?.tokenBalance > 20 ? 'text-green-600' : 'text-red-600'}`}>
+                                        {customer?.tokenBalance} Tokens
                                     </span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Package className="w-4 h-4 text-third/60" />
                                     <span className="text-third">
-                                        {customer.activePlan ? customer.activePlan.name : 'No Active Plan'}
+                                        {customer?.activePlan ? customer?.activePlan?.name : 'No Active Plan'}
                                     </span>
                                 </div>
                             </div>
@@ -112,9 +112,9 @@ const DeliveryDrawer = ({ isOpen, onClose, customer, deliveries, loading }) => {
                     )}
 
                     {/* Delivery History */}
-                    {!loading && deliveries.length > 0 && (
+                    {!loading && deliveries?.length > 0 && (
                         <div className="space-y-4">
-                            <h3 className="font-semibold text-lg text-primary mb-4">Delivery History ({deliveries.length})</h3>
+                            <h3 className="font-semibold text-lg text-primary mb-4">Delivery History ({deliveries?.length})</h3>
 
                             {/* Desktop Table */}
                             <div className="hidden md:block overflow-x-auto">
@@ -130,25 +130,25 @@ const DeliveryDrawer = ({ isOpen, onClose, customer, deliveries, loading }) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {deliveries.map((delivery) => (
+                                        {deliveries?.map((delivery) => (
                                             <tr key={delivery._id} className="border-b border-third/10 hover:bg-third/5 transition">
                                                 <td className="py-3 px-2 text-sm text-third">
                                                     <div className="flex items-center gap-2">
                                                         <Calendar className="w-4 h-4 text-third/60" />
-                                                        {formatDate(delivery.date)}
+                                                        {formatDate(delivery?.date)}
                                                     </div>
                                                 </td>
                                                 <td className="py-3 px-2">
-                                                    <MealSlotBadge slot={delivery.mealSlot} />
+                                                    <MealSlotBadge slot={delivery?.mealSlot} />
                                                 </td>
-                                                <td className="py-3 px-2 text-sm text-third">{delivery.quantity}</td>
-                                                <td className="py-3 px-2 text-sm font-semibold text-primary">{delivery.tokenUsed}</td>
+                                                <td className="py-3 px-2 text-sm text-third">{delivery?.quantity}</td>
+                                                <td className="py-3 px-2 text-sm font-semibold text-primary">{delivery?.tokenUsed}</td>
                                                 <td className="py-3 px-2 text-sm text-third">
-                                                    <div>{delivery.tiffinMenu.menuName}</div>
-                                                    <div className="text-xs text-third/60">{delivery.tiffinMenu.menuType}</div>
+                                                    <div>{delivery?.tiffinMenu?.menuName}</div>
+                                                    <div className="text-xs text-third/60">{delivery?.tiffinMenu?.menuType}</div>
                                                 </td>
                                                 <td className="py-3 px-2">
-                                                    <StatusBadge status={delivery.status} />
+                                                    <StatusBadge status={delivery?.status} />
                                                 </td>
                                             </tr>
                                         ))}
@@ -158,32 +158,32 @@ const DeliveryDrawer = ({ isOpen, onClose, customer, deliveries, loading }) => {
 
                             {/* Mobile Cards */}
                             <div className="md:hidden space-y-3">
-                                {deliveries.map((delivery) => (
+                                {deliveries?.map((delivery) => (
                                     <div key={delivery._id} className="bg-white border border-third/20 rounded-xl shadow p-4">
                                         <div className="flex justify-between items-start mb-3">
-                                            <MealSlotBadge slot={delivery.mealSlot} />
-                                            <StatusBadge status={delivery.status} />
+                                            <MealSlotBadge slot={delivery?.mealSlot} />
+                                            <StatusBadge status={delivery?.status} />
                                         </div>
 
                                         <div className="space-y-2 text-sm">
                                             <div className="flex items-center gap-2 text-third/70">
                                                 <Calendar className="w-4 h-4" />
-                                                <span>{formatDate(delivery.date)}</span>
+                                                <span>{formatDate(delivery?.date)}</span>
                                             </div>
 
                                             <div className="flex justify-between">
                                                 <span className="text-third/70">Quantity:</span>
-                                                <span className="font-medium text-third">{delivery.quantity}</span>
+                                                <span className="font-medium text-third">{delivery?.quantity}</span>
                                             </div>
 
                                             <div className="flex justify-between">
                                                 <span className="text-third/70">Tokens Used:</span>
-                                                <span className="font-semibold text-primary">{delivery.tokenUsed}</span>
+                                                <span className="font-semibold text-primary">{delivery?.tokenUsed}</span>
                                             </div>
 
                                             <div className="pt-2 border-t border-third/10">
-                                                <div className="font-medium text-third">{delivery.tiffinMenu.menuName}</div>
-                                                <div className="text-xs text-third/60">{delivery.tiffinMenu.menuType}</div>
+                                                <div className="font-medium text-third">{delivery?.tiffinMenu?.menuName}</div>
+                                                <div className="text-xs text-third/60">{delivery?.tiffinMenu?.menuType}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -193,7 +193,7 @@ const DeliveryDrawer = ({ isOpen, onClose, customer, deliveries, loading }) => {
                     )}
 
                     {/* No Deliveries */}
-                    {!loading && deliveries.length === 0 && (
+                    {!loading && deliveries?.length === 0 && (
                         <div className="text-center py-12">
                             <Package className="w-16 h-16 text-third/30 mx-auto mb-4" />
                             <p className="text-third/60 text-lg">📭 No deliveries found for this customer.</p>
@@ -262,9 +262,9 @@ const CustomerDeliveryTable = () => {
 
         // Active plan filter
         if (planFilter === 'yes') {
-            filtered = filtered.filter(customer => customer.activePlan);
+            filtered = filtered.filter(customer => customer?.activePlan);
         } else if (planFilter === 'no') {
-            filtered = filtered.filter(customer => !customer.activePlan);
+            filtered = filtered.filter(customer => !customer?.activePlan);
         }
 
         setFilteredCustomers(filtered);
@@ -386,7 +386,7 @@ const CustomerDeliveryTable = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {filteredCustomers.map((customer) => (
+                                    {filteredCustomers?.map((customer) => (
                                         <tr
                                             key={customer._id}
                                             className="border-t border-third/20 hover:bg-third/5 transition cursor-pointer"
@@ -397,21 +397,21 @@ const CustomerDeliveryTable = () => {
                                                     <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                                                         <User className="w-5 h-5 text-primary" />
                                                     </div>
-                                                    <span className="font-medium text-primary">{customer.name}</span>
+                                                    <span className="font-medium text-primary">{customer?.name}</span>
                                                 </div>
                                             </td>
-                                            <td className="py-4 px-6 text-sm text-third">{customer.mobile}</td>
-                                            <td className="py-4 px-6 text-sm text-third">{customer.email}</td>
-                                            <td className="py-4 px-6 text-sm text-third">{customer.address}</td>
+                                            <td className="py-4 px-6 text-sm text-third">{customer?.mobile}</td>
+                                            <td className="py-4 px-6 text-sm text-third">{customer?.email}</td>
+                                            <td className="py-4 px-6 text-sm text-third">{customer?.address}</td>
                                             <td className="py-4 px-6">
-                                                <span className={`font-semibold ${customer.tokenBalance > 20 ? 'text-green-600' : 'text-red-600'}`}>
-                                                    {customer.tokenBalance}
+                                                <span className={`font-semibold ${customer?.tokenBalance > 20 ? 'text-green-600' : 'text-red-600'}`}>
+                                                    {customer?.tokenBalance}
                                                 </span>
                                             </td>
                                             <td className="py-4 px-6 text-sm text-third">
-                                                {customer.activePlan ? (
+                                                {customer?.activePlan ? (
                                                     <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
-                                                        {customer.activePlan.name}
+                                                        {customer?.activePlan?.name}
                                                     </span>
                                                 ) : (
                                                     <span className="text-third/50">None</span>
@@ -434,7 +434,7 @@ const CustomerDeliveryTable = () => {
                             </table>
                         </div>
 
-                        {filteredCustomers.length === 0 && (
+                        {filteredCustomers?.length === 0 && (
                             <div className="text-center py-12 text-third/60">
                                 No customers found matching your criteria.
                             </div>
@@ -456,22 +456,22 @@ const CustomerDeliveryTable = () => {
                                         <User className="w-6 h-6 text-primary" />
                                     </div>
                                     <div className="flex-1">
-                                        <h3 className="font-bold text-primary">{customer.name}</h3>
-                                        <p className="text-sm text-third/70">{customer.mobile}</p>
+                                        <h3 className="font-bold text-primary">{customer?.name}</h3>
+                                        <p className="text-sm text-third/70">{customer?.mobile}</p>
                                     </div>
-                                    <span className={`font-bold text-lg ${customer.tokenBalance > 20 ? 'text-green-600' : 'text-red-600'}`}>
-                                        {customer.tokenBalance}
+                                    <span className={`font-bold text-lg ${customer?.tokenBalance > 20 ? 'text-green-600' : 'text-red-600'}`}>
+                                        {customer?.tokenBalance}
                                     </span>
                                 </div>
 
                                 <div className="space-y-2 text-sm">
                                     <div className="flex items-center gap-2 text-third/70">
                                         <Mail className="w-4 h-4" />
-                                        <span>{customer.email}</span>
+                                        <span>{customer?.email}</span>
                                     </div>
                                     <div className="flex items-center gap-2 text-third/70">
                                         <MapPin className="w-4 h-4" />
-                                        <span>{customer.address}</span>
+                                        <span>{customer?.address}</span>
                                     </div>
                                 </div>
 
@@ -479,7 +479,7 @@ const CustomerDeliveryTable = () => {
                                     <span className="text-sm text-third/70">Active Plan:</span>
                                     {customer.activePlan ? (
                                         <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
-                                            {customer.activePlan.name}
+                                            {customer?.activePlan?.name}
                                         </span>
                                     ) : (
                                         <span className="text-sm text-third/50">None</span>
@@ -498,7 +498,7 @@ const CustomerDeliveryTable = () => {
                             </div>
                         ))}
 
-                        {filteredCustomers.length === 0 && (
+                        {filteredCustomers?.length === 0 && (
                             <div className="text-center py-12 text-third/60 bg-white rounded-xl shadow border border-third/20">
                                 No customers found matching your criteria.
                             </div>
