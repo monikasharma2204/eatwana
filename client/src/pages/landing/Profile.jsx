@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Package, MapPin, CreditCard, Clock, CheckCircle, XCircle, Truck, ChefHat, ShoppingBag, Circle } from 'lucide-react';
 import axiosClient from '../../services/axiosClient';
+import { useNavigate } from 'react-router-dom';
 
 // Mock data - replace with actual API call
 const mockOrders = [
@@ -218,6 +219,7 @@ const OrderItem = ({ item }) => {
 };
 
 const OrderCard = ({ order }) => {
+    const navigate = useNavigate()
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return date.toLocaleDateString('en-IN', {
@@ -241,6 +243,12 @@ const OrderCard = ({ order }) => {
                 return 'bg-gray-100 text-gray-700 border-gray-200';
         }
     };
+    // Check if invoice exists
+    const hasInvoice =
+        order?.invoiceId ||
+        order?.dishInvoiceGenerated ||
+        order?.tiffinInvoiceGenerated ||
+        order?.mealPlanInvoiceGenerated;
 
     return (
         <div className="rounded-xl shadow-md border border-third/10 p-5 mb-6 bg-white hover:shadow-lg transition-all duration-300">
@@ -330,13 +338,30 @@ const OrderCard = ({ order }) => {
             </div>
 
             {/* Delivery Address */}
-            <div className="mt-6 p-4 rounded-lg border border-third/20 bg-white">
-                <h3 className="text-sm font-semibold text-third mb-2 flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-primary" />
-                    Delivery Address
-                </h3>
-                <p className="text-sm text-third/70">{order.address}</p>
+            <div className='flex items-center justify-center gap-4'>
+                <div className="mt-6 p-4 rounded-lg border border-third/20 bg-white w-full">
+                    <h3 className="text-sm font-semibold text-third mb-2 flex items-center gap-2">
+                        <MapPin className="w-4 h-4 text-primary" />
+                        Delivery Address
+                    </h3>
+                    <p className="text-sm text-third/70">{order.address}</p>
+                </div>
+
+                <div>
+                    <button
+                        onClick={() => navigate(`/invoice/${order?.invoiceId}`)}
+                        disabled={!hasInvoice}
+                        className={`px-6 py-2 rounded-lg text-sm font-semibold transition-all duration-300
+                ${hasInvoice
+                                ? "text-white bg-gradient-to-r from-primary to-secondary hover:shadow-lg hover:scale-105"
+                                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                            }`}
+                    >
+                        View Invoice
+                    </button>
+                </div>
             </div>
+
 
             {/* Last Updated */}
             <div className="mt-4 pt-4 border-t border-third/10">

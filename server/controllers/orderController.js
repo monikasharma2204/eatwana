@@ -620,17 +620,32 @@ export const confirmPayment = async (req, res) => {
 // ---------------------------
 export const getUserOrders = async (req, res) => {
     try {
-        console.log(req.user)
+        console.log("USER:", req.user);
+
+        // Fetch Orders
         const orders = await Order.find({ user: req.user._id })
             .populate("items.itemId")
-            .sort({ createdAt: -1 });
-        res.status(200).json({ orders });
+            .sort({ createdAt: -1 })
+            .lean(); // important to modify results
+
+        // For each order → find its invoice
+        const ordersWithInvoice = await Promise.all(
+            orders.map(async (order) => {
+                const invoice = await Invoice.findOne({ order: order._id }).select("_id");
+                return {
+                    ...order,
+                    invoiceId: invoice ? invoice._id : null
+                };
+            })
+        );
+        console.log(ordersWithInvoice)
+        return res.status(200).json({ orders: ordersWithInvoice });
 
     } catch (error) {
-        res.status(500).json({ message: "Server Error" });
+        console.error("Error getUserOrders:", error);
+        return res.status(500).json({ message: "Server Error" });
     }
 };
-
 
 // ---------------------------
 // ALL ORDERS (Admin)

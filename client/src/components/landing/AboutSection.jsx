@@ -65,7 +65,7 @@ const AboutSection = () => {
                                 Your Home Away From Home
                             </h3>
                             <p className="text-gray-700 leading-relaxed">
-                                We started with a simple mission: to provide students and working professionals with nutritious, homely meals that remind them of home-cooked food. We understand the challenges of managing time, budget, and health when you're focused on your studies or career.
+                                Eatwana is your reliable tiffin partner, delivering fresh, homestyle meals across Patna. We believe food should be simple, healthy, and filled with the taste of home — every single day.
                             </p>
                             <p className="text-gray-700 leading-relaxed">
                                 Our cloud kitchen operates with the highest standards of hygiene and quality. Every meal is prepared fresh daily by experienced chefs who treat food preparation as an art. We source ingredients locally, ensuring freshness and supporting our community.
