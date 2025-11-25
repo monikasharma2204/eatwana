@@ -2,6 +2,8 @@ import Customer from "../models/customerModel.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { generateOtp } from '../utils/otpHelper.js';
+import { sendMail } from "../utils/mailer.js";
+import { adminCreatedWelcomeEmail, signupWelcomeEmail } from "../utils/welcomeEmailTemplet.js";
 
 
 export const signup = async (req, res) => {
@@ -32,7 +34,11 @@ export const signup = async (req, res) => {
 
         // Generate JWT token
         const token = jwt.sign({ id: newUser._id }, process.env.USER_JWT_SECRET, { expiresIn: '7d' });
-
+        await sendMail({
+            to: email,
+            subject: "Welcome to Eatwana - Account Created Successfully",
+            body: signupWelcomeEmail(name)
+        });
         res.status(201).json({
             message: 'User registered successfully!',
             user: { id: newUser._id, name: newUser.name, email: newUser.email },
@@ -195,7 +201,13 @@ export const createCustomer = async (req, res) => {
             email,
             address
         });
-
+        if (email) {
+            await sendMail({
+                to: email,
+                subject: "Welcome to Eatwana - Your Account Details",
+                body: adminCreatedWelcomeEmail(name, email, "Eatwana@123")
+            });
+        }
         res.status(201).json({
             success: true,
             message: "Customer created successfully",

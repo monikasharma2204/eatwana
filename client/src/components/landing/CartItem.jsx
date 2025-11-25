@@ -38,12 +38,12 @@ const CartItem = ({ item, onRemove }) => {
         if (timings.length === 3) return 'Three Times';
         return `${timings.length} Times`;
     };
-
+    console.log(data)
     if (isDish) {
         return (
             <div className="bg-white rounded-xl shadow-md border border-gray-200 p-4 flex gap-4 hover:scale-[1.02] transition-transform">
                 <img
-                    src={data.image || '/placeholder-dish.jpg'}
+                    src={`${import.meta.env.VITE_API_URL}/${data.image}` || '/placeholder-dish.jpg'}
                     alt={data.name}
                     className="w-24 h-24 rounded-lg object-cover"
                 />

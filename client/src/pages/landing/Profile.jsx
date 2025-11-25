@@ -383,7 +383,6 @@ const OrdersPage = () => {
             try {
                 // Replace with actual API call: const response = await getUserOrders();
                 const response = await axiosClient.get("/api/v1/order/my-orders")
-                console.log(response.data.orders)
                 setOrders(response.data.orders);
             } catch (error) {
                 console.error('Error fetching orders:', error);

@@ -9,10 +9,8 @@ export const sendMail = async ({ to, subject, body }) => {
             port: 587,
             secure: false,
             auth: {
-                user: "biharilibrary@gmail.com",
-                pass: "sjmxbccniigpnlfe", // Ensure you're using an app-specific password
-                // user: "tejasvibihari2000@gmail.com",
-                // pass: "gjnoqyfqnblqhiak", // Ensure you're using an app-specific password
+                user: "eatwana@gmail.com",
+                pass: "omyapotjyialgauz", // Ensure you're using an app-specific password
             },
             tls: {
                 rejectUnauthorized: false, // This can sometimes help avoid spam filters
@@ -27,10 +25,10 @@ export const sendMail = async ({ to, subject, body }) => {
         //     html: body, // html body
         // }
         const emailFormat = {
-            from: '"Bihari Library" <biharilibrary@gmail.com>', // Include a clear display name
+            from: '"Eatwana" <eatwana@gmail.com>', // Include a clear display name
             to: to,
             subject: subject,
-            text: "Bihari Library", // Consider adding a plaintext version of the email
+            text: "Eatwana", // Consider adding a plaintext version of the email
             html: body,
             headers: {
                 'X-Priority': '3', // Normal priority

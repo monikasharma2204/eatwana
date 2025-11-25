@@ -81,9 +81,6 @@ const CartPage = () => {
                 paymentMethod: selectedPayment,
                 utrNumber: selectedPayment === 'upi' ? paymentData.utr : null
             };
-
-            console.log("Order data during place order:", JSON.stringify(orderData, null, 2));
-
             // Place order via API
             const response = await axiosClient.post("/api/v1/order/place", orderData);
 

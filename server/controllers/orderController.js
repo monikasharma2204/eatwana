@@ -5,15 +5,13 @@ import Subscription from "../models/subscriptionModel.js";
 import Invoice from "../models/invoiceModel.js";
 import MealPlan from "../models/mealPlanModel.js";
 import Customer from "../models/customerModel.js";
+import { generateMealPlanInvoiceEmail, sendOrderConfirmationEmail } from "../utils/orderConfirmationEmail.js";
 // ---------------------------
 // PLACE ORDER (Updated - No Invoice Generation)
 // ---------------------------
 export const placeOrder = async (req, res) => {
     try {
         const userId = req.user._id;
-        console.log("=== PLACE ORDER REQUEST ===");
-        console.log("User ID:", userId);
-        console.log("Request body:", JSON.stringify(req.body, null, 2));
 
         const { items, address, paymentMethod, utrNumber } = req.body;
 
@@ -35,8 +33,6 @@ export const placeOrder = async (req, res) => {
         const mealPlansToCreate = [];
 
         for (const item of items) {
-            console.log("\n--- Processing item ---");
-            console.log("Item:", JSON.stringify(item, null, 2));
 
             let convertedItemType =
                 item.itemType === "dish"
@@ -62,7 +58,6 @@ export const placeOrder = async (req, res) => {
                 return res.status(404).json({ message: `Item not found: ${item.itemId}` });
             }
 
-            console.log("Product found:", product.name);
 
             const price = item.price;
             const quantity = item.quantity || 1;
@@ -110,9 +105,6 @@ export const placeOrder = async (req, res) => {
                     item.selectedVariant !== "oneTime" &&
                     item.selectedVariant !== "one-time";
 
-                console.log("Is subscription?", isSubscription);
-                console.log("Selected variant:", item.selectedVariant);
-                console.log("Delivery timings:", deliveryTimings);
 
                 if (isSubscription && deliveryTimings.length > 0) {
                     mealPlansToCreate.push({
@@ -122,16 +114,10 @@ export const placeOrder = async (req, res) => {
                         price: price,
                         quantity: quantity
                     });
-                    console.log("✅ Meal plan queued for creation");
                 }
             }
         }
 
-        console.log("\n=== ORDER SUMMARY ===");
-        console.log("Total amount:", total);
-        console.log("Dish items:", dishItems.length);
-        console.log("Tiffin items:", tiffinItems.length);
-        console.log("Meal plans to create:", mealPlansToCreate.length);
 
         // Create order
         const order = await Order.create({
@@ -151,18 +137,14 @@ export const placeOrder = async (req, res) => {
             tiffinItemsData: tiffinItems
         });
 
-        console.log("Order created:", order._id);
 
         // Create meal plans (WITHOUT generating invoices or tokens yet)
         const createdMealPlans = [];
         for (const mealPlanData of mealPlansToCreate) {
             try {
-                console.log("\n--- Creating meal plan ---");
-                console.log("Meal plan data:", JSON.stringify(mealPlanData, null, 2));
 
                 const customer = await Customer.findById(userId);
                 if (!customer) {
-                    console.error("Customer not found:", userId);
                     continue;
                 }
 
@@ -174,7 +156,6 @@ export const placeOrder = async (req, res) => {
                 });
 
                 if (existingPlan) {
-                    console.log(`Customer already has active meal plan for tiffin ${mealPlanData.tiffinId}`);
                     continue;
                 }
 
@@ -184,11 +165,6 @@ export const placeOrder = async (req, res) => {
                 const totalPrice = mealPlanData.price;
                 const pricePerMeal = totalPrice / totalMeals;
 
-                console.log("Meal plan calculations:");
-                console.log("- Meals per day:", mealsPerDay);
-                console.log("- Total meals:", totalMeals);
-                console.log("- Total price:", totalPrice);
-                console.log("- Price per meal:", pricePerMeal);
 
                 const mealPlan = await MealPlan.create({
                     customer: userId,
@@ -207,8 +183,6 @@ export const placeOrder = async (req, res) => {
                     pendingApproval: true,
                     relatedOrder: order._id
                 });
-
-                console.log("✅ Meal plan created:", mealPlan._id);
                 createdMealPlans.push(mealPlan);
             } catch (error) {
                 console.error(`Error creating meal plan: ${error.message}`);
@@ -216,9 +190,7 @@ export const placeOrder = async (req, res) => {
             }
         }
 
-        console.log(`\n=== ORDER PLACEMENT COMPLETE ===`);
-        console.log(`Order ID: ${order._id}`);
-        console.log(`Meal plans created: ${createdMealPlans.length}`);
+
 
         return res.status(201).json({
             message: "Order placed successfully",
@@ -228,7 +200,6 @@ export const placeOrder = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("=== ORDER PLACEMENT ERROR ===");
         console.error(error);
         res.status(500).json({
             message: "Server Error",
@@ -273,9 +244,6 @@ const generateDishInvoice = async (order) => {
 // HELPER: Generate Tiffin Invoice (One-Time Orders Only)
 // ---------------------------
 const generateTiffinInvoice = async (order) => {
-    console.log("=== generateTiffinInvoice called ===");
-    console.log("Order ID:", order._id);
-    console.log("Tiffin items data:", JSON.stringify(order.tiffinItemsData, null, 2));
 
     if (!order.tiffinItemsData || order.tiffinItemsData.length === 0) {
         console.log("No tiffin items data found");
@@ -288,19 +256,15 @@ const generateTiffinInvoice = async (order) => {
             item.selectedVariant === "oneTime" ||
             item.selectedVariant === "one-time";
 
-        console.log(`Tiffin ${item.itemName}: variant=${item.selectedVariant}, isOneTime=${isOneTime}`);
         return isOneTime;
     });
 
-    console.log("One-time tiffin data found:", oneTimeTiffinData.length);
 
     if (oneTimeTiffinData.length === 0) {
-        console.log("No one-time tiffins to generate invoice for");
         return null;
     }
 
     const tiffinSubtotal = oneTimeTiffinData.reduce((sum, item) => sum + item.totalPrice, 0);
-    console.log("Tiffin subtotal:", tiffinSubtotal);
 
     const timestamp = Date.now().toString().slice(-8);
     const random = Math.floor(Math.random() * 1000).toString().padStart(3, "0");
@@ -329,7 +293,7 @@ const generateTiffinInvoice = async (order) => {
 // HELPER: Generate Meal Plan Invoices and Tokens
 // ---------------------------
 const generateMealPlanInvoicesAndTokens = async (order) => {
-    console.log("=== generateMealPlanInvoicesAndTokens called ===");
+
     const mealPlanInvoices = [];
 
     // Find all meal plans related to this order
@@ -337,12 +301,9 @@ const generateMealPlanInvoicesAndTokens = async (order) => {
         relatedOrder: order._id,
         pendingApproval: true
     }).populate('tiffinMenu');
-
-    console.log(`Found ${relatedMealPlans.length} pending meal plans`);
-
     for (const mealPlan of relatedMealPlans) {
         try {
-            console.log(`\n--- Processing meal plan ${mealPlan._id} ---`);
+
 
             const customer = await Customer.findById(mealPlan.customer);
             if (!customer) {
@@ -355,14 +316,6 @@ const generateMealPlanInvoicesAndTokens = async (order) => {
             const tokensGenerated = Math.floor(amountPaid / mealPlan.pricePerMeal);
             const previousBalance = customer.tokenBalance || 0;
             const newBalance = previousBalance + tokensGenerated;
-
-            console.log(`Meal Plan ${mealPlan._id} token calculations:`);
-            console.log(`- Total price: ${mealPlan.totalPrice}`);
-            console.log(`- Amount paid: ${amountPaid}`);
-            console.log(`- Price per meal: ${mealPlan.pricePerMeal}`);
-            console.log(`- Tokens generated: ${tokensGenerated}`);
-            console.log(`- Previous balance: ${previousBalance}`);
-            console.log(`- New balance: ${newBalance}`);
 
             // Update meal plan with tokens and activate it
             mealPlan.amountPaid = amountPaid;
@@ -438,12 +391,6 @@ export const updateOrderStatus = async (req, res) => {
         const previousOrderStatus = order.orderStatus;
         const previousPaymentStatus = order.paymentStatus;
 
-        console.log("\n=== UPDATE ORDER STATUS ===");
-        console.log("Order ID:", orderId);
-        console.log("Previous order status:", previousOrderStatus);
-        console.log("New order status:", status);
-        console.log("Previous payment status:", previousPaymentStatus);
-        console.log("New payment status:", paymentStatus || order.paymentStatus);
 
         // Update order status
         order.orderStatus = status;
@@ -475,9 +422,6 @@ export const updateOrderStatus = async (req, res) => {
                 order.paymentStatus === "paid" &&
                 orderJustConfirmed);
 
-        console.log("Payment just confirmed:", paymentJustConfirmed);
-        console.log("Order just confirmed:", orderJustConfirmed);
-        console.log("Should generate invoice:", shouldGenerateInvoice);
 
         // -----------------------------
         // 📄 INVOICE GENERATION LOGIC
@@ -531,9 +475,45 @@ export const updateOrderStatus = async (req, res) => {
 
         // Save the updated order
         await order.save();
+        // After generating invoices
+        if (generatedInvoices.length > 0) {
+            const customer = await Customer.findById(order.user);
 
-        console.log(`\n=== ORDER STATUS UPDATE COMPLETE ===`);
-        console.log(`Total invoices generated: ${generatedInvoices.length}`);
+            for (const invoice of generatedInvoices) {
+                if (invoice.invoiceType === 'mealPlan') {
+                    // Send meal plan email
+                    const mealPlan = await MealPlan.findById(invoice.mealPlan).populate('tiffinMenu');
+                    const emailData = {
+                        customerName: customer.name,
+                        invoiceId: invoice._id,
+                        mealPlanDetails: {
+                            menuName: mealPlan.tiffinMenu?.menuName,
+                            mealsPerDay: mealPlan.mealsPerDay,
+                            days: mealPlan.days,
+                            totalMeals: mealPlan.totalMeals,
+                            mealSlots: mealPlan.mealSlots
+                        },
+                        tokensGenerated: invoice.tokensCreated,
+                        previousBalance: invoice.previousTokenBalance,
+                        newBalance: invoice.newTokenBalance,
+                        totalAmount: invoice.totalAmount,
+                        paymentMethod: order.paymentMethod,
+                        address: order.address,
+                        utrNumber: order.utrNumber
+                    };
+
+                    const emailBody = generateMealPlanInvoiceEmail(emailData);
+                    await sendMail({
+                        to: customer.email,
+                        subject: `Meal Plan Activated - ${tokensGenerated} Tokens Added | Eatwana`,
+                        body: emailBody
+                    });
+                } else {
+                    // Send regular order confirmation
+                    await sendOrderConfirmationEmail(order, invoice, customer);
+                }
+            }
+        }
 
         res.status(200).json({
             message: `Order status updated to ${status}`,
@@ -546,7 +526,7 @@ export const updateOrderStatus = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("=== UPDATE ORDER STATUS ERROR ===");
+
         console.error(error);
         res.status(500).json({
             message: "Server Error",
@@ -638,7 +618,7 @@ export const getUserOrders = async (req, res) => {
                 };
             })
         );
-        console.log(ordersWithInvoice)
+
         return res.status(200).json({ orders: ordersWithInvoice });
 
     } catch (error) {
