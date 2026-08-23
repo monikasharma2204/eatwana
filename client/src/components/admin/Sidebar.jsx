@@ -213,7 +213,7 @@ const Sidebar = ({ children }) => {
                         </div>
                         <div>
                             <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-rose-600 bg-clip-text text-transparent">Eatwana</h1>
-                            <p className="text-xs text-gray-500 font-medium">Restaurant Admin</p>
+                            <p className="text-xs text-gray-500 font-medium">Restaurant Admins</p>
                         </div>
                     </div>
                     <button onClick={toggleSidebar} className="lg:hidden text-gray-400 hover:text-orange-600 hover:bg-orange-50 p-2 rounded-lg transition-all">
