@@ -1,12 +1,11 @@
 import express from "express";
 import {
-    registerAdmin,
-    loginAdmin,
-    generateAdminOTP,
-    verifyAdminOTP
+  registerAdmin,
+  loginAdmin,
+  generateAdminOTP,
+  verifyAdminOTP,
 } from "../controllers/adminController.js";
 import { adminAuth } from "../middleware/adminAuthMiddleware.js";
-
 
 const router = express.Router();
 
@@ -17,7 +16,7 @@ router.post("/verify-otp", verifyAdminOTP);
 
 // protected route
 router.get("/validate", adminAuth, (req, res) => {
-    res.status(200).json({ admin: req.admin });
+  res.status(200).json({ admin: req.admin });
 });
 
 export default router;
